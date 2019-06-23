@@ -58,20 +58,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        setLiveDataObservers();
+        setEventListeners();
+    }
+
+    private void setLiveDataObservers() {
         viewModel.getData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 binding.txtResult.setText(s);
             }
         });
+    }
 
+    private void setEventListeners(){
         btnSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.getViewModel().setData("Button Was Clicked");
             }
         });
-
 
         switchSendData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -103,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (findViewById(checkedId).getId()){
                     case R.id.radioOn:
                         binding.getViewModel().setData("Radio Button is On of your selected Radio Group");
-                    break;
+                        break;
                     case R.id.radioOff:
                         binding.getViewModel().setData("Radio Button is Off of your selected Radio Group");
                         break;
@@ -124,7 +130,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        viewModel.getData().observe(this, null);
+        btnSendData.setOnClickListener(null);
+        switchSendData.setOnCheckedChangeListener(null);
+        toggleBtnSendData.setOnCheckedChangeListener(null);
+        radioGroup.setOnCheckedChangeListener(null);
+        checkboxSendData.setOnCheckedChangeListener(null);
+    }
+
+
 }

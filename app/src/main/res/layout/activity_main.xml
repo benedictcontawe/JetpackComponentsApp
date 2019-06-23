@@ -117,10 +117,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/ratingBarSendData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
         </ScrollView>
-
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
