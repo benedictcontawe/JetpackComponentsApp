@@ -2,11 +2,14 @@ package com.example.databindingmvvmapp;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
 
     Button btnSendData;
-    TextView txtResult;
-    SwitchCompat switchSendData; //Use SwitchCompat instead of using Switch
-    ToggleButton toggleBtnSendData;
     CheckBox checkboxSendData;
     RadioGroup radioGroup;
     RadioButton radioOn,radioOff;
+    RatingBar ratingBarSendData;
+    Spinner spinnerSendData;
+    SwitchCompat switchSendData; //Use SwitchCompat instead of using Switch
+    TextView txtResult;
+    ToggleButton toggleBtnSendData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         radioOn = (RadioButton) findViewById(R.id.radioOn);
         radioOff = (RadioButton) findViewById(R.id.radioOff);
         checkboxSendData = (CheckBox) findViewById(R.id.checkboxSendData);
+        spinnerSendData = (Spinner) findViewById(R.id.spinnerSendData);
+        ratingBarSendData = (RatingBar) findViewById(R.id.ratingBarSendData);
     }
 
     @Override
@@ -128,6 +135,25 @@ public class MainActivity extends AppCompatActivity {
                     binding.getViewModel().setData("Check Box is Off");
                     checkboxSendData.setText("Off");
                 }
+            }
+        });
+
+        spinnerSendData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ratingBarSendData.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                binding.getViewModel().setData("Rating Bar value is " + String.valueOf(rating));
             }
         });
     }
