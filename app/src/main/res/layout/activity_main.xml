@@ -16,15 +16,19 @@
         android:weightSum="1"
         android:background="#AAA">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.25">
+            android:layout_weight="0.23"
+            android:orientation="vertical"
+            android:weightSum="1"
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textResult"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="@{viewModel.data}"/>
 
@@ -32,11 +36,22 @@
                 android:id="@+id/progressBarResult"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:progressTint="#FFF"
                 android:max="10"
-                android:progress="5"/>
+                android:progress="@{viewModel.progressData}"/>
 
-        </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02"
+            android:background="#FFF"
+            android:elevation="30dp"
+            />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -148,24 +163,40 @@
                 <androidx.appcompat.widget.AppCompatRatingBar
                     android:id="@+id/ratingBarSendData"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:theme="@style/RatingBar"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
                 <SeekBar
                     android:id="@+id/seekBarSendData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:progressTint="#FFF"
+                    android:progressBackgroundTint="#E75748"
+
                     android:max="10"
-                    android:progress="5"
-                    />
+                    android:progress="5" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
                 <SeekBar
                     android:id="@+id/seekBarDiscreteSendData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:progressTint="#FFF"
+                    android:progressBackgroundTint="#E75748"
                     android:max="10"
-                    android:progress="5"
-                    />
+                    android:progress="5" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
             </LinearLayout>
 

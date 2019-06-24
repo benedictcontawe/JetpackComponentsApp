@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MainBinder binding;
     private MainViewModel viewModel;
+
     private String[] names ={"A","B","C","D","E","F","G"};
     private int icons[] = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         ratingBarSendData = (RatingBar) findViewById(R.id.ratingBarSendData);
         seekBarSendData = (SeekBar) findViewById(R.id.seekBarSendData);
         seekBarDiscreteSendData = (SeekBar) findViewById(R.id.seekBarDiscreteSendData);
-
+        progressBarResult = (ProgressBar) findViewById(R.id.progressBarResult);
     }
 
     @Override
@@ -98,10 +99,18 @@ public class MainActivity extends AppCompatActivity {
     private void setLiveDataObservers() {
         viewModel.getData().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(String s) {
-                binding.textResult.setText(s);
+            public void onChanged(String string) {
+                binding.textResult.setText(string);
             }
         });
+
+        viewModel.getProgressData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                binding.progressBarResult.setProgress(integer);
+            }
+        });
+
     }
 
     private void setEventListeners(){
@@ -194,6 +203,44 @@ public class MainActivity extends AppCompatActivity {
                 binding.getViewModel().setData("Rating Bar value is " + String.valueOf(rating));
             }
         });
+
+        seekBarSendData.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                binding.getViewModel().setProgressData(progress);
+                binding.getViewModel().setData("Seek Bar Value selected is " + progress);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        seekBarDiscreteSendData.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                binding.getViewModel().setProgressData(progress);
+                binding.getViewModel().setData("Customize Seek Bar Value selected is " + progress);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
@@ -208,6 +255,8 @@ public class MainActivity extends AppCompatActivity {
         checkboxSendData.setOnCheckedChangeListener(null);
         spinnerSendData.setOnItemSelectedListener(null);
         spinnerCustomSendData.setOnItemSelectedListener(null);
+        ratingBarSendData.setOnRatingBarChangeListener(null);
+
     }
 
 
