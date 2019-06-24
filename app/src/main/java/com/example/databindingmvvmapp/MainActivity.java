@@ -3,16 +3,17 @@ package com.example.databindingmvvmapp;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,16 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
     private MainBinder binding;
     private MainViewModel viewModel;
+    private String[] names ={"A","B","C","D","E","F","G"};
+    private int icons[] = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
-    Button btnSendData;
-    CheckBox checkboxSendData;
-    RadioGroup radioGroup;
-    RadioButton radioOn,radioOff;
-    RatingBar ratingBarSendData;
-    Spinner spinnerSendData;
-    SwitchCompat switchSendData; //Use SwitchCompat instead of using Switch
-    TextView txtResult;
-    ToggleButton toggleBtnSendData;
+    private Button buttonSendData;
+    private CheckBox checkboxSendData;
+    private ProgressBar progressBarResult;
+    private RadioGroup radioGroup;
+    private RadioButton radioOn,radioOff;
+    private RatingBar ratingBarSendData;
+    private SeekBar seekBarSendData,seekBarDiscreteSendData;
+    private Spinner spinnerSendData,spinnerCustomSendData;
+    private SwitchCompat switchSendData; //Use SwitchCompat instead of using Switch
+    private TextView textResult;
+    private ToggleButton toggleButtonSendData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,37 +54,58 @@ public class MainActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
         //binding.setLifecycleOwner();
 
-        txtResult = (TextView) findViewById(R.id.txtResult);
-        btnSendData = (Button) findViewById(R.id.btnSendData);
+        textResult = (TextView) findViewById(R.id.textResult);
+        buttonSendData = (Button) findViewById(R.id.buttonSendData);
         switchSendData = (SwitchCompat) findViewById(R.id.switchSendData);
-        toggleBtnSendData = (ToggleButton) findViewById(R.id.toggleBtnSendData);
+        toggleButtonSendData = (ToggleButton) findViewById(R.id.toggleBtnSendData);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         radioOn = (RadioButton) findViewById(R.id.radioOn);
         radioOff = (RadioButton) findViewById(R.id.radioOff);
         checkboxSendData = (CheckBox) findViewById(R.id.checkboxSendData);
         spinnerSendData = (Spinner) findViewById(R.id.spinnerSendData);
+        spinnerCustomSendData = (Spinner) findViewById(R.id.spinnerCustomSendData);
         ratingBarSendData = (RatingBar) findViewById(R.id.ratingBarSendData);
+        seekBarSendData = (SeekBar) findViewById(R.id.seekBarSendData);
+        seekBarDiscreteSendData = (SeekBar) findViewById(R.id.seekBarDiscreteSendData);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        setSpinnerAdapter();
         setLiveDataObservers();
         setEventListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        binding.getViewModel().setData("A");
+    }
+
+    private void setSpinnerAdapter() {
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item, names);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSendData.setAdapter(spinnerAdapter);
+
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),icons, names);
+        spinnerCustomSendData.setAdapter(customAdapter);
     }
 
     private void setLiveDataObservers() {
         viewModel.getData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                binding.txtResult.setText(s);
+                binding.textResult.setText(s);
             }
         });
     }
 
     private void setEventListeners(){
-        btnSendData.setOnClickListener(new View.OnClickListener() {
+        buttonSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.getViewModel().setData("Button Was Clicked");
@@ -98,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        toggleBtnSendData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggleButtonSendData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
@@ -141,12 +167,24 @@ public class MainActivity extends AppCompatActivity {
         spinnerSendData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                binding.getViewModel().setData("Spinner value selected is " + names[position]);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                binding.getViewModel().setData("Spinner Nothing selected");
+            }
+        });
 
+        spinnerCustomSendData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                binding.getViewModel().setData("Customize Spinner Nothing selected");
             }
         });
 
@@ -163,11 +201,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
 
         viewModel.getData().observe(this, null);
-        btnSendData.setOnClickListener(null);
+        buttonSendData.setOnClickListener(null);
         switchSendData.setOnCheckedChangeListener(null);
-        toggleBtnSendData.setOnCheckedChangeListener(null);
+        toggleButtonSendData.setOnCheckedChangeListener(null);
         radioGroup.setOnCheckedChangeListener(null);
         checkboxSendData.setOnCheckedChangeListener(null);
+        spinnerSendData.setOnItemSelectedListener(null);
+        spinnerCustomSendData.setOnItemSelectedListener(null);
     }
 
 
