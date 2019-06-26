@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1"
-        android:background="#AAA">
+        android:background="#FFF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,14 +49,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.02"
-            android:background="#FFF"
-            android:elevation="30dp"
+            android:background="#FF0000"
+            android:elevation="10dp"
             />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".75">
+            android:layout_weight=".75"
+            android:background="#FFE">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,7 +175,7 @@
                     android:id="@+id/seekBarSendData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:progressTint="#FFF"
+                    android:progressTint="#000"
                     android:progressBackgroundTint="#E75748"
 
                     android:max="10"
@@ -189,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:progressTint="#FFF"
+                    android:progressTint="#000"
                     android:progressBackgroundTint="#E75748"
                     android:max="10"
                     android:progress="5" />
