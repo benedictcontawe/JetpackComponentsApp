@@ -55,20 +55,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
         //binding.setLifecycleOwner();
 
-        textResult = (TextView) findViewById(R.id.textResult);
-        buttonSendData = (Button) findViewById(R.id.buttonSendData);
-        switchSendData = (SwitchCompat) findViewById(R.id.switchSendData);
-        toggleButtonSendData = (ToggleButton) findViewById(R.id.toggleBtnSendData);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        radioOn = (RadioButton) findViewById(R.id.radioOn);
-        radioOff = (RadioButton) findViewById(R.id.radioOff);
-        checkboxSendData = (CheckBox) findViewById(R.id.checkboxSendData);
-        spinnerSendData = (Spinner) findViewById(R.id.spinnerSendData);
-        spinnerCustomSendData = (Spinner) findViewById(R.id.spinnerCustomSendData);
-        ratingBarSendData = (RatingBar) findViewById(R.id.ratingBarSendData);
-        seekBarSendData = (SeekBar) findViewById(R.id.seekBarSendData);
-        seekBarDiscreteSendData = (SeekBar) findViewById(R.id.seekBarDiscreteSendData);
-        progressBarResult = (ProgressBar) findViewById(R.id.progressBarResult);
+        findViewId();
     }
 
     @Override
@@ -85,6 +72,23 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         binding.getViewModel().setData("A");
+    }
+
+    private void findViewId(){
+        textResult = (TextView) findViewById(R.id.textResult);
+        buttonSendData = (Button) findViewById(R.id.buttonSendData);
+        switchSendData = (SwitchCompat) findViewById(R.id.switchSendData);
+        toggleButtonSendData = (ToggleButton) findViewById(R.id.toggleBtnSendData);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        radioOn = (RadioButton) findViewById(R.id.radioOn);
+        radioOff = (RadioButton) findViewById(R.id.radioOff);
+        checkboxSendData = (CheckBox) findViewById(R.id.checkboxSendData);
+        spinnerSendData = (Spinner) findViewById(R.id.spinnerSendData);
+        spinnerCustomSendData = (Spinner) findViewById(R.id.spinnerCustomSendData);
+        ratingBarSendData = (RatingBar) findViewById(R.id.ratingBarSendData);
+        seekBarSendData = (SeekBar) findViewById(R.id.seekBarSendData);
+        seekBarDiscreteSendData = (SeekBar) findViewById(R.id.seekBarDiscreteSendData);
+        progressBarResult = (ProgressBar) findViewById(R.id.progressBarResult);
     }
 
     private void setSpinnerAdapter() {
