@@ -39,7 +39,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:progressTint="#FFF"
+                android:progressTint="#FF0000"
                 android:max="10"
                 android:progress="@{viewModel.progressData}"/>
 
@@ -176,8 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:progressTint="#000"
-                    android:progressBackgroundTint="#E75748"
-
+                    android:progressBackgroundTint="@android:color/darker_gray"
                     android:max="10"
                     android:progress="5" />
 
@@ -191,7 +190,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
                     android:progressTint="#000"
-                    android:progressBackgroundTint="#E75748"
+                    android:progressBackgroundTint="@android:color/darker_gray"
                     android:max="10"
                     android:progress="5" />
 
