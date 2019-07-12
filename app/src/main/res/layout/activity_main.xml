@@ -175,6 +175,7 @@
                     android:id="@+id/seekBarSendData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:thumb="@drawable/lever_selected"
                     android:progressTint="#000"
                     android:progressBackgroundTint="@android:color/darker_gray"
                     android:max="10"
@@ -188,11 +189,12 @@
                     android:id="@+id/seekBarDiscreteSendData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:thumb="@drawable/lever_unselected"
                     android:progressTint="#000"
                     android:progressBackgroundTint="@android:color/darker_gray"
                     android:max="10"
-                    android:progress="5" />
+                    android:progress="5"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"/>
 
                 <Space
                     android:layout_width="match_parent"
