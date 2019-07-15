@@ -185,6 +185,38 @@ public class MainActivity : AppCompatActivity(){
 
             }
         })
+
+        seekBarSendData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                seekBarSendData.setThumb(getResources().getDrawable(
+                    when(hasFocus){
+                        true -> {
+                            R.drawable.ic_seeker_thumb_selected
+                        }
+                        false -> {
+                            R.drawable.ic_seeker_thumb_unselected
+                        }
+                    }
+                ))
+            }
+
+        })
+
+        seekBarDiscreteSendData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                seekBarDiscreteSendData.setThumb(getResources().getDrawable(
+                        when(hasFocus){
+                            true -> {
+                                R.drawable.ic_lever_selected
+                            }
+                            false -> {
+                                R.drawable.ic_lever_unselected
+                            }
+                        }
+                ))
+            }
+
+        })
     }
 
     override fun onStop() {
