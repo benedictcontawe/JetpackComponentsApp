@@ -190,7 +190,7 @@
                     android:id="@+id/seekBarDiscreteSendData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/lever_unselected"
+                    android:thumb="@drawable/ic_lever_unselected"
                     android:thumbOffset="0dp"
                     android:progressTint="#000"
                     android:progressBackgroundTint="@android:color/darker_gray"
