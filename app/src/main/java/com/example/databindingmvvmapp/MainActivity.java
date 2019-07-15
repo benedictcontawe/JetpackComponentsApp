@@ -227,6 +227,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        seekBarSendData.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                if (isFocus){
+                    //Toast.makeText(getBaseContext(),"On Enter Focus",Toast.LENGTH_SHORT).show();
+                    seekBarSendData.setThumb(getResources().getDrawable(R.drawable.ic_seeker_thumb_selected));
+                }
+                else {
+                    //Toast.makeText(getBaseContext(),"On Leave Focus",Toast.LENGTH_SHORT).show();
+                    seekBarSendData.setThumb(getResources().getDrawable(R.drawable.ic_seeker_thumb_unselected));
+                }
+            }
+        });
+
         seekBarDiscreteSendData.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -243,6 +257,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        seekBarDiscreteSendData.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                if (isFocus){
+                    //Toast.makeText(getBaseContext(),"On Enter Focus",Toast.LENGTH_SHORT).show();
+                    seekBarSendData.setThumb(getResources().getDrawable(R.drawable.ic_lever_selected));
+                }
+                else {
+                    //Toast.makeText(getBaseContext(),"On Leave Focus",Toast.LENGTH_SHORT).show();
+                    seekBarSendData.setThumb(getResources().getDrawable(R.drawable.ic_lever_unselected));
+                }
             }
         });
     }

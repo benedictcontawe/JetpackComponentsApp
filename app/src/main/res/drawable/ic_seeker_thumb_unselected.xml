@@ -3,15 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:viewportWidth="500.0"
     android:viewportHeight="500.0"
-    android:width="40dp"
-    android:height="40dp">
+    android:width="20dp"
+    android:height="20dp">
+
+    <path
+        android:pathData="M 500 250 A 100 100 0 0 0 0 250 Z"/>
+
+    <path
+        android:pathData="M 0 250 A 100 100 0 0 0 500 250 Z"/>
 
     <path
         android:fillColor="#FFF"
-        android:pathData="M 450 250 A 100 100 0 0 0 250 250 Z"/>
+        android:pathData="M 350 250 A 100 100 0 0 0 150 250 Z"/>
 
     <path
         android:fillColor="#FFF"
-        android:pathData="M 250 250 A 100 100 0 0 0 450 250 Z"/>
+        android:pathData="M 150 250 A 100 100 0 0 0 350 250 Z"/>
 
 </vector>

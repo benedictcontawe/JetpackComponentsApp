@@ -3,27 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:viewportWidth="500.0"
     android:viewportHeight="500.0"
-    android:width="40dp"
-    android:height="40dp">
-
-    <!--<path android:fillColor="#EE3031" android:pathData="M0,500 H500 V0"/>
-
-    <path android:fillColor="#000" android:pathData="M0,500 L500,0 H0 V0"/>-->
+    android:width="20dp"
+    android:height="20dp">
 
     <path
-        android:fillColor="#B3339DFF"
+        android:fillColor="#40339DFF"
         android:pathData="M 500 250 A 100 100 0 0 0 0 250 Z"/>
 
     <path
-        android:fillColor="#B3339DFF"
+        android:fillColor="#40339DFF"
         android:pathData="M 0 250 A 100 100 0 0 0 500 250 Z"/>
 
     <path
         android:fillColor="#339DFF"
-        android:pathData="M 400 250 A 100 100 0 0 0 100 250 Z"/>
+        android:pathData="M 350 250 A 100 100 0 0 0 150 250 Z"/>
 
     <path
         android:fillColor="#339DFF"
-        android:pathData="M 100 250 A 100 100 0 0 0 400 250 Z"/>
+        android:pathData="M 150 250 A 100 100 0 0 0 350 250 Z"/>
 
 </vector>
