@@ -129,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         ratingBarSendData.setOnRatingBarChangeListener(this);
         seekBarSendData.setOnSeekBarChangeListener(this);
         seekBarDiscreteSendData.setOnSeekBarChangeListener(this);
+        seekBarSendData.setOnFocusChangeListener(this);
+        seekBarDiscreteSendData.setOnFocusChangeListener(this);
     }
 
     @Override
@@ -248,12 +250,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Override
-    public void onFocusChange(View view, boolean b) {
+    public void onFocusChange(View view, boolean isFocus) {
         if (view.getId() == seekBarSendData.getId()) {
-
+            seekBarSendData.setThumb(getResources().getDrawable(isFocus ? R.drawable.ic_seeker_thumb_selected : R.drawable.ic_seeker_thumb_unselected));
         }
         else if (view.getId() == seekBarDiscreteSendData.getId()){
-
+            seekBarDiscreteSendData.setThumb(getResources().getDrawable(isFocus ? R.drawable.ic_lever_selected : R.drawable.ic_lever_unselected));
         }
     }
     //endregion
