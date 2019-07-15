@@ -3,6 +3,7 @@ package com.example.databindingmvvmapp;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,7 +26,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.databindingmvvmapp.databinding.MainBinder;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener, OnFocusChangeListener {
 
     private MainBinder binding;
     private MainViewModel viewModel;
@@ -244,6 +245,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        if (view.getId() == seekBarSendData.getId()) {
+
+        }
+        else if (view.getId() == seekBarDiscreteSendData.getId()){
+
+        }
     }
     //endregion
 }
