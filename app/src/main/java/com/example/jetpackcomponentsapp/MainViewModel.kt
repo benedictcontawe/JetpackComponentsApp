@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
-class MainViewModelKotlin : ViewModel() {
+class MainViewModel : ViewModel() {
     private val data = MutableLiveData<CustomModel>()
-    val Data : LiveData<String> = Transformations.map<CustomModel, String>(data,::processData)
+    private val Data : LiveData<String> = Transformations.map<CustomModel, String>(data,::processData)
 
     private fun processData(customModel: CustomModel) : String =
         if (customModel.firstName.isNullOrEmpty()|| customModel.lastName.isNullOrEmpty()) {
@@ -17,7 +17,11 @@ class MainViewModelKotlin : ViewModel() {
             "Your Full name is ${customModel.firstName} ${customModel.lastName}"
         }
 
-    fun setData(customModel: CustomModel) : MainViewModelKotlin =
+    fun getData() : LiveData<String> {
+        return Data
+    }
+
+    fun setData(customModel: CustomModel) : MainViewModel =
         apply {
             data.setValue(customModel)
         }
