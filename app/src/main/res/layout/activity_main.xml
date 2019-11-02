@@ -6,7 +6,7 @@
     <data class="MainBinder">
         <variable
             name="viewModel"
-            type="com.example.databindingmvvmapp.MainViewModel" />
+            type="com.example.jetpackcomponentsapp.MainViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat

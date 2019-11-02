@@ -1,4 +1,4 @@
-package com.example.databindingmvvmapp
+package com.example.jetpackcomponentsapp
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.databindingmvvmapp.databinding.MainBinder
+import com.example.jetpackcomponentsapp.databinding.MainBinder
 import kotlinx.android.synthetic.main.activity_main.*
 
 public class MainActivity : AppCompatActivity(){
