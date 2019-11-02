@@ -1,4 +1,4 @@
-package com.example.databindingmvvmapp;
+package com.example.jetpackcomponentsapp;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

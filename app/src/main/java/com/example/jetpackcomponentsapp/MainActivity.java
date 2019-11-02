@@ -1,4 +1,4 @@
-package com.example.databindingmvvmapp;
+package com.example.jetpackcomponentsapp;
 
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +24,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.databindingmvvmapp.databinding.MainBinder;
+import com.example.jetpackcomponentsapp.databinding.MainBinder;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener, OnFocusChangeListener {
 
