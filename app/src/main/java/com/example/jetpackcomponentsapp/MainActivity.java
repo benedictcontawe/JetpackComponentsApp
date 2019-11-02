@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         setSpinnerAdapter();
-        setLiveDataObservers();
         setEventListeners();
     }
 
@@ -49,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        binding.getViewModel().setData("A");
+        binding.getViewModel().setData("");
+        binding.textResult.setText(binding.getViewModel().getData());
     }
 
     private void setSpinnerAdapter() {
@@ -61,28 +61,12 @@ public class MainActivity extends AppCompatActivity {
         binding.spinnerCustomSendData.setAdapter(customAdapter);
     }
 
-    private void setLiveDataObservers() {
-        viewModel.getData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String string) {
-                binding.textResult.setText(string);
-            }
-        });
-
-        viewModel.getProgressData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                binding.progressBarResult.setProgress(integer);
-            }
-        });
-
-    }
-
     private void setEventListeners(){
         binding.buttonSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.getViewModel().setData("Button Was Clicked");
+                binding.textResult.setText(binding.getViewModel().getData());
             }
         });
 
@@ -91,9 +75,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
                     binding.getViewModel().setData("Switch is On");
+                    binding.textResult.setText(binding.getViewModel().getData());
                 }
                 else if (isChecked == false) {
                     binding.getViewModel().setData("Switch is Off");
+                    binding.textResult.setText(binding.getViewModel().getData());
                 }
             }
         });
@@ -103,9 +89,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
                     binding.getViewModel().setData("Toggle Button is On");
+                    binding.textResult.setText(binding.getViewModel().getData());
                 }
                 else if (isChecked == false) {
                     binding.getViewModel().setData("Toggle Button is Off");
+                    binding.textResult.setText(binding.getViewModel().getData());
                 }
             }
         });
@@ -116,9 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 switch (findViewById(checkedId).getId()){
                     case R.id.radioOn:
                         binding.getViewModel().setData("Radio Button is On of your selected Radio Group");
+                        binding.textResult.setText(binding.getViewModel().getData());
                         break;
                     case R.id.radioOff:
                         binding.getViewModel().setData("Radio Button is Off of your selected Radio Group");
+                        binding.textResult.setText(binding.getViewModel().getData());
                         break;
                 }
             }
@@ -129,10 +119,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
                     binding.getViewModel().setData("Check Box is On");
+                    binding.textResult.setText(binding.getViewModel().getData());
                     binding.checkboxSendData.setText("On");
                 }
                 else if (isChecked == false) {
                     binding.getViewModel().setData("Check Box is Off");
+                    binding.textResult.setText(binding.getViewModel().getData());
                     binding.checkboxSendData.setText("Off");
                 }
             }
@@ -142,11 +134,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 binding.getViewModel().setData("Spinner value selected is " + names[position]);
+                binding.textResult.setText(binding.getViewModel().getData());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 binding.getViewModel().setData("Spinner Nothing selected");
+                binding.textResult.setText(binding.getViewModel().getData());
             }
         });
 
@@ -154,11 +148,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
+                binding.textResult.setText(binding.getViewModel().getData());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 binding.getViewModel().setData("Customize Spinner Nothing selected");
+                binding.textResult.setText(binding.getViewModel().getData());
             }
         });
 
@@ -166,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 binding.getViewModel().setData("Rating Bar value is " + String.valueOf(rating));
+                binding.textResult.setText(binding.getViewModel().getData());
             }
         });
 
@@ -179,7 +176,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 binding.getViewModel().setProgressData(progress);
+                binding.progressBarResult.setProgress(binding.getViewModel().getProgressData());
                 binding.getViewModel().setData("Seek Bar Value selected is " + progress);
+                binding.textResult.setText(binding.getViewModel().getData());
             }
 
             @Override
@@ -212,7 +211,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 binding.getViewModel().setProgressData(progress);
+                binding.progressBarResult.setProgress(binding.getViewModel().getProgressData());
                 binding.getViewModel().setData("Customize Seek Bar Value selected is " + progress);
+                binding.textResult.setText(binding.getViewModel().getData());
             }
 
             @Override
@@ -225,11 +226,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean isFocus) {
                 if (isFocus){
-                    //Toast.makeText(getBaseContext(),"On Enter Focus",Toast.LENGTH_SHORT).show();
                     binding.seekBarDiscreteSendData.setThumb(getResources().getDrawable(R.drawable.ic_lever_selected));
                 }
                 else {
-                    //Toast.makeText(getBaseContext(),"On Leave Focus",Toast.LENGTH_SHORT).show();
                     binding.seekBarDiscreteSendData.setThumb(getResources().getDrawable(R.drawable.ic_lever_unselected));
                 }
             }
@@ -240,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        viewModel.getData().observe(this, null);
         binding.buttonSendData.setOnClickListener(null);
         binding.switchSendData.setOnCheckedChangeListener(null);
         binding.toggleButtonSendData.setOnCheckedChangeListener(null);
@@ -249,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
         binding.spinnerSendData.setOnItemSelectedListener(null);
         binding.spinnerCustomSendData.setOnItemSelectedListener(null);
         binding.ratingBarSendData.setOnRatingBarChangeListener(null);
-
     }
 
 }

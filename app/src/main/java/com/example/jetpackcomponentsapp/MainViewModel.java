@@ -6,22 +6,22 @@ import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<String> data = new MutableLiveData<>();
-    private MutableLiveData<Integer> progressData = new MutableLiveData<>();
+    private String data;
+    private Integer progressData;
 
-    public LiveData<String> getData() {
+    public String getData() {
         return data;
     }
 
     public void setData(String data){
-        this.data.setValue(data);
+        this.data = data;
     }
 
-    public LiveData<Integer> getProgressData() {
+    public Integer getProgressData() {
         return progressData;
     }
 
     public void setProgressData(int progressData) {
-        this.progressData.setValue(progressData);
+        this.progressData = progressData;
     }
 }
