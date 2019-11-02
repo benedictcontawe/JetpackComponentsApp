@@ -6,22 +6,22 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    private var data : MutableLiveData<String> = MutableLiveData()
-    private var progressData : MutableLiveData<Int> = MutableLiveData()
+    private lateinit var data : String
+    private var progressData : Int? = null
 
-    public fun getData() : LiveData<String> {
+    public fun getData() : String {
         return data
     }
 
     public fun setData(data : String) {
-        this.data.setValue(data)
+        this.data = data
     }
 
-    public fun getProgressData() : LiveData<Int> {
+    public fun getProgressData() : Int? {
         return progressData
     }
 
-    public fun setProgressData(progressData : Int){
-        this.progressData.setValue(progressData)
+    public fun setProgressData(progressData : Int) {
+        this.progressData = progressData
     }
 }
