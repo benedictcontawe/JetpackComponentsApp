@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         }*/
         binding.buttonSendData.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
+                //this was for the sample for the transformations map
+                // this call is intended to use in the back end calling
                 binding.viewModel!!.setData(
                         CustomModel(
                                 binding.exitTextFirstName.text.toString(),

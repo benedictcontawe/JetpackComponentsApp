@@ -22,6 +22,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun setData(customModel: CustomModel) : MainViewModel =
+            //This will be use for the back end like calling retrofit data or
         apply {
             data.setValue(customModel)
         }
