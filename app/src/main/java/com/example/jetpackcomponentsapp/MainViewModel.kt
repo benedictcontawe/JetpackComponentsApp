@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
+    //TODO: Finish code for Transformations.switchMap
     private val data = MutableLiveData<CustomModel>()
     private val Data : LiveData<String> = Transformations.map<CustomModel, String>(data,::processData)
 
