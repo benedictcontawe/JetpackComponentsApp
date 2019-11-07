@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         //viewModel.getData().observe(this, Observer { string -> binding.textResult.text = string })
         viewModel.getData().observe(this, object : Observer<String> {
             override fun onChanged(string: String) {
-                binding.textResult.setText(string)
+                binding.textResult.text = string
             }
         })
     }
@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         /*binding.buttonSendData.setOnClickListener {
             binding.viewModel!!.setData(
                     CustomModel(
-                            binding.exitTextFirstName.text.toString(),
-                            binding.exitTextLastName.text.toString()
+                            binding.editTextFirstName.text.toString(),
+                            binding.editTextLastName.text.toString()
                     )
             )
         }*/
@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
                 //This call is intended to use in the back end calling
                 binding.viewModel!!.setData(
                         CustomModel(
-                                binding.exitTextFirstName.text.toString(),
-                                binding.exitTextLastName.text.toString()
+                                binding.editTextFirstName.text.toString(),
+                                binding.editTextLastName.text.toString()
                         )
                 )
             }
