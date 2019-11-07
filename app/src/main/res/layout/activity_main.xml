@@ -23,11 +23,23 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="From the Front End"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textResult"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@{viewModel.data}"/>
+                android:text="@{viewModel.data}"
+                tools:text="Data Request from the back end"/>
 
         </LinearLayout>
 
@@ -46,6 +58,17 @@
             android:background="#FFE"
             android:orientation="vertical"
             android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="From the Back End"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/exitTextFirstName"
@@ -79,7 +102,7 @@
                 android:id="@+id/buttonSendData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Send Data"/>
+                android:text="Send Data to Front End"/>
 
         </LinearLayout>
 
