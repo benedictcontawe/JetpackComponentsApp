@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.getViewModel().setData(
                         new CustomModel(
-                                binding.exitTextFirstName.getText().toString(),
-                                binding.exitTextLastName.getText().toString()
+                                binding.editTextFirstName.getText().toString(),
+                                binding.editTextLastName.getText().toString()
                         )
                 );
             }

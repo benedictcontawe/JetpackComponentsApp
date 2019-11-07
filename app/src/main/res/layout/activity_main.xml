@@ -70,7 +70,7 @@
                 android:layout_height="20dp" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/exitTextFirstName"
+                android:id="@+id/editTextFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Type your First Name"
@@ -84,7 +84,7 @@
                 android:layout_height="20dp" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/exitTextLastName"
+                android:id="@+id/editTextLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Type your Last Name"
