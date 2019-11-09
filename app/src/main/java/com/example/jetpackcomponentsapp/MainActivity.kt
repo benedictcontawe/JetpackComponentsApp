@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.jetpackcomponentsapp.databinding.MainBinder
 
-public class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding : MainBinder
     private lateinit var viewModel : MainViewModel
@@ -24,7 +24,7 @@ public class MainActivity : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        binding.setViewModel(viewModel) //binding.viewModel = viewModel
+        binding.viewModel = viewModel //binding.viewModel = viewModel
         //binding.setLifecycleOwner(this)
 
     }
@@ -39,28 +39,28 @@ public class MainActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
 
-        binding.getViewModel()?.setData("Test")
-        binding.textResult.setText(binding.getViewModel().getData())
+        binding.viewModel?.setData("Test")
+        binding.textResult.text = binding.viewModel?.getData()
     }
 
     private fun setSpinnerAdapter(){
         val spinnerAdapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, names)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerSendData.setAdapter(spinnerAdapter)
+        binding.spinnerSendData.adapter = spinnerAdapter
 
 
         for (i in 0 until names.size){
             customSpinnerItemList.add(CustomSpinnerModel(names[i],icons[i]))
         }
         val customAdapter : CustomAdapter = CustomAdapter(this@MainActivity, R.layout.custom_spinner_items, customSpinnerItemList)
-        binding.spinnerCustomSendData.setAdapter(customAdapter)
+        binding.spinnerCustomSendData.adapter = customAdapter
     }
 
     private fun setEventListeners(){
         binding.buttonSendData.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                binding.getViewModel()?.setData("Button Was Clicked")
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setData("Button Was Clicked")
+                binding.textResult.text = binding.viewModel?.getData()
             }
 
         })
@@ -68,11 +68,11 @@ public class MainActivity : AppCompatActivity(){
         binding.switchSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 if (isChecked == true) {
-                    binding.getViewModel()?.setData("Switch is On")
-                    binding.textResult.setText(binding.getViewModel().getData())
+                    binding.viewModel?.setData("Switch is On")
+                    binding.textResult.text = binding.viewModel?.getData()
                 } else if (isChecked == false) {
-                    binding.getViewModel()?.setData("Switch is Off")
-                    binding.textResult.setText(binding.getViewModel().getData())
+                    binding.viewModel?.setData("Switch is Off")
+                    binding.textResult.text = binding.viewModel?.getData()
                 }
             }
         })
@@ -80,26 +80,26 @@ public class MainActivity : AppCompatActivity(){
         binding.toggleButtonSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView : CompoundButton , isChecked : Boolean) {
                 if (isChecked == true) {
-                    binding.getViewModel()?.setData("Toggle Button is On")
-                    binding.textResult.setText(binding.getViewModel().getData())
+                    binding.viewModel?.setData("Toggle Button is On")
+                    binding.textResult.text = binding.viewModel?.getData()
                 }
                 else if (isChecked == false) {
-                    binding.getViewModel()?.setData("Toggle Button is Off")
-                    binding.textResult.setText(binding.getViewModel().getData())
+                    binding.viewModel?.setData("Toggle Button is Off")
+                    binding.textResult.text = binding.viewModel?.getData()
                 }
             }
         })
 
         binding.radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
-                when (findViewById<View>(checkedId).getId()) {
+                when (findViewById<View>(checkedId).id) {
                     R.id.radioOn -> {
-                        binding.getViewModel()?.setData("Radio Button is On of your selected Radio Group")
-                        binding.textResult.setText(binding.getViewModel().getData())
+                        binding.viewModel?.setData("Radio Button is On of your selected Radio Group")
+                        binding.textResult.text = binding.viewModel?.getData()
                     }
                     R.id.radioOff -> {
-                        binding.getViewModel()?.setData("Radio Button is Off of your selected Radio Group")
-                        binding.textResult.setText(binding.getViewModel().getData())
+                        binding.viewModel?.setData("Radio Button is Off of your selected Radio Group")
+                        binding.textResult.text = binding.viewModel?.getData()
                     }
                 }
             }
@@ -108,49 +108,49 @@ public class MainActivity : AppCompatActivity(){
         binding.checkboxSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 if (isChecked == true) {
-                    binding.getViewModel()?.setData("Check Box is On")
-                    binding.textResult.setText(binding.getViewModel().getData())
-                    binding.checkboxSendData.setText("On")
+                    binding.viewModel?.setData("Check Box is On")
+                    binding.textResult.text = binding.viewModel?.getData()
+                    binding.checkboxSendData.text = "On"
                 }
                 else if (isChecked == false) {
-                    binding.getViewModel()?.setData("Check Box is Off")
-                    binding.textResult.setText(binding.getViewModel().getData())
-                    binding.checkboxSendData.setText("Off")
+                    binding.viewModel?.setData("Check Box is Off")
+                    binding.textResult.text = binding.viewModel?.getData()
+                    binding.checkboxSendData.text = "Off"
                 }
             }
 
         })
 
-        binding.spinnerSendData.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        binding.spinnerSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.getViewModel()?.setData("Spinner value selected is " + names[position])
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setData("Spinner value selected is " + names[position])
+                binding.textResult.text = binding.viewModel?.getData()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.getViewModel()?.setData("Spinner Nothing selected")
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setData("Spinner Nothing selected")
+                binding.textResult.text = binding.viewModel?.getData()
             }
-        })
+        }
 
-        binding.spinnerCustomSendData.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        binding.spinnerCustomSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.getViewModel()?.setData("Customize Spinner value selected is " + names[position])
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setData("Customize Spinner value selected is " + names[position])
+                binding.textResult.text = binding.viewModel?.getData()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.getViewModel()?.setData("Customize Spinner Nothing selected")
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setData("Customize Spinner Nothing selected")
+                binding.textResult.text = binding.viewModel?.getData()
             }
-        })
+        }
 
-        binding.ratingBarSendData.setOnRatingBarChangeListener(object :  RatingBar.OnRatingBarChangeListener {
+        binding.ratingBarSendData.onRatingBarChangeListener = object :  RatingBar.OnRatingBarChangeListener {
             override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-                binding.getViewModel()?.setData("Rating Bar value is ${rating}")
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setData("Rating Bar value is ${rating}")
+                binding.textResult.text = binding.viewModel?.getData()
             }
-        })
+        }
 
         binding.seekBarSendData.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar : SeekBar) {
@@ -158,10 +158,10 @@ public class MainActivity : AppCompatActivity(){
             }
 
             override fun onProgressChanged(seekBar : SeekBar , progress : Int , fromUser : Boolean) {
-                binding.getViewModel()?.setProgressData(progress)
-                binding.progressBarResult.setProgress(binding.getViewModel().getProgressData()?:0)
-                binding.getViewModel()?.setData("Seek Bar Value selected is " + progress)
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setProgressData(progress)
+                binding.progressBarResult.progress = binding.viewModel?.getProgressData()?:0
+                binding.viewModel?.setData("Seek Bar Value selected is " + progress)
+                binding.textResult.text = binding.viewModel?.getData()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -175,10 +175,10 @@ public class MainActivity : AppCompatActivity(){
             }
 
             override fun onProgressChanged(seekBar : SeekBar , progress : Int , fromUser : Boolean) {
-                binding.getViewModel()?.setProgressData(progress)
-                binding.progressBarResult.setProgress(binding.getViewModel().getProgressData()?:0)
-                binding.getViewModel()?.setData("Customize Seek Bar Value selected is " + progress)
-                binding.textResult.setText(binding.getViewModel().getData())
+                binding.viewModel?.setProgressData(progress)
+                binding.progressBarResult.progress = binding.viewModel?.getProgressData()?:0
+                binding.viewModel?.setData("Customize Seek Bar Value selected is " + progress)
+                binding.textResult.text = binding.viewModel?.getData()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -186,25 +186,25 @@ public class MainActivity : AppCompatActivity(){
             }
         })
 
-        binding.seekBarSendData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
+        binding.seekBarSendData.onFocusChangeListener = object : View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                binding.seekBarSendData.setThumb(getResources().getDrawable(
-                    when(hasFocus){
-                        true -> {
-                            R.drawable.ic_seeker_thumb_selected
+                binding.seekBarSendData.thumb = resources.getDrawable(
+                        when(hasFocus){
+                            true -> {
+                                R.drawable.ic_seeker_thumb_selected
+                            }
+                            false -> {
+                                R.drawable.ic_seeker_thumb_unselected
+                            }
                         }
-                        false -> {
-                            R.drawable.ic_seeker_thumb_unselected
-                        }
-                    }
-                ))
+                )
             }
 
-        })
+        }
 
-        binding.seekBarDiscreteSendData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
+        binding.seekBarDiscreteSendData.onFocusChangeListener = object : View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                binding.seekBarDiscreteSendData.setThumb(getResources().getDrawable(
+                binding.seekBarDiscreteSendData.thumb = resources.getDrawable(
                         when(hasFocus){
                             true -> {
                                 R.drawable.ic_lever_selected
@@ -213,10 +213,10 @@ public class MainActivity : AppCompatActivity(){
                                 R.drawable.ic_lever_unselected
                             }
                         }
-                ))
+                )
             }
 
-        })
+        }
     }
 
     override fun onStop() {
@@ -227,8 +227,8 @@ public class MainActivity : AppCompatActivity(){
         binding.toggleButtonSendData.setOnCheckedChangeListener(null)
         binding.radioGroup.setOnCheckedChangeListener(null)
         binding.checkboxSendData.setOnCheckedChangeListener(null)
-        binding.spinnerSendData.setOnItemSelectedListener(null)
-        binding.spinnerCustomSendData.setOnItemSelectedListener(null)
-        binding.ratingBarSendData.setOnRatingBarChangeListener(null)
+        binding.spinnerSendData.onItemSelectedListener = null
+        binding.spinnerCustomSendData.onItemSelectedListener = null
+        binding.ratingBarSendData.onRatingBarChangeListener = null
     }
 }
