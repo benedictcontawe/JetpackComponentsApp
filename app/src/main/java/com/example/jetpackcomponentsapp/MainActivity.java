@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
 
     private String[] names ={"A","B","C","D","E","F","G"};
-    private int icons[] = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         binding.ratingBarSendData.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                binding.getViewModel().setData("Rating Bar value is " + String.valueOf(rating));
+                binding.getViewModel().setData("Rating Bar value is " + rating);
                 binding.textResult.setText(binding.getViewModel().getData());
             }
         });
