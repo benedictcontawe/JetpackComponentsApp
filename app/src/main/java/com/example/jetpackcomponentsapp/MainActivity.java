@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding.setViewModel(viewModel);
         //binding.setLifecycleOwner();
+
+        setLiveDataObservers();
+        setEventListeners();
     }
 
     private void setLiveDataObservers() {
@@ -48,13 +51,5 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        setLiveDataObservers();
-        setEventListeners();
     }
 }
