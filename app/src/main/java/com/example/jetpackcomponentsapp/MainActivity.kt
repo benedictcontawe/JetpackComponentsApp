@@ -24,13 +24,16 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
         //binding.setLifecycleOwner()
+
+        setLiveDataObservers()
+        setEventListeners()
     }
 
     private fun setLiveDataObservers() {
         //viewModel.getData().observe(this, Observer { string -> binding.textResult.text = string })
         viewModel.getData().observe(this, object : Observer<String> {
             override fun onChanged(string: String) {
-                binding.textResult.setText(string)
+                binding.textResult.text = string
             }
         })
     }
@@ -55,12 +58,5 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        setLiveDataObservers()
-        setEventListeners()
     }
 }
