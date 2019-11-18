@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity(){
     private val names = arrayOf("A", "B", "C", "D", "E", "F", "G")
     private val icons = intArrayOf(R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground)
 
+    private var isSpinnerTouch = false
+    private var isCustomSpinnerTouch : Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -26,11 +30,6 @@ class MainActivity : AppCompatActivity(){
 
         binding.viewModel = viewModel //binding.viewModel = viewModel
         //binding.setLifecycleOwner(this)
-
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         setSpinnerAdapter()
         setEventListeners()
@@ -121,10 +120,19 @@ class MainActivity : AppCompatActivity(){
 
         })
 
+        binding.spinnerSendData.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+                isSpinnerTouch = true
+                return false
+            }
+        })
+
         binding.spinnerSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.viewModel?.setData("Spinner value selected is " + names[position])
-                binding.textResult.text = binding.viewModel?.getData()
+                if (isSpinnerTouch) {
+                    binding.viewModel?.setData("Spinner value selected is " + names[position])
+                    binding.textResult.text = binding.viewModel?.getData()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -133,10 +141,20 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
+        binding.spinnerCustomSendData.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+                isCustomSpinnerTouch = true
+                return false
+            }
+
+        })
+
         binding.spinnerCustomSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.viewModel?.setData("Customize Spinner value selected is " + names[position])
-                binding.textResult.text = binding.viewModel?.getData()
+                if (isCustomSpinnerTouch) {
+                    binding.viewModel?.setData("Customize Spinner value selected is " + names[position])
+                    binding.textResult.text = binding.viewModel?.getData()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -219,8 +237,8 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
 
         binding.buttonSendData.setOnClickListener(null)
         binding.switchSendData.setOnCheckedChangeListener(null)
