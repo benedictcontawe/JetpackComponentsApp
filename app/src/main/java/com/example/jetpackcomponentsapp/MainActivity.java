@@ -1,8 +1,10 @@
 package com.example.jetpackcomponentsapp;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,13 +28,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.jetpackcomponentsapp.databinding.MainBinder;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener, OnFocusChangeListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnTouchListener,CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener, OnFocusChangeListener {
 
     private MainBinder binding;
     private MainViewModel viewModel;
 
     private String[] names ={"A","B","C","D","E","F","G"};
-    private int icons[] = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+
+    private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
 
     private Button buttonSendData;
     private CheckBox checkboxSendData;
@@ -58,11 +62,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         //binding.setLifecycleOwner();
 
         findViewId();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         setSpinnerAdapter();
         setLiveDataObservers();
@@ -77,20 +76,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     private void findViewId(){
-        textResult = (TextView) findViewById(R.id.textResult);
-        buttonSendData = (Button) findViewById(R.id.buttonSendData);
-        switchSendData = (SwitchCompat) findViewById(R.id.switchSendData);
-        toggleButtonSendData = (ToggleButton) findViewById(R.id.toggleBtnSendData);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        radioOn = (RadioButton) findViewById(R.id.radioOn);
-        radioOff = (RadioButton) findViewById(R.id.radioOff);
-        checkboxSendData = (CheckBox) findViewById(R.id.checkboxSendData);
-        spinnerSendData = (Spinner) findViewById(R.id.spinnerSendData);
-        spinnerCustomSendData = (Spinner) findViewById(R.id.spinnerCustomSendData);
-        ratingBarSendData = (RatingBar) findViewById(R.id.ratingBarSendData);
-        seekBarSendData = (SeekBar) findViewById(R.id.seekBarSendData);
-        seekBarDiscreteSendData = (SeekBar) findViewById(R.id.seekBarDiscreteSendData);
-        progressBarResult = (ProgressBar) findViewById(R.id.progressBarResult);
+        textResult = findViewById(R.id.textResult);
+        buttonSendData = findViewById(R.id.buttonSendData);
+        switchSendData = findViewById(R.id.switchSendData);
+        toggleButtonSendData = findViewById(R.id.toggleBtnSendData);
+        radioGroup = findViewById(R.id.radioGroup);
+        radioOn = findViewById(R.id.radioOn);
+        radioOff = findViewById(R.id.radioOff);
+        checkboxSendData = findViewById(R.id.checkboxSendData);
+        spinnerSendData = findViewById(R.id.spinnerSendData);
+        spinnerCustomSendData = findViewById(R.id.spinnerCustomSendData);
+        ratingBarSendData = findViewById(R.id.ratingBarSendData);
+        seekBarSendData = findViewById(R.id.seekBarSendData);
+        seekBarDiscreteSendData = findViewById(R.id.seekBarDiscreteSendData);
+        progressBarResult = findViewById(R.id.progressBarResult);
     }
 
     private void setSpinnerAdapter() {
@@ -134,26 +133,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
-        viewModel.getData().observe(this, null);
-        buttonSendData.setOnClickListener(null);
-        switchSendData.setOnCheckedChangeListener(null);
-        toggleButtonSendData.setOnCheckedChangeListener(null);
-        radioGroup.setOnCheckedChangeListener(null);
-        checkboxSendData.setOnCheckedChangeListener(null);
-        spinnerSendData.setOnItemSelectedListener(null);
-        spinnerCustomSendData.setOnItemSelectedListener(null);
-        ratingBarSendData.setOnRatingBarChangeListener(null);
-
-    }
-
-    @Override
     public void onClick(View v) {
         if (v.getId() == buttonSendData.getId()){
             binding.getViewModel().setData("Button Was Clicked");
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (view.getId() == spinnerSendData.getId()){
+            isSpinnerTouch = true;
+        } else if (view.getId() == spinnerCustomSendData.getId()){
+            isCustomSpinnerTouch = true;
+        }
+        return false;
     }
 
     @Override
@@ -203,10 +196,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == spinnerSendData.getId()){
-            binding.getViewModel().setData("Spinner value selected is " + names[position]);
+            if (isSpinnerTouch)
+                binding.getViewModel().setData("Spinner value selected is " + names[position]);
         }
         else if(parent.getId() == spinnerCustomSendData.getId()){
-            binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
+            if (isCustomSpinnerTouch)
+                binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
         }
     }
 
@@ -223,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
         if (ratingBar.getId() == ratingBarSendData.getId()){
-            binding.getViewModel().setData("Rating Bar value is " + String.valueOf(rating));
+            binding.getViewModel().setData("Rating Bar value is " + rating);
         }
     }
     //region SeekBar.OnSeekBarChangeListener
@@ -259,4 +254,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
     //endregion
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        viewModel.getData().observe(this, null);
+        buttonSendData.setOnClickListener(null);
+        switchSendData.setOnCheckedChangeListener(null);
+        toggleButtonSendData.setOnCheckedChangeListener(null);
+        radioGroup.setOnCheckedChangeListener(null);
+        checkboxSendData.setOnCheckedChangeListener(null);
+        spinnerSendData.setOnItemSelectedListener(null);
+        spinnerCustomSendData.setOnItemSelectedListener(null);
+        ratingBarSendData.setOnRatingBarChangeListener(null);
+    }
 }
