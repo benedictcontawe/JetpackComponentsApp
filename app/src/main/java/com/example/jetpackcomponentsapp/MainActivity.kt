@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(){
         })
 
         spinnerSendData.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
                 isSpinnerTouch = true
                 return false
             }
