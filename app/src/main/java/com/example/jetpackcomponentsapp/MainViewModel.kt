@@ -27,3 +27,21 @@ class MainViewModel : ViewModel() {
             data.setValue(customModel)
         }
 }
+
+/*
+    //Holds the location in a the form of [lat,lng], as is convenient for the UI:
+    LiveData<double[]> locationLiveD = ...;
+
+    // Creates a string format from the location, as Repository requires
+    LiveData<String> locationStrLiveD =
+    Transformations.map(locationLiveD, newLocation ->
+            String.format("%0s,%1s", newLocation[0], newLocation[1]));
+
+    //Gets the venue DataModels at the location from Repository
+    LiveData<List<VenueData>> dataModelsLiveD = Transformations.switchMap(locationStrLiveD,
+            newLocationStr -> repository.getVenues(newLocationStr));
+
+    //Transforms DataModels to ViewModels
+    LiveData<List<VenueViewModel>> viewModelsLiveD =
+    Transformations.map(dataModelsLiveD, newData -> createVenuesViewModel(newData));
+*/
