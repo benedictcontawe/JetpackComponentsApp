@@ -36,11 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.setViewModel(viewModel);
         //binding.setLifecycleOwner();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         setSpinnerAdapter();
         setEventListeners();
@@ -258,8 +253,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
 
         binding.buttonSendData.setOnClickListener(null);
         binding.switchSendData.setOnCheckedChangeListener(null);
