@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
         //binding.setLifecycleOwner()
+
+        setLiveDataObservers()
+        setEventListeners()
     }
 
     private fun setLiveDataObservers() {
@@ -57,12 +60,5 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        setLiveDataObservers()
-        setEventListeners()
     }
 }
