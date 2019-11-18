@@ -1,29 +1,29 @@
 package com.example.jetpackcomponentsapp
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
 
-class MainViewModel : ViewModel() {
-    //TODO: Finish code for Transformations.switchMap
+class MainViewModel : AndroidViewModel {
+
+    private lateinit var repository : CustomRepository
     private val data = MutableLiveData<CustomModel>()
-    private val Data : LiveData<String> = Transformations.map<CustomModel, String>(data,::processData)
 
-    private fun processData(customModel: CustomModel) : String =
-        if (customModel.firstName.isNullOrEmpty()|| customModel.lastName.isNullOrEmpty()) {
-            "Your Full name is invalid"
-        }
-        else {
-            "Your Full name is ${customModel.firstName} ${customModel.lastName}"
-        }
-
-    fun getData() : LiveData<String> {
-        return Data
+    constructor(application: Application) : super(application) {
+        repository = CustomRepository.getInstance(application)!!
     }
+
+    private fun processData(customModel: CustomModel) : LiveData<String> =
+            if (customModel.firstName.isNullOrEmpty() || customModel.lastName.isNullOrEmpty()) {
+                repository.getErrorName()
+            }
+            else {
+                repository.getFullname(customModel)
+            }
+
+    fun getData() : LiveData<String> = Transformations.switchMap(data,::processData)
 
     fun setData(customModel: CustomModel) : MainViewModel =
         apply {
-            data.setValue(customModel)
+            data.value = customModel //data.setValue(customModel)
         }
 }
