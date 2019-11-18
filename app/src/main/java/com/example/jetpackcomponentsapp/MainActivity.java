@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,7 +12,6 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.jetpackcomponentsapp.databinding.MainBinder;
@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String[] names ={"A","B","C","D","E","F","G"};
     private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+
+    private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,11 +132,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.spinnerSendData.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                isSpinnerTouch = true;
+                return false;
+            }
+        });
+
         binding.spinnerSendData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.getViewModel().setData("Spinner value selected is " + names[position]);
-                binding.textResult.setText(binding.getViewModel().getData());
+                if (isSpinnerTouch) {
+                    binding.getViewModel().setData("Spinner value selected is " + names[position]);
+                    binding.textResult.setText(binding.getViewModel().getData());
+                }
             }
 
             @Override
@@ -144,11 +156,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.spinnerCustomSendData.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                isCustomSpinnerTouch = true;
+                return false;
+            }
+        });
+
         binding.spinnerCustomSendData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
-                binding.textResult.setText(binding.getViewModel().getData());
+                if (isCustomSpinnerTouch) {
+                    binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
+                    binding.textResult.setText(binding.getViewModel().getData());
+                }
             }
 
             @Override
