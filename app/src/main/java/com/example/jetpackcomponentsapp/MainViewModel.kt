@@ -7,6 +7,7 @@ class MainViewModel : AndroidViewModel {
 
     private lateinit var repository : CustomRepository
     private val data = MutableLiveData<CustomModel>()
+    private val Data : LiveData<String> = Transformations.switchMap(data,::processData)
 
     constructor(application: Application) : super(application) {
         repository = CustomRepository.getInstance(application)!!
@@ -20,7 +21,10 @@ class MainViewModel : AndroidViewModel {
                 repository.getFullname(customModel)
             }
 
-    fun getData() : LiveData<String> = Transformations.switchMap(data,::processData)
+    //fun getData() : LiveData<String> = Data
+    fun getData() : LiveData<String> {
+        return Data
+    }
 
     fun setData(customModel: CustomModel) : MainViewModel =
         apply {
