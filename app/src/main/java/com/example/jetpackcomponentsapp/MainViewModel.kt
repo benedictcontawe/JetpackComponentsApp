@@ -31,6 +31,7 @@ class MainViewModel : ViewModel() {
 /*
 Reference
     https://medium.com/@elye.project/understanding-live-data-made-simple-a820fcd7b4d0
+    https://github.com/elye/demo_android_livedata_illustration
     https://miro.medium.com/max/384/1*eMsbIZVbY36kC2CmuWwOBQ.gif
     https://miro.medium.com/max/384/1*Nn77SrwxLxugLpmIYcZ03A.gif
 
