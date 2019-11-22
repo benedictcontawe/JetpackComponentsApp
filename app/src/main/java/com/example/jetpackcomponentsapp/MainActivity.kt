@@ -91,7 +91,6 @@ class MainActivity : AppCompatActivity(){
             override fun onClick(v: View) {
                 binding.viewModel?.buttonLiveData!!.value = "Button Was Clicked"
             }
-
         })
 
         switchSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
@@ -131,7 +130,7 @@ class MainActivity : AppCompatActivity(){
         checkboxSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 if (isChecked == true) {
-                    binding.viewModel?.checkBoxOnLiveData!!.setValue("Check Box is On")
+                    binding.viewModel?.checkBoxOnLiveData!!.value = "Check Box is On"
                     checkboxSendData.text = "On"
                 }
                 else if (isChecked == false) {
