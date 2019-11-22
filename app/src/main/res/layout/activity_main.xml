@@ -30,7 +30,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="@{viewModel.data}"/>
+                android:text="@{viewModel.stringMediatorLiveData}"/>
 
             <ProgressBar
                 android:id="@+id/progressBarResult"
@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:progressTint="#FF0000"
                 android:max="10"
-                android:progress="@{viewModel.progressData}"/>
+                android:progress="@{viewModel.progressMediatorLiveData}"/>
 
         </LinearLayout>
 

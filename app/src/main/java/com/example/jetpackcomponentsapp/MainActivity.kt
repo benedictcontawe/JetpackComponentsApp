@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.jetpackcomponentsapp.databinding.MainBinder
@@ -38,12 +39,6 @@ class MainActivity : AppCompatActivity(){
         setEventListeners()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        binding.viewModel?.setData("Test")
-    }
-
     private fun setSpinnerAdapter(){
         val spinnerAdapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, names)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -58,14 +53,32 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun setLiveDataObservers(){
-        viewModel.getData().observe(this, object : Observer<String> {
+        val stringMediatorLiveData : MediatorLiveData<String> = viewModel.stringMediatorLiveData
+        stringMediatorLiveData.addSource(viewModel.buttonLiveData) { stringMediatorLiveData.value = "${it}" }
+        stringMediatorLiveData.addSource(viewModel.switchOnLiveData) { stringMediatorLiveData.value = "$it" }
+        stringMediatorLiveData.addSource(viewModel.switchOffLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.toggleButtonOnLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.toggleButtonOffLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.radioButtonOnLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.radioButtonOffLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.checkBoxOnLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.checkBoxOffLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.spinnerLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.customSpinnerLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.ratingBarLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.seekBarLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.addSource(viewModel.seekBarDiscreteLiveData) { stringMediatorLiveData.value = it }
+        stringMediatorLiveData.observe(this, object : Observer<String> {
             override fun onChanged(string: String) {
                 binding.textResult.text = string
             }
 
         })
 
-        viewModel.getProgressData().observe(this, object : Observer<Int> {
+        val progressMediatorLiveData : MediatorLiveData<Int> = viewModel.progressMediatorLiveData
+        progressMediatorLiveData.addSource(viewModel.seekBarProgressLiveData) { progressMediatorLiveData.value = it }
+        progressMediatorLiveData.addSource(viewModel.seekBarDiscreteProgressLiveData) { progressMediatorLiveData.value = it }
+        progressMediatorLiveData.observe(this, object : Observer<Int> {
             override fun onChanged(int: Int) {
                 binding.progressBarResult.progress = int
             }
@@ -76,7 +89,7 @@ class MainActivity : AppCompatActivity(){
     private fun setEventListeners(){
         buttonSendData.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                binding.viewModel?.setData("Button Was Clicked")
+                binding.viewModel?.buttonLiveData!!.value = "Button Was Clicked"
             }
 
         })
@@ -84,9 +97,9 @@ class MainActivity : AppCompatActivity(){
         switchSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 if (isChecked == true) {
-                    binding.viewModel?.setData("Switch is On")
+                    binding.viewModel?.switchOnLiveData!!.setValue("Switch is On")
                 } else if (isChecked == false) {
-                    binding.viewModel?.setData("Switch is Off")
+                    binding.viewModel?.switchOffLiveData!!.value = "Switch is Off"
                 }
             }
         })
@@ -94,10 +107,10 @@ class MainActivity : AppCompatActivity(){
         toggleButtonSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView : CompoundButton , isChecked : Boolean) {
                 if (isChecked == true) {
-                    binding.viewModel?.setData("Toggle Button is On")
+                    binding.viewModel?.toggleButtonOnLiveData!!.setValue("Toggle Button is On")
                 }
                 else if (isChecked == false) {
-                    binding.viewModel?.setData("Toggle Button is Off")
+                    binding.viewModel?.toggleButtonOffLiveData!!.value = "Toggle Button is Off"
                 }
             }
         })
@@ -106,10 +119,10 @@ class MainActivity : AppCompatActivity(){
             override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
                 when (findViewById<View>(checkedId).id) {
                     R.id.radioOn -> {
-                        binding.viewModel?.setData("Radio Button is On of your selected Radio Group")
+                        binding.viewModel?.radioButtonOnLiveData!!.setValue("Radio Button is On of your selected Radio Group")
                     }
                     R.id.radioOff -> {
-                        binding.viewModel?.setData("Radio Button is Off of your selected Radio Group")
+                        binding.viewModel?.radioButtonOffLiveData!!.setValue("Radio Button is Off of your selected Radio Group")
                     }
                 }
             }
@@ -118,11 +131,11 @@ class MainActivity : AppCompatActivity(){
         checkboxSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 if (isChecked == true) {
-                    binding.viewModel?.setData("Check Box is On")
+                    binding.viewModel?.checkBoxOnLiveData!!.setValue("Check Box is On")
                     checkboxSendData.text = "On"
                 }
                 else if (isChecked == false) {
-                    binding.viewModel?.setData("Check Box is Off")
+                    binding.viewModel?.checkBoxOffLiveData!!.value = "Check Box is Off"
                     checkboxSendData.text = "Off"
                 }
             }
@@ -139,12 +152,13 @@ class MainActivity : AppCompatActivity(){
         spinnerSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (isSpinnerTouch) {
-                    binding.viewModel?.setData("Spinner value selected is " + names[position])
+                    binding.viewModel?.spinnerLiveData!!.value = "Spinner value selected is ${names[position]}"
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.viewModel?.setData("Spinner Nothing selected")
+                binding.viewModel?.spinnerLiveData!!.value = "Spinner Nothing selected"
+
             }
         }
 
@@ -159,18 +173,18 @@ class MainActivity : AppCompatActivity(){
         spinnerCustomSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (isCustomSpinnerTouch) {
-                    binding.viewModel?.setData("Customize Spinner value selected is " + names[position])
+                    binding.viewModel?.customSpinnerLiveData!!.value = "Customize Spinner value selected is " + names[position]
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.viewModel?.setData("Customize Spinner Nothing selected")
+                binding.viewModel?.customSpinnerLiveData!!.value = ""
             }
         }
 
         ratingBarSendData.onRatingBarChangeListener = object :  RatingBar.OnRatingBarChangeListener {
             override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-                binding.viewModel?.setData("Rating Bar value is ${rating}")
+                binding.viewModel?.ratingBarLiveData!!.value = "Rating Bar value is ${rating}"
             }
         }
 
@@ -180,8 +194,8 @@ class MainActivity : AppCompatActivity(){
             }
 
             override fun onProgressChanged(seekBar : SeekBar , progress : Int , fromUser : Boolean) {
-                binding.viewModel?.setProgressData(progress)
-                binding.viewModel?.setData("Seek Bar Value selected is " + progress)
+                binding.viewModel?.seekBarProgressLiveData!!.value = progress
+                binding.viewModel?.seekBarLiveData!!.value = "Seek Bar Value selected is " + progress
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -195,8 +209,8 @@ class MainActivity : AppCompatActivity(){
             }
 
             override fun onProgressChanged(seekBar : SeekBar , progress : Int , fromUser : Boolean) {
-                binding.viewModel?.setProgressData(progress)
-                binding.viewModel?.setData("Customize Seek Bar Value selected is " + progress)
+                binding.viewModel?.seekBarDiscreteProgressLiveData!!.value = progress
+                binding.viewModel?.seekBarDiscreteLiveData!!.value = "Customize Seek Bar Value selected is " + progress
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -240,7 +254,6 @@ class MainActivity : AppCompatActivity(){
     override fun onDestroy() {
         super.onDestroy()
 
-        viewModel.getData().observe(this, null!!)
         buttonSendData.setOnClickListener(null)
         switchSendData.setOnCheckedChangeListener(null)
         toggleButtonSendData.setOnCheckedChangeListener(null)
