@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -26,6 +27,20 @@ public class MainActivity extends AppCompatActivity {
     private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
+
+    private Observer<String> stringObserver = new Observer<String>() {
+        @Override
+        public void onChanged(String string) {
+            binding.textResult.setText(string);
+        }
+    };
+
+    private Observer<Integer> integerObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer integer) {
+            binding.progressBarResult.setProgress(integer);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +58,6 @@ public class MainActivity extends AppCompatActivity {
         setEventListeners();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        binding.getViewModel().setData("Test");
-    }
-
     private void setSpinnerAdapter() {
         ArrayAdapter spinnerAdapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item, names);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -60,27 +68,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setLiveDataObservers() {
-        viewModel.getData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String string) {
-                binding.textResult.setText(string);
-            }
-        });
+        MediatorLiveData<String> stringMediatorLiveData = viewModel.stringMediatorLiveData;
+        stringMediatorLiveData.addSource(viewModel.buttonLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.switchOnLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.switchOffLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.toggleButtonOnLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.toggleButtonOffLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.radioButtonOnLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.radioButtonOffLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.checkBoxOnLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.checkBoxOffLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.spinnerLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.customSpinnerLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.ratingBarLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.seekBarLiveData,stringObserver);
+        stringMediatorLiveData.addSource(viewModel.seekBarDiscreteLiveData,stringObserver);
+        stringMediatorLiveData.observe(this, stringObserver);
 
-        viewModel.getProgressData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                binding.progressBarResult.setProgress(integer);
-            }
-        });
-
+        MediatorLiveData<Integer> progressMediatorLiveData = viewModel.progressMediatorLiveData;
+        progressMediatorLiveData.addSource(viewModel.seekBarProgressLiveData,integerObserver);
+        progressMediatorLiveData.addSource(viewModel.seekBarDiscreteProgressLiveData,integerObserver);
+        progressMediatorLiveData.observe(this, integerObserver);
     }
 
     private void setEventListeners(){
         binding.buttonSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.getViewModel().setData("Button Was Clicked");
+                binding.getViewModel().buttonLiveData.setValue("Button Was Clicked");
             }
         });
 
@@ -88,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
-                    binding.getViewModel().setData("Switch is On");
+                    binding.getViewModel().switchOnLiveData.setValue("Switch is On");
                 }
                 else if (isChecked == false) {
-                    binding.getViewModel().setData("Switch is Off");
+                    binding.getViewModel().switchOffLiveData.setValue("Switch is Off");
                 }
             }
         });
@@ -100,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
-                    binding.getViewModel().setData("Toggle Button is On");
+                    binding.getViewModel().toggleButtonOnLiveData.setValue("Toggle Button is On");
                 }
                 else if (isChecked == false) {
-                    binding.getViewModel().setData("Toggle Button is Off");
+                    binding.getViewModel().toggleButtonOffLiveData.setValue("Toggle Button is Off");
                 }
             }
         });
@@ -113,10 +128,10 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (findViewById(checkedId).getId()){
                     case R.id.radioOn:
-                        binding.getViewModel().setData("Radio Button is On of your selected Radio Group");
+                        binding.getViewModel().radioButtonOnLiveData.setValue("Radio Button is On of your selected Radio Group");
                         break;
                     case R.id.radioOff:
-                        binding.getViewModel().setData("Radio Button is Off of your selected Radio Group");
+                        binding.getViewModel().radioButtonOffLiveData.setValue("Radio Button is Off of your selected Radio Group");
                         break;
                 }
             }
@@ -126,11 +141,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
-                    binding.getViewModel().setData("Check Box is On");
+                    binding.getViewModel().checkBoxOnLiveData.setValue("Check Box is On");
                     binding.checkboxSendData.setText("On");
                 }
                 else if (isChecked == false) {
-                    binding.getViewModel().setData("Check Box is Off");
+                    binding.getViewModel().checkBoxOffLiveData.setValue("Check Box is Off");
                     binding.checkboxSendData.setText("Off");
                 }
             }
@@ -148,13 +163,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (isSpinnerTouch) {
-                    binding.getViewModel().setData("Spinner value selected is " + names[position]);
+                    binding.getViewModel().spinnerLiveData.setValue("Spinner value selected is " + names[position]);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                binding.getViewModel().setData("Spinner Nothing selected");
+                binding.getViewModel().spinnerLiveData.setValue("Spinner Nothing selected");
             }
         });
 
@@ -170,20 +185,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (isCustomSpinnerTouch) {
-                    binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
+                    binding.getViewModel().customSpinnerLiveData.setValue("Customize Spinner value selected is " + names[position]);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                binding.getViewModel().setData("Customize Spinner Nothing selected");
+                binding.getViewModel().customSpinnerLiveData.setValue("Customize Spinner Nothing selected");
             }
         });
 
         binding.ratingBarSendData.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                binding.getViewModel().setData("Rating Bar value is " + rating);
+                binding.getViewModel().ratingBarLiveData.setValue("Rating Bar value is " + rating);
             }
         });
 
@@ -196,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                binding.getViewModel().setProgressData(progress);
-                binding.getViewModel().setData("Seek Bar Value selected is " + progress);
+                binding.getViewModel().seekBarProgressLiveData.setValue(progress);
+                binding.getViewModel().seekBarLiveData.setValue("Seek Bar Value selected is " + progress);
             }
 
             @Override
@@ -229,8 +244,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                binding.getViewModel().setProgressData(progress);
-                binding.getViewModel().setData("Customize Seek Bar Value selected is " + progress);
+                binding.getViewModel().seekBarDiscreteProgressLiveData.setValue(progress);
+                binding.getViewModel().seekBarDiscreteLiveData.setValue("Customize Seek Bar Value selected is " + progress);
             }
 
             @Override
@@ -258,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        viewModel.getData().observe(this, null);
         binding.buttonSendData.setOnClickListener(null);
         binding.switchSendData.setOnCheckedChangeListener(null);
         binding.toggleButtonSendData.setOnCheckedChangeListener(null);
