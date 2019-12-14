@@ -1,49 +1,24 @@
 package com.example.jetpackcomponentsapp;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
-    Context context;
-    int flags[];
-    String[] countryNames;
-    LayoutInflater inflter;
-
-    public CustomAdapter(Context applicationContext, int[] flags, String[] countryNames) {
-        this.context = applicationContext;
-        this.flags = flags;
-        this.countryNames = countryNames;
-        inflter = (LayoutInflater.from(applicationContext));
-    }
-
+    @NonNull
     @Override
-    public int getCount() {
-        return flags.length;
-    }
-
-    @Override
-    public Object getItem(int i) {
+    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return null;
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.custom_spinner_items, null);
-        ImageView icon = (ImageView) view.findViewById(R.id.imageView);
-        TextView names = (TextView) view.findViewById(R.id.textView);
-        icon.setImageResource(flags[i]);
-        names.setText(countryNames[i]);
-        return view;
+    public int getItemCount() {
+        return 0;
     }
 }

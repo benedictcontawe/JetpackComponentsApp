@@ -8,19 +8,4 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.ToggleButton" parent="Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@android:color/white</item>
-        <item name="colorAccent">#00FF00</item>
-    </style>
-
-    <style name="AppTheme.CheckBox" parent="Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@android:color/white</item>
-        <item name="colorAccent">#00FF00</item>
-    </style>
-
-    <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">#000</item>
-        <item name="colorControlActivated">#FF0000</item>
-    </style>
-
 </resources>

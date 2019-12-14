@@ -3,4 +3,11 @@
     <color name="colorPrimary">#FF0000</color>
     <color name="colorPrimaryDark">#A00000</color>
     <color name="colorAccent">#FF0000</color>
+
+    <color name="background_material_dark_gray">#DDDDDD</color>
+
+    <color name="card_state_normal">#FFE</color>
+    <color name="card_state_focused">#CCC</color>
+    <color name="card_state_selected">#0055A5</color>
+    <color name="card_state_ripple">#000</color>
 </resources>
