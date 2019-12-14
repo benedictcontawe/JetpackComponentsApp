@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#A00000</color>
     <color name="colorAccent">#FF0000</color>
 
-    <color name="background_material_dark_gray">#DDDDDD</color>
+    <color name="background_material_dark_gray">#EEEEEE</color>
 
     <color name="card_state_normal">#FFE</color>
     <color name="card_state_focused">#CCC</color>

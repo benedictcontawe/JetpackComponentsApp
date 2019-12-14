@@ -13,5 +13,8 @@
 
     <!-- Padding -->
     <dimen name="pad_top">15dp</dimen>
+    <dimen name="auto_size_min_text_size">12sp</dimen>
+    <dimen name="auto_size_max_text_size">15sp</dimen>
+    <dimen name="auto_size_step_granularity">1sp</dimen>
 
 </resources>
