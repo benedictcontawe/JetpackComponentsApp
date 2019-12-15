@@ -1,4 +1,6 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view
+
+import com.example.jetpackcomponentsapp.model.CustomModel
 
 interface CustomListeners {
 

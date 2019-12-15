@@ -1,8 +1,10 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view.holder
 
 import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.model.CustomModel
 
 abstract class BaseViewHolder : RecyclerView.ViewHolder {
 

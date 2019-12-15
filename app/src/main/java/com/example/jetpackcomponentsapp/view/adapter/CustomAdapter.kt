@@ -1,11 +1,15 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
+import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
 class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
@@ -33,7 +37,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
                 parent,
                 false
         )
-        return CustomViewHolder(context,customListeners,customBinder)
+        return CustomViewHolder(context, customListeners, customBinder)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {

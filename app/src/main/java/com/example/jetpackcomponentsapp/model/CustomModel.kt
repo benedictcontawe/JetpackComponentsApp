@@ -1,4 +1,6 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.model
+
+import com.example.jetpackcomponentsapp.R
 
 class CustomModel {
 

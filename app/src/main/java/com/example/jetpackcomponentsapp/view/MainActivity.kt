@@ -1,9 +1,12 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view
 
 import android.os.Bundle
-import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
+import com.example.jetpackcomponentsapp.view.fragment.AddFragment
+import com.example.jetpackcomponentsapp.view.fragment.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

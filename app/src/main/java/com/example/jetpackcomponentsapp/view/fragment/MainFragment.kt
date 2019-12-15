@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.MainBinder
+import com.example.jetpackcomponentsapp.view.MainActivity
+import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 
 class MainFragment : Fragment(), CustomListeners {
 
@@ -41,7 +47,7 @@ class MainFragment : Fragment(), CustomListeners {
     }
 
     private fun setRecyclerView() {
-        adapter = CustomAdapter(context!!,this)
+        adapter = CustomAdapter(context!!, this)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)

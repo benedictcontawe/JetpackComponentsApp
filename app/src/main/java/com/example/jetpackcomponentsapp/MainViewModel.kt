@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.jetpackcomponentsapp.model.CustomModel
 
 class MainViewModel : AndroidViewModel {
 
@@ -18,15 +19,15 @@ class MainViewModel : AndroidViewModel {
     fun setItems() {
         val itemList = mutableListOf<CustomModel>()
         itemList.clear()
-        itemList.add(CustomModel(0,"name 0"))
-        itemList.add(CustomModel(1,"name 1"))
-        itemList.add(CustomModel(2,"name 2"))
-        itemList.add(CustomModel(3,"name 3"))
-        itemList.add(CustomModel(4,"name 4"))
-        itemList.add(CustomModel(5,"name 5"))
-        itemList.add(CustomModel(6,"name 6"))
-        itemList.add(CustomModel(7,"name 7"))
-        itemList.add(CustomModel(8,"name 8"))
+        itemList.add(CustomModel(0, "name 0"))
+        itemList.add(CustomModel(1, "name 1"))
+        itemList.add(CustomModel(2, "name 2"))
+        itemList.add(CustomModel(3, "name 3"))
+        itemList.add(CustomModel(4, "name 4"))
+        itemList.add(CustomModel(5, "name 5"))
+        itemList.add(CustomModel(6, "name 6"))
+        itemList.add(CustomModel(7, "name 7"))
+        itemList.add(CustomModel(8, "name 8"))
         liveList.value = itemList
     }
 

@@ -1,7 +1,9 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view.holder
 
 import android.content.Context
 import android.view.View
+import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 
 class CustomViewHolder : BaseViewHolder {

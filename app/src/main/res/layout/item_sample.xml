@@ -4,7 +4,7 @@
     <data class="CustomBinder">
         <variable
             name="customModel"
-            type="com.example.jetpackcomponentsapp.CustomModel" />
+            type="com.example.jetpackcomponentsapp.model.CustomModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"

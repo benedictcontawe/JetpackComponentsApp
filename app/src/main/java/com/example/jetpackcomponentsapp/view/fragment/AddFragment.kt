@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 
 class AddFragment : Fragment() {
