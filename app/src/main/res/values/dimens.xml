@@ -11,10 +11,12 @@
     <dimen name="card_elevation_minimum">2dp</dimen>
     <dimen name="card_elevation_none">0dp</dimen>
 
-    <!-- Padding -->
-    <dimen name="pad_top">15dp</dimen>
+    <!-- App Compat Auto Size -->
     <dimen name="auto_size_min_text_size">12sp</dimen>
     <dimen name="auto_size_max_text_size">15sp</dimen>
     <dimen name="auto_size_step_granularity">1sp</dimen>
+
+    <!-- Recycler View Extra Scroll Height -->
+    <dimen name="extra_scroll">5dp</dimen>
 
 </resources>
