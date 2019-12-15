@@ -22,7 +22,7 @@ class MainFragment : Fragment(), CustomListeners {
     private lateinit var binding: MainBinder
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter : CustomAdapter
-    private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
+    //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment,container,false)
@@ -42,10 +42,10 @@ class MainFragment : Fragment(), CustomListeners {
 
     private fun setRecyclerView() {
         adapter = CustomAdapter(context!!,this)
-        itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
+        //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-        binding.recyclerView.removeItemDecoration(itemDecorationHelper)
+        //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
 
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<MutableList<CustomModel>> {
@@ -53,8 +53,8 @@ class MainFragment : Fragment(), CustomListeners {
                 adapter.setItems(list)
             }
         })
-        binding.recyclerView.scrollToPosition(0)
-        binding.recyclerView.addItemDecoration(itemDecorationHelper)
+        //binding.recyclerView.scrollToPosition(0)
+        //binding.recyclerView.addItemDecoration(itemDecorationHelper)
         binding.recyclerView.setHasFixedSize(true)
     }
 
