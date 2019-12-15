@@ -15,15 +15,24 @@ abstract class CustomDatabase : RoomDatabase {
 
     companion object {
         @Volatile private var instance : CustomDatabase? = null
-        private val LOCK = Any()
 
-        operator fun invoke(context: Context) : CustomDatabase = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context).also { instance = it }
+        fun getInstance(context: Context): CustomDatabase? {
+            //TODO: creating a instance of database has a run time error, FIX IT!
+            if (instance == null) {
+                synchronized(CustomDatabase::class) {
+                    instance = Room.databaseBuilder(context.applicationContext,
+                            CustomDatabase::class.java, "custom_database.db")
+                            .fallbackToDestructiveMigration()
+                            //.addCallback()
+                            .build()
+                }
+            }
+            return instance
         }
 
-        private fun buildDatabase(context: Context) = Room.databaseBuilder(context,
-                CustomDatabase::class.java, "custom_database")
-                .build()
+        fun destroyInstance() {
+            instance = null
+        }
     }
 
     constructor()

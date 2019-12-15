@@ -5,12 +5,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.repository.CustomRepository
 
 class MainViewModel : AndroidViewModel {
 
+    private lateinit var customRepository : CustomRepository
     private lateinit var liveList : MutableLiveData<MutableList<CustomModel>>
 
-    constructor(application: Application) : super(application)
+    constructor(application: Application) : super(application) {
+        customRepository = CustomRepository.getInstance(application)
+    }
 
     init {
         liveList = MutableLiveData()
