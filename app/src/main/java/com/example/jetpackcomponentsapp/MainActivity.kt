@@ -23,24 +23,14 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         binding.viewModel = viewModel
-        //binding.setLifecycleOwner()
+        binding.setLifecycleOwner(this) // this is needed for liveData works correctly in XML.
 
-        setLiveDataObservers()
         setEventListeners()
-    }
-
-    private fun setLiveDataObservers() {
-        //viewModel.getData().observe(this, Observer { string -> binding.textResult.text = string })
-        viewModel.getData().observe(this, object : Observer<String> {
-            override fun onChanged(string: String) {
-                binding.textResult.text = string
-            }
-        })
     }
 
     private fun setEventListeners() {
         /*binding.buttonSendData.setOnClickListener {
-            binding.viewModel!!.setData(
+            binding.viewModel!!.setCustomModelLiveData(
                     CustomModel(
                             binding.exitTextFirstName.text.toString(),
                             binding.exitTextLastName.text.toString()
@@ -49,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         }*/
         binding.buttonSendData.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                binding.viewModel!!.setData(
+                binding.viewModel!!.setCustomModelLiveData(
                         CustomModel(
                                 binding.exitTextFirstName.text.toString(),
                                 binding.exitTextLastName.text.toString()
