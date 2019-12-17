@@ -24,26 +24,16 @@ public class MainActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         binding.setViewModel(viewModel);
-        //binding.setLifecycleOwner();
+        binding.setLifecycleOwner(this); // this is needed for liveData works correctly in XML.
 
-        setLiveDataObservers();
         setEventListeners();
-    }
-
-    private void setLiveDataObservers() {
-        viewModel.getData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String string) {
-                binding.textResult.setText(string);
-            }
-        });
     }
 
     private void setEventListeners(){
         binding.buttonSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.getViewModel().setData(
+                binding.getViewModel().setCustomModelLiveData(
                         new CustomModel(
                                 binding.editTextFirstName.getText().toString(),
                                 binding.editTextLastName.getText().toString()
