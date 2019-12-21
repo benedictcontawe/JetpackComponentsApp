@@ -14,13 +14,11 @@ class MainViewModel : AndroidViewModel {
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
-    }
-
-    init {
         liveList = MutableLiveData()
     }
 
     fun setItems() {
+        /*
         val itemList = mutableListOf<CustomModel>()
         itemList.clear()
         itemList.add(CustomModel(0, "name 0"))
@@ -33,9 +31,11 @@ class MainViewModel : AndroidViewModel {
         itemList.add(CustomModel(7, "name 7"))
         itemList.add(CustomModel(8, "name 8"))
         liveList.value = itemList
+        */
     }
 
     fun getItems() : LiveData<MutableList<CustomModel>> {
-        return  liveList
+        //return  liveList
+        return  customRepository.getAll()
     }
 }

@@ -52,7 +52,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     fun setItems(items : MutableList<CustomModel>) {
         list.clear()
         list.addAll(items)
-        //notifyDataSetChanged()
-        notifyItemRangeChanged(0, itemCount)
+        notifyDataSetChanged()
+        //notifyItemRangeChanged(0, itemCount)
     }
 }

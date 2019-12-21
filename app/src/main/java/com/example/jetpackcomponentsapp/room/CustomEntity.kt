@@ -6,15 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "custom_table")
 data class CustomEntity(
-
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "Id")
-    private var id : Int? = null,
-
     @ColumnInfo(name = "Name")
-    private var name : String? = null,
+    var name : String? = null,
 
     @ColumnInfo(name = "Icon")
-    private var icon : Int? = null
-
-)
+    var icon : Int? = null
+) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "Id")
+    var id : Int? = null
+}

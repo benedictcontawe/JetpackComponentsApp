@@ -51,8 +51,8 @@ dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.1.0'
 
-    //Room
+    //Room -> use annotationProcessor for java, kapt for kotlin
     implementation "androidx.room:room-runtime:2.2.2" //android.arch.persistence.room:runtime
-    annotationProcessor "androidx.room:room-compiler:2.2.2" //android.arch.persistence.room:compiler
+    kapt "androidx.room:room-compiler:2.2.2" //android.arch.persistence.room:compiler
     testImplementation "androidx.room:room-testing:2.2.2" //android.arch.persistence.room:testing
 }

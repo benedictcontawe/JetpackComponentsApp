@@ -21,10 +21,14 @@ class MainActivity : AppCompatActivity() {
             callMainFragment()
 
             viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-            viewModel.setItems()
             //binding.setViewModel(viewModel)
             //binding.setLifecycleOwner(this)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setItems()
     }
 
     private fun callMainFragment() {

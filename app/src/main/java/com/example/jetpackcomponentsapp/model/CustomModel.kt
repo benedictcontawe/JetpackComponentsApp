@@ -9,9 +9,15 @@ class CustomModel {
 
     var icon: Int? = null
 
-    constructor(id: Int, name: String) {
+    constructor(id : Int, name : String) {
         this.id = id
         this.name = name
         this.icon = R.drawable.ic_launcher_foreground
+    }
+
+    constructor(id : Int, name : String, icon : Int) {
+        this.id = id
+        this.name = name
+        this.icon = icon
     }
 }

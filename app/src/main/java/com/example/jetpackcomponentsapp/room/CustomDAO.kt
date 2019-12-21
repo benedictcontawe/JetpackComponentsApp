@@ -2,7 +2,6 @@ package com.example.jetpackcomponentsapp.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.jetpackcomponentsapp.model.CustomModel
 
 @Dao
 interface CustomDAO {
@@ -20,5 +19,5 @@ interface CustomDAO {
     fun deleteAll()
 
     @Query("SELECT * FROM custom_table")
-    fun getAll() : LiveData<List<CustomModel>>
+    fun getAll() : LiveData<List<CustomEntity>>
 }
