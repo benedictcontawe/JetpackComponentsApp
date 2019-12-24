@@ -39,6 +39,7 @@ abstract class CustomDatabase : RoomDatabase() {
 
         private val roomCallback : RoomDatabase.Callback = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
+                //Initialize Database if no database attached to the App
                 super.onCreate(db)
                 PopulateDbAsyncTask(instance).execute()
             }
@@ -46,14 +47,14 @@ abstract class CustomDatabase : RoomDatabase() {
         }
 
         class PopulateDbAsyncTask(db : CustomDatabase?) : AsyncTask<Unit,Unit,Unit>() {
-            private val customDAO = db?.customDao()
+            //private val customDAO = db?.customDao()
 
             override fun doInBackground(vararg param : Unit) {
-                customDAO?.insert(CustomEntity("name 0"))
-                customDAO?.insert(CustomEntity("name 1"))
-                customDAO?.insert(CustomEntity("name 2"))
-                customDAO?.insert(CustomEntity("name 3"))
-                customDAO?.insert(CustomEntity("name 4"))
+                //customDAO?.insert(CustomEntity("name 0"))
+                //customDAO?.insert(CustomEntity("name 1"))
+                //customDAO?.insert(CustomEntity("name 2"))
+                //customDAO?.insert(CustomEntity("name 3"))
+                //customDAO?.insert(CustomEntity("name 4"))
             }
         }
     }

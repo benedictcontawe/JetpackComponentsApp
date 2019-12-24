@@ -2,11 +2,13 @@ package com.example.jetpackcomponentsapp.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
-import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
+import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.view.fragment.AddFragment
 import com.example.jetpackcomponentsapp.view.fragment.MainFragment
+import com.example.jetpackcomponentsapp.view.fragment.UpdateFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,16 +21,10 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             callMainFragment()
-
             viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
             //binding.setViewModel(viewModel)
             //binding.setLifecycleOwner(this)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.setItems()
     }
 
     private fun callMainFragment() {
@@ -43,6 +39,12 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack("AddFragment").commit()
     }
 
+    fun callUpdateFragment() {
+        UpdateFragment
+                .newInstance()
+                .show(supportFragmentManager.beginTransaction(),"UpdateFragment")
+    }
+
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {
             super.onBackPressed()
@@ -51,5 +53,4 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.popBackStack()
         }
     }
-
 }

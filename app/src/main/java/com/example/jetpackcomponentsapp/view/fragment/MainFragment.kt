@@ -54,9 +54,11 @@ class MainFragment : Fragment(), CustomListeners {
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
 
-        viewModel.getItems().observe(viewLifecycleOwner, object : Observer<MutableList<CustomModel>> {
-            override fun onChanged(list : MutableList<CustomModel>) {
+        viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
+            override fun onChanged(list : List<CustomModel>) {
+                binding.recyclerView.removeAllViews()
                 adapter.setItems(list)
+                adapter.notifyDataSetChanged()
             }
         })
         //binding.recyclerView.scrollToPosition(0)
@@ -65,22 +67,30 @@ class MainFragment : Fragment(), CustomListeners {
     }
 
     private fun setFloatingActionButton() {
-        binding.floatingActionButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
+        binding.floatingActionButtonAdd.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view : View?) {
                 onAdd()
+            }
+        })
+        binding.floatingActionButtonDelete.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view : View?) {
+                viewModel.deleteAll()
+                Toast.makeText(context,"deleteAll()",Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun onAdd() {
         (activity as MainActivity).callAddFragment()
+        //viewModel.setItems()
     }
 
-    override fun onUpdate(item: CustomModel, position: Int) {
-        Toast.makeText(context,"onUpdate(${item.name},${position})",Toast.LENGTH_SHORT).show()
+    override fun onUpdate(item : CustomModel, position : Int) {
+        viewModel.setUpdate(item)
+        (activity as MainActivity).callUpdateFragment()
     }
 
-    override fun onDelete(item: CustomModel, position: Int) {
-        Toast.makeText(context,"onDelete(${item.name},${position})",Toast.LENGTH_SHORT).show()
+    override fun onDelete(item : CustomModel, position : Int) {
+        viewModel.deleteItem(item)
     }
 }

@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DialogFragment" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@color/design_default_color_background</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowMinWidthMajor">70%</item>
+        <item name="android:windowMinWidthMinor">70%</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

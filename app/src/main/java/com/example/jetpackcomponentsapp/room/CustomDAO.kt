@@ -12,8 +12,11 @@ interface CustomDAO {
     @Update
     fun update(customEntity: CustomEntity)
 
-    @Delete
-    fun delete(customEntity: CustomEntity)
+    //@Delete
+    //fun delete(customEntity: CustomEntity)
+
+    @Query("DELETE FROM custom_table WHERE Id = :id")
+    fun delete(id : Int?)
 
     @Query("DELETE FROM custom_table")
     fun deleteAll()

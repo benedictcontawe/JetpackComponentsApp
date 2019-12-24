@@ -10,117 +10,62 @@
             type="com.example.jetpackcomponentsapp.MainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_material_dark_gray"
-        android:animateLayoutChanges="true"
-        tools:context=".view.MainActivity">
+        android:gravity="center"
+        android:background="@color/background_material_dark_black">
 
-        <!--region Guide lines-->
-        <!--region Vertical Guide lines-->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_start"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05"/>
+            android:gravity="center_horizontal"
+            android:background="@color/design_default_color_background"
+            android:orientation="vertical" >
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_quarter_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5"/>
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:contentDescription="Image"
+                    app:srcCompat="@drawable/ic_launcher_foreground"/>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95"/>
-        <!--endregion-->
-        <!--region Horizontal Guidlines-->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+                <TextView
+                    android:id="@+id/text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Add Name"
+                    android:textAlignment="center"/>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.95" />
-        <!--endregion-->
-        <!--endregion-->
-        <TextView
-            android:id="@+id/icon_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Icon"
-            app:layout_constraintTop_toTopOf="@id/constraint_guideline_top"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_quarter_vertical" />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="Image"
-            tools:srcCompat="@drawable/ic_launcher_foreground"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toBottomOf="@id/icon_text"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_quarter_vertical"/>
+            <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="@id/constraint_guideline_top"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_center"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_end"/>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="Add"
+                />
 
-        <Space
-            android:id="@+id/image_spacer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:0.10"
-            app:layout_constraintTop_toBottomOf="@id/image_view"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_end"/>
-        
-        <EditText
-            android:id="@+id/edit_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/image_spacer"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_end"
-            />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:text="Add"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_end"
-            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_bottom"
-            />
+    </RelativeLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

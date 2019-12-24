@@ -1,13 +1,11 @@
 package com.example.jetpackcomponentsapp.repository
 
 import android.app.Application
+import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
-import com.example.jetpackcomponentsapp.room.CustomEntity
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
@@ -22,46 +20,47 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     init {
-        val database = CustomDatabase.getInstance(applicationContext.applicationContext)
+        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.applicationContext)
         customDao = database!!.customDao()
     }
 
     //region CRUD Operation
-    override fun insert(customEntity: CustomEntity) {
-
+    override fun insert(customModel: CustomModel) {
+        AsyncTask.execute {
+            customDao.insert(
+                    ConvertList.toEntity(customModel)
+            )
+        }
     }
 
-    override fun update(customEntity: CustomEntity) {
-
+    override fun update(customModel: CustomModel) {
+        //customDao.update(customEntity)
+        AsyncTask.execute {
+            customDao.update(
+                    ConvertList.toEntity(customModel)
+            )
+        }
     }
 
-    override fun delete(customEntity: CustomEntity) {
-
+    override fun delete(customModel: CustomModel) {
+        println("${customModel.id}")
+        AsyncTask.execute {
+            customDao.delete(
+                    customModel.id
+            )
+        }
     }
 
     override fun deleteAll() {
-
+        AsyncTask.execute {
+            customDao.deleteAll()
+        }
     }
-    //endregion
 
     fun getAll() : LiveData<MutableList<CustomModel>> {
-        val localList : LiveData<List<CustomEntity>> = customDao.getAll()
-        val requesList : LiveData<MutableList<CustomModel>> =
-                Transformations.map<
-                        List<CustomEntity>, //localList Data Type
-                        MutableList<CustomModel> //requesList Data Type
-                        >(
-                        localList,
-                        ::convertList
-                        )
-
-        return requesList
+        return ConvertList.toLiveDataListModel(
+                customDao.getAll()
+        )
     }
-
-    private fun convertList(customEntity: List<CustomEntity>) : MutableList<CustomModel> {
-        val itemList = mutableListOf<CustomModel>()
-        customEntity.map { itemList.add(CustomModel(it.id?:0, it.name?:"")) }
-
-        return itemList
-    }
+    //endregion
 }

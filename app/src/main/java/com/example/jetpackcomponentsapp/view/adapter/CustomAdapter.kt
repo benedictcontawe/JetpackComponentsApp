@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jetpackcomponentsapp.view.CustomListeners
-import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
+import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.view.CustomListeners
 import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
 class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
@@ -19,15 +19,11 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
     private lateinit var customBinder : CustomBinder
 
-    private lateinit var list : MutableList<CustomModel>
+    private var list : MutableList<CustomModel> = mutableListOf()
 
     constructor(context : Context, customListeners : CustomListeners) : super() {
         this.context = context
         this.customListeners = customListeners
-    }
-
-    init {
-        list = mutableListOf()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -49,10 +45,8 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
         return list.size
     }
 
-    fun setItems(items : MutableList<CustomModel>) {
+    fun setItems(items : List<CustomModel>) {
         list.clear()
         list.addAll(items)
-        notifyDataSetChanged()
-        //notifyItemRangeChanged(0, itemCount)
     }
 }

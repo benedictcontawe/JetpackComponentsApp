@@ -8,9 +8,10 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
+import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.databinding.AddBinder
+import com.example.jetpackcomponentsapp.model.CustomModel
 
 class AddFragment : Fragment() {
 
@@ -18,8 +19,8 @@ class AddFragment : Fragment() {
         fun newInstance() : AddFragment = AddFragment()
     }
 
-    private lateinit var binding: AddBinder
-    private lateinit var viewModel: MainViewModel
+    private lateinit var binding : AddBinder
+    private lateinit var viewModel : MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.add_fragment,container,false)
@@ -32,9 +33,11 @@ class AddFragment : Fragment() {
         viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                Toast.makeText(context,"onAdd(${binding.editText.text})", Toast.LENGTH_SHORT).show()
+                viewModel.insertItem(CustomModel(binding.editText.text.toString()))
+                activity!!.supportFragmentManager.popBackStack()
             }
         })
     }

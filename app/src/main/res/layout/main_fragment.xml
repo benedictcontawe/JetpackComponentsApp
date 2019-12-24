@@ -19,6 +19,13 @@
         <!--region Guide lines-->
         <!--region Vertical Guide lines-->
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_marginStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/constraint_guideline_marginEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,6 +33,13 @@
             app:layout_constraintGuide_percent="0.95"/>
         <!--endregion-->
         <!--region Horizontal Guidlines-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_marginTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05"/>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/constraint_guideline_marginBottom"
             android:layout_width="wrap_content"
@@ -64,13 +78,25 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
+            android:id="@+id/floating_action_button_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawingCacheQuality="high"
             android:scaleType="fitXY"
             app:backgroundTint="#0055A5"
             app:srcCompat="@drawable/ic_add_white"
+            app:fabSize="mini"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_marginStart"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawingCacheQuality="high"
+            android:scaleType="fitXY"
+            app:backgroundTint="#0055A5"
+            app:srcCompat="@drawable/ic_delete_white"
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_marginEnd"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"/>

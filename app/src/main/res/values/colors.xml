@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF0000</color>
 
     <color name="background_material_dark_gray">#EEEEEE</color>
+    <color name="background_material_dark_black">#B3000000</color>
 
     <color name="card_state_normal">#FFE</color>
     <color name="card_state_focused">#CCC</color>
