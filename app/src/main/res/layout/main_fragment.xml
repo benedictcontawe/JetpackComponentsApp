@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_material_dark_gray"
-        android:animateLayoutChanges="true"
-        tools:context=".view.MainActivity">
+        android:animateLayoutChanges="true" >
 
         <!--region Guide lines-->
         <!--region Vertical Guide lines-->
