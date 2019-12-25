@@ -1,8 +1,11 @@
 package com.example.jetpackcomponentsapp.view
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
@@ -43,6 +46,26 @@ class MainActivity : AppCompatActivity() {
         UpdateFragment
                 .newInstance()
                 .show(supportFragmentManager.beginTransaction(),"UpdateFragment")
+    }
+
+    fun showSoftKeyboard(activity: Activity, showKeyboard : Boolean) {
+        var view = activity.currentFocus
+        when(showKeyboard){
+            true -> {
+                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
+            false ->{
+                val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                //Find the currently focused view, so we can grab the correct window token from it.
+
+                //If no view currently has focus, create a new one, just so we can grab a window token from it
+                if (view == null) {
+                    view = View(activity)
+                }
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
     }
 
     override fun onBackPressed() {

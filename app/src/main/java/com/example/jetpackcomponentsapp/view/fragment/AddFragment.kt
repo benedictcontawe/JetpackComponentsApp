@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +32,8 @@ class AddFragment : Fragment() {
         viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.editText.requestFocus()
 
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {

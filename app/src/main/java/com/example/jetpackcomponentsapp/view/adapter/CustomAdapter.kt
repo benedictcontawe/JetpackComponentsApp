@@ -48,5 +48,6 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     fun setItems(items : List<CustomModel>) {
         list.clear()
         list.addAll(items)
+        notifyDataSetChanged()
     }
 }

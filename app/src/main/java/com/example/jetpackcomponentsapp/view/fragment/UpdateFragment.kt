@@ -25,7 +25,7 @@ class UpdateFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogFragment)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -43,6 +43,7 @@ class UpdateFragment : DialogFragment() {
         viewModel.getUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
             override fun onChanged(item : CustomModel) {
                 binding.editText.setText(item.name)
+                binding.editText.requestFocus()
             }
         })
 
