@@ -1,9 +1,11 @@
 package com.example.jetpackcomponentsapp.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -44,15 +46,28 @@ class UpdateFragment : DialogFragment() {
             override fun onChanged(item : CustomModel) {
                 binding.editText.setText(item.name)
                 binding.editText.requestFocus()
+                binding.editText.selectAll()
+                showSoftKeyboard()
             }
         })
 
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
                 viewModel.updateItem()
+                hideSoftKeyboard()
                 dismiss()
             }
         })
+    }
+
+    private fun showSoftKeyboard() {
+        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    private fun hideSoftKeyboard() {
+        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 }
 

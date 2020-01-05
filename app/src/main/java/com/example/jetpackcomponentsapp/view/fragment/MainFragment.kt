@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,7 @@ class MainFragment : Fragment(), CustomListeners {
 
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
             override fun onChanged(list : List<CustomModel>) {
+                Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                 binding.recyclerView.removeAllViews()
                 adapter.setItems(list)
                 adapter.notifyDataSetChanged()
