@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+                                                   
+
+    
+                 
+                            
+                                                                    
+           
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:background="#FFF" android:tag="layout/activity_main_0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.23"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="From the Front End"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textResult"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:tag="binding_1"                   
+                tools:text="Data Request from the back end"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02"
+            android:background="#FF0000"
+            android:elevation="10dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".75"
+            android:background="#FFE"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="From the Back End"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editTextFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your First Name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editTextLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your Last Name"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSendData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Data to Front End"/>
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+         
