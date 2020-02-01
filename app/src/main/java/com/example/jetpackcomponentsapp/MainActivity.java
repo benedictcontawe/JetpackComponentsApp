@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
 
-    MediatorLiveData<String> stringMediatorLiveData;
-    MediatorLiveData<Integer> progressMediatorLiveData;
+    private MediatorLiveData<String> stringMediatorLiveData;
+    private MediatorLiveData<Integer> progressMediatorLiveData;
 
     private Observer<String> stringObserver = new Observer<String>() {
         @Override
@@ -87,11 +87,10 @@ public class MainActivity extends AppCompatActivity {
         stringMediatorLiveData.addSource(viewModel.ratingBarLiveData,stringObserver);
         stringMediatorLiveData.addSource(viewModel.seekBarLiveData,stringObserver);
         stringMediatorLiveData.addSource(viewModel.seekBarDiscreteLiveData,stringObserver);
-
         stringMediatorLiveData.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(String s) {
-                binding.textResult.setText(s);
+            public void onChanged(String string) {
+                binding.textResult.setText(string);
             }
         });
 
@@ -99,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
         progressMediatorLiveData.addSource(viewModel.seekBarDiscreteProgressLiveData,integerObserver);
         progressMediatorLiveData.observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(Integer i) {
-                binding.progressBarResult.setProgress(i);
+            public void onChanged(Integer integer) {
+                binding.progressBarResult.setProgress(integer);
             }
         });
     }
