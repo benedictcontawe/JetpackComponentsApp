@@ -23,9 +23,9 @@ class CustomRepository : BaseRepository {
     constructor(application : Application)
 
     fun getFullname(customModel: CustomModel) : LiveData<String> {
-        val sample : MutableLiveData<String> = MutableLiveData()
-        sample.value = "Your Full name is ${customModel.firstName} ${customModel.lastName}"
-        return sample
+        val sampleLiveData : MutableLiveData<String> = MutableLiveData()
+        sampleLiveData.value = "Your Full name is ${customModel.firstName} ${customModel.lastName}"
+        return sampleLiveData
     }
 
     fun getErrorName() : LiveData<String> {
