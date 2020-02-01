@@ -21,9 +21,9 @@ public class CustomRepository implements BaseRepository {
     }
 
     LiveData<String> getFullname(CustomModel customModel) {
-        MutableLiveData<String> sample = new MutableLiveData();
-        sample.setValue("Your Full name is " + customModel.firstName + " " + customModel.lastName);
-        return  sample;
+        MutableLiveData<String> sampleLiveData = new MutableLiveData();
+        sampleLiveData.setValue("Your Full name is " + customModel.firstName + " " + customModel.lastName);
+        return  sampleLiveData;
     }
 
     LiveData<String> getErrorName() {
