@@ -28,17 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
 
+    MediatorLiveData<String> stringMediatorLiveData;
+    MediatorLiveData<Integer> progressMediatorLiveData;
+
     private Observer<String> stringObserver = new Observer<String>() {
         @Override
-        public void onChanged(String string) {
-            binding.textResult.setText(string);
+        public void onChanged(String s) {
+            stringMediatorLiveData.setValue(s);
         }
     };
 
     private Observer<Integer> integerObserver = new Observer<Integer>() {
         @Override
-        public void onChanged(Integer integer) {
-            binding.progressBarResult.setProgress(integer);
+        public void onChanged(Integer i) {
+            progressMediatorLiveData.setValue(i);
         }
     };
 
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
         //binding.setLifecycleOwner();
 
+        stringMediatorLiveData = viewModel.stringMediatorLiveData;
+        progressMediatorLiveData = viewModel.progressMediatorLiveData;
         setSpinnerAdapter();
         setLiveDataObservers();
         setEventListeners();
@@ -68,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setLiveDataObservers() {
-        MediatorLiveData<String> stringMediatorLiveData = viewModel.stringMediatorLiveData;
         stringMediatorLiveData.addSource(viewModel.buttonLiveData,stringObserver);
         stringMediatorLiveData.addSource(viewModel.switchOnLiveData,stringObserver);
         stringMediatorLiveData.addSource(viewModel.switchOffLiveData,stringObserver);
@@ -83,12 +87,22 @@ public class MainActivity extends AppCompatActivity {
         stringMediatorLiveData.addSource(viewModel.ratingBarLiveData,stringObserver);
         stringMediatorLiveData.addSource(viewModel.seekBarLiveData,stringObserver);
         stringMediatorLiveData.addSource(viewModel.seekBarDiscreteLiveData,stringObserver);
-        stringMediatorLiveData.observe(this, stringObserver);
 
-        MediatorLiveData<Integer> progressMediatorLiveData = viewModel.progressMediatorLiveData;
+        stringMediatorLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.textResult.setText(s);
+            }
+        });
+
         progressMediatorLiveData.addSource(viewModel.seekBarProgressLiveData,integerObserver);
         progressMediatorLiveData.addSource(viewModel.seekBarDiscreteProgressLiveData,integerObserver);
-        progressMediatorLiveData.observe(this, integerObserver);
+        progressMediatorLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer i) {
+                binding.progressBarResult.setProgress(i);
+            }
+        });
     }
 
     private void setEventListeners(){
