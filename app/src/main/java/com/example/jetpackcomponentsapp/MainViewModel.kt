@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.repository.ConvertList
+import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 
 class MainViewModel : AndroidViewModel {

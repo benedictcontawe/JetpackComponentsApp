@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp.repository
+package com.example.jetpackcomponentsapp.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -24,7 +24,7 @@ class ConvertList {
                     MutableList<CustomModel> //toListModel List Data Type
                     >(
                     localList,
-                    ::toListModel
+                    Companion::toListModel
             )
         }
 
