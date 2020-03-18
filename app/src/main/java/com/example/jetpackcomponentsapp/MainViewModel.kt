@@ -1,27 +1,22 @@
 package com.example.jetpackcomponentsapp
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.jetpackcomponentsapp.repository.CustomRepository
+import com.example.jetpackcomponentsapp.web.CountryResponseModel
 
-class MainViewModel : ViewModel() {
+class MainViewModel : AndroidViewModel {
 
-    private var data : MutableLiveData<String> = MutableLiveData()
-    private var progressData : MutableLiveData<Int> = MutableLiveData()
+    private lateinit var customRepository : CustomRepository
 
-    public fun getData() : LiveData<String> {
-        return data
+    constructor(application: Application) : super(application) {
+        customRepository = CustomRepository.getInstance(application)
     }
 
-    public fun setData(data : String) {
-        this.data.setValue(data)
-    }
-
-    public fun getProgressData() : LiveData<Int> {
-        return progressData
-    }
-
-    public fun setProgressData(progressData : Int){
-        this.progressData.setValue(progressData)
+    fun requestCountry() : LiveData<List<CountryResponseModel>> {
+        return customRepository.requestCountryDetails()
     }
 }
