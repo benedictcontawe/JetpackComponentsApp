@@ -23,6 +23,7 @@ interface CustomDAO {
     @Query("DELETE FROM custom_table")
     fun deleteAll()
 
-    @Query("SELECT * FROM custom_table")
+    //@Query("SELECT * FROM custom_table")
+    @Query("SELECT * FROM custom_table ORDER BY Id ASC")
     fun getAll() : LiveData<List<CustomEntity>>
 }
