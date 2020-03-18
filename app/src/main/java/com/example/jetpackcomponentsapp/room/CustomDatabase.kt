@@ -51,6 +51,10 @@ abstract class CustomDatabase : RoomDatabase() {
                 }
             }
 
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                //Re-open Database if it has database attached to the App
+                super.onOpen(db)
+            }
         }
 
         class PopulateDbAsyncTask(db : CustomDatabase?) : AsyncTask<Unit,Unit,Unit>() {
