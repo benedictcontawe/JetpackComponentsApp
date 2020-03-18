@@ -34,7 +34,6 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     override fun update(customEntity: CustomEntity) {
-        //customDao.update(customEntity)
         AsyncTask.execute {
             customDao.update(
                     customEntity

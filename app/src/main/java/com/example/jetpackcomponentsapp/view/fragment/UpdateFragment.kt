@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
@@ -20,6 +20,8 @@ class UpdateFragment : DialogFragment() {
 
     companion object {
         fun newInstance() : UpdateFragment = UpdateFragment()
+
+        fun getTag() : String = "UpdateFragment"
     }
 
     private lateinit var binding : UpdateBinder
@@ -38,7 +40,7 @@ class UpdateFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

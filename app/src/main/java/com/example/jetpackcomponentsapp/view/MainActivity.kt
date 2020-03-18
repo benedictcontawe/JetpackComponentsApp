@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.view.fragment.AddFragment
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             callMainFragment()
-            viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
             //binding.setViewModel(viewModel)
             //binding.setLifecycleOwner(this)
         }
@@ -39,13 +39,18 @@ class MainActivity : AppCompatActivity() {
     fun callAddFragment() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, AddFragment.newInstance())
-                .addToBackStack("AddFragment").commit()
+                .addToBackStack(
+                        AddFragment.getTag())
+                .commit()
     }
 
     fun callUpdateFragment() {
         UpdateFragment
                 .newInstance()
-                .show(supportFragmentManager.beginTransaction(),"UpdateFragment")
+                .show(
+                        supportFragmentManager.beginTransaction(),
+                        UpdateFragment.getTag()
+                )
     }
 
     fun showSoftKeyboard(activity: Activity, showKeyboard : Boolean) {
