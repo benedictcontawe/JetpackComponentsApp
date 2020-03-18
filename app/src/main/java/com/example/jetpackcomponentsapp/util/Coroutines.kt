@@ -5,6 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
+ * https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
+
     +-----------------------------------+
     |         Dispatchers.Main          |
     +-----------------------------------+
@@ -38,6 +40,7 @@ import kotlinx.coroutines.launch
     | - Parsing JSON                    |
     | - DiffUtils                       |
     +-----------------------------------+
+
  */
 
 object Coroutines {
