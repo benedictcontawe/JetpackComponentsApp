@@ -41,7 +41,14 @@ abstract class CustomDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 //Initialize Database if no database attached to the App
                 super.onCreate(db)
-                PopulateDbAsyncTask(instance).execute()
+                //PopulateDbAsyncTask(instance).execute()
+                AsyncTask.execute {
+                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 0")))
+                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 1")))
+                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 2")))
+                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 3")))
+                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 4")))
+                }
             }
 
         }
