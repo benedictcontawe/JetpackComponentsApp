@@ -15,7 +15,7 @@ import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 
 
-class AddFragment : Fragment() {
+class AddFragment : BaseFragment() {
 
     companion object {
         fun newInstance() : AddFragment = AddFragment()

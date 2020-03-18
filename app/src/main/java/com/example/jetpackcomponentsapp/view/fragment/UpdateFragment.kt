@@ -16,7 +16,7 @@ import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 
 
-class UpdateFragment : DialogFragment() {
+class UpdateFragment : BaseDialogFragment() {
 
     companion object {
         fun newInstance() : UpdateFragment = UpdateFragment()

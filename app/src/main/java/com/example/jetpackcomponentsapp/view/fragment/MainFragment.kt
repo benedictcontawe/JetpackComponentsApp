@@ -21,7 +21,7 @@ import com.example.jetpackcomponentsapp.databinding.MainBinder
 import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 
-class MainFragment : Fragment(), CustomListeners {
+class MainFragment : BaseFragment(), CustomListeners {
 
     companion object {
         fun newInstance() : MainFragment = MainFragment()
