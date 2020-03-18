@@ -6,7 +6,9 @@ import androidx.room.*
 @Dao
 interface CustomDAO {
 
-    @Insert
+    //@Insert
+    //@Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(customEntity: CustomEntity)
 
     @Update
