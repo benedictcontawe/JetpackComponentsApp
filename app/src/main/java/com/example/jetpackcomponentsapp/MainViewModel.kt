@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.repository.ConvertList
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 
 class MainViewModel : AndroidViewModel {
@@ -21,15 +22,15 @@ class MainViewModel : AndroidViewModel {
     @Deprecated("For Static Data")
     fun setItems() {
         customRepository.deleteAll()
-        customRepository.insert(CustomModel(0,"name 0"))
-        customRepository.insert(CustomModel(1,"name 1"))
-        customRepository.insert(CustomModel(2,"name 2"))
-        customRepository.insert(CustomModel(3,"name 3"))
-        customRepository.insert(CustomModel(4,"name 4"))
-        customRepository.insert(CustomModel(5,"name 5"))
-        customRepository.insert(CustomModel(6,"name 6"))
-        customRepository.insert(CustomModel(7,"name 7"))
-        customRepository.insert(CustomModel(8,"name 8"))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 0")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 1")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 2")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 3")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 4")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 5")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 6")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 7")))
+        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 8")))
     }
 
     fun setUpdate(item : CustomModel) {
@@ -41,17 +42,23 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun insertItem(item : CustomModel) {
-        customRepository.insert(item)
+        customRepository.insert(
+                ConvertList.toEntity(item)
+        )
     }
 
     fun updateItem() {
         liveUpdate.value?.let {
-            customRepository.update(it)
+            customRepository.update(
+                ConvertList.toEntity(it)
+            )
         }
     }
 
     fun deleteItem(item : CustomModel) {
-        customRepository.delete(item)
+        customRepository.delete(
+                ConvertList.toEntity(item)
+        )
     }
 
     fun deleteAll() {
@@ -60,6 +67,8 @@ class MainViewModel : AndroidViewModel {
 
     fun getItems() : LiveData<MutableList<CustomModel>> {
         //return  liveList
-        return  customRepository.getAll()
+        return ConvertList.toLiveDataListModel(
+                customRepository.getAll()
+        )
     }
 }

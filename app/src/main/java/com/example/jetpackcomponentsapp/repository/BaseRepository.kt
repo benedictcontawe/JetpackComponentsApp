@@ -1,15 +1,14 @@
 package com.example.jetpackcomponentsapp.repository
 
-import com.example.jetpackcomponentsapp.model.CustomModel
-
+import com.example.jetpackcomponentsapp.room.CustomEntity
 
 interface BaseRepository {
 
-    fun  insert(customModel: CustomModel)
+    fun  insert(customEntity: CustomEntity)
 
-    fun  update(customModel: CustomModel)
+    fun  update(customEntity: CustomEntity)
 
-    fun  delete(customModel: CustomModel)
+    fun  delete(customEntity: CustomEntity)
 
     fun  deleteAll()
 }

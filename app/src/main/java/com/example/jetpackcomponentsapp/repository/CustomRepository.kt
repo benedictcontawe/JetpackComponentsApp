@@ -3,9 +3,9 @@ package com.example.jetpackcomponentsapp.repository
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
+import com.example.jetpackcomponentsapp.room.CustomEntity
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
@@ -25,28 +25,28 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     //region CRUD Operation
-    override fun insert(customModel: CustomModel) {
+    override fun insert(customEntity: CustomEntity) {
         AsyncTask.execute {
             customDao.insert(
-                    ConvertList.toEntity(customModel)
+                    customEntity
             )
         }
     }
 
-    override fun update(customModel: CustomModel) {
+    override fun update(customEntity: CustomEntity) {
         //customDao.update(customEntity)
         AsyncTask.execute {
             customDao.update(
-                    ConvertList.toEntity(customModel)
+                    customEntity
             )
         }
     }
 
-    override fun delete(customModel: CustomModel) {
-        println("${customModel.id}")
+    override fun delete(customEntity: CustomEntity) {
+        println("${customEntity.id}")
         AsyncTask.execute {
             customDao.delete(
-                    customModel.id
+                    customEntity.id
             )
         }
     }
@@ -57,10 +57,8 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
         }
     }
 
-    fun getAll() : LiveData<MutableList<CustomModel>> {
-        return ConvertList.toLiveDataListModel(
-                customDao.getAll()
-        )
+    fun getAll() : LiveData<List<CustomEntity>> {
+        return customDao.getAll()
     }
     //endregion
 }
