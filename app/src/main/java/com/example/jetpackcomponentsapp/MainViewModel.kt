@@ -5,13 +5,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.repository.CustomRepository
+import com.example.jetpackcomponentsapp.util.ConvertList
+import com.example.jetpackcomponentsapp.util.Coroutines
 
 class MainViewModel : AndroidViewModel {
 
     private lateinit var customRepository : CustomRepository
-    private lateinit var liveList : MutableLiveData<MutableList<CustomModel>>
+    private lateinit var liveList : LiveData<MutableList<CustomModel>>
     private lateinit var liveUpdate : MutableLiveData<CustomModel>
 
     constructor(application: Application) : super(application) {
@@ -19,22 +20,27 @@ class MainViewModel : AndroidViewModel {
         liveList = MutableLiveData()
         liveUpdate = MutableLiveData()
     }
+
     @Deprecated("For Static Data")
     fun setItems() {
-        customRepository.deleteAll()
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 0")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 1")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 2")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 3")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 4")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 5")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 6")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 7")))
-        customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 8")))
+        Coroutines.io {
+            customRepository.deleteAll()
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 0")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 1")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 2")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 3")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 4")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 5")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 6")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 7")))
+            customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 8")))
+        }
     }
 
     fun setUpdate(item : CustomModel) {
-        liveUpdate.value = item
+        Coroutines.main {
+            liveUpdate.value = item
+        }
     }
 
     fun getUpdate() : LiveData<CustomModel> {
@@ -42,33 +48,42 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun insertItem(item : CustomModel) {
-        customRepository.insert(
-                ConvertList.toEntity(item)
-        )
-    }
-
-    fun updateItem() {
-        liveUpdate.value?.let {
-            customRepository.update(
-                ConvertList.toEntity(it)
+        Coroutines.io {
+            customRepository.insert(
+                    ConvertList.toEntity(item)
             )
         }
     }
 
+    fun updateItem() {
+        liveUpdate.value?.let {
+            Coroutines.io {
+                customRepository.update(
+                        ConvertList.toEntity(it)
+                )
+            }
+        }
+    }
+
     fun deleteItem(item : CustomModel) {
-        customRepository.delete(
-                ConvertList.toEntity(item)
-        )
+        Coroutines.io {
+            customRepository.delete(
+                    ConvertList.toEntity(item)
+            )
+        }
     }
 
     fun deleteAll() {
-        customRepository.deleteAll()
+        Coroutines.io {
+            customRepository.deleteAll()
+        }
     }
 
     fun getItems() : LiveData<MutableList<CustomModel>> {
-        //return  liveList
-        return ConvertList.toLiveDataListModel(
+        liveList = ConvertList.toLiveDataListModel(
                 customRepository.getAll()
         )
+        return liveList
     }
+
 }
