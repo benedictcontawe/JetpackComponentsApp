@@ -10,7 +10,7 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.web.CountryResponseModel
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel : MainViewModel
 
