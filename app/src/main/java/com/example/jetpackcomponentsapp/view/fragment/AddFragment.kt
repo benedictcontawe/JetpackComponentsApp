@@ -28,7 +28,7 @@ class AddFragment : Fragment() {
     private lateinit var binding : AddBinder
     private lateinit var viewModel : MainViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.add_fragment,container,false)
         return binding.root
     }

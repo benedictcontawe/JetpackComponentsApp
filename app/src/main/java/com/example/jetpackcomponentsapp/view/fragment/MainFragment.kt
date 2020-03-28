@@ -32,7 +32,7 @@ class MainFragment : Fragment(), CustomListeners {
     private lateinit var adapter : CustomAdapter
     //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment,container,false)
         return binding.root
     }

@@ -32,7 +32,7 @@ class UpdateFragment : DialogFragment() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         binding = DataBindingUtil.inflate(inflater,R.layout.update_fragment,container,false)
         return binding.root
     }

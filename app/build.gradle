@@ -52,11 +52,11 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
 
     //Room -> use annotationProcessor for java, kapt for kotlin
-    implementation "androidx.room:room-runtime:2.2.4" //android.arch.persistence.room:runtime
-    kapt "androidx.room:room-compiler:2.2.4" //android.arch.persistence.room:compiler
-    testImplementation "androidx.room:room-testing:2.2.4" //android.arch.persistence.room:testing
+    implementation "androidx.room:room-runtime:2.2.5" //android.arch.persistence.room:runtime
+    kapt "androidx.room:room-compiler:2.2.5" //android.arch.persistence.room:compiler
+    testImplementation "androidx.room:room-testing:2.2.5" //android.arch.persistence.room:testing
 
     //Work Manager
-    implementation "androidx.work:work-runtime:2.3.3" // (Java only)
-    implementation "androidx.work:work-runtime-ktx:2.3.3" // Kotlin + coroutines
+    implementation "androidx.work:work-runtime:2.3.4" // (Java only)
+    implementation "androidx.work:work-runtime-ktx:2.3.4" // Kotlin + coroutines
 }
