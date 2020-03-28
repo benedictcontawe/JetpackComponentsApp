@@ -9,7 +9,7 @@ import com.example.jetpackcomponentsapp.room.CustomEntity
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
-    private lateinit var customDao: CustomDAO
+    private lateinit var customDao : CustomDAO
 
     companion object {
         @Volatile private var INSTANCE  : CustomRepository? = null
