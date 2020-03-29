@@ -56,8 +56,8 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun updateItem() {
+        Coroutines.io {
         liveUpdate.value?.let {
-            Coroutines.io {
                 customRepository.update(
                         ConvertList.toEntity(it)
                 )
