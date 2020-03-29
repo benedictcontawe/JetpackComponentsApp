@@ -22,10 +22,11 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.requestCountry().observe(this, object : Observer<List<CountryResponseModel>> {
             override fun onChanged(list : List<CountryResponseModel>) {
-                list.map {
-                    Log.e("Test - MainActivity",it.Name?:"")
-                    text_view_result.text = "Done"
-                }
+                text_view_result.text = list
+                        .map {
+                            Log.d("MainActivity",it.Name?:"")
+                            it.Name
+                        }.toString()
             }
         })
     }
