@@ -5,8 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 abstract class NetworkClient {
     companion object{
-        const val BASE_URL = "https://restcountries.eu"
-        var retrofit : Retrofit? = null
+        private const val BASE_URL = "https://restcountries.eu"
+        private var retrofit : Retrofit? = null
         /*
         This public static method will return Retrofit client
         anywhere in the appplication
