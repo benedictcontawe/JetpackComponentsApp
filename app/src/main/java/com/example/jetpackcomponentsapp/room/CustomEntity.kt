@@ -21,4 +21,8 @@ data class CustomEntity (
         this.name = name
         this.icon = icon
     }
+
+    override fun toString(): String {
+        return "MessageThreadListEntity(Id=$id, Name=$name, Icon=$icon)"
+    }
 }
