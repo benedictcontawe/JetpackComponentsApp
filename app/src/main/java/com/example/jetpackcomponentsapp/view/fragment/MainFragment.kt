@@ -62,7 +62,6 @@ class MainFragment : Fragment(), CustomListeners {
                 Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                 binding.recyclerView.removeAllViews()
                 adapter.setItems(list)
-                adapter.notifyDataSetChanged()
             }
         })
         //binding.recyclerView.scrollToPosition(0)
