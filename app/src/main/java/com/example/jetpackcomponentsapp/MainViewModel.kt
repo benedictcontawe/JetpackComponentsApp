@@ -8,21 +8,40 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.util.Coroutines
+import kotlinx.coroutines.delay
 
 class MainViewModel : AndroidViewModel {
 
     private lateinit var customRepository : CustomRepository
     private lateinit var liveList : LiveData<MutableList<CustomModel>>
     private lateinit var liveUpdate : MutableLiveData<CustomModel>
+    private lateinit var liveStandBy : MutableLiveData<Boolean>
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
         liveList = MutableLiveData()
         liveUpdate = MutableLiveData()
+        liveStandBy = MutableLiveData()
+    }
+
+    fun viewDidLoad() {
+        liveStandBy.setValue(true)
+    }
+
+    fun viewWillAppear() {
+        Coroutines.main {
+            delay(500)
+            liveStandBy.setValue(false)
+        }
+    }
+
+    fun getLoadState() : LiveData<Boolean> {
+        return liveStandBy
     }
 
     @Deprecated("For Static Data")
     fun setItems() {
+        viewDidLoad()
         Coroutines.io {
             customRepository.deleteAll()
             customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 0")))
@@ -35,9 +54,11 @@ class MainViewModel : AndroidViewModel {
             customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 7")))
             customRepository.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground, "name 8")))
         }
+        viewWillAppear()
     }
 
     fun setUpdate(item : CustomModel) {
+        viewDidLoad()
         Coroutines.main {
             liveUpdate.value = item
         }
@@ -48,14 +69,17 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun insertItem(item : CustomModel) {
+        viewDidLoad()
         Coroutines.io {
             customRepository.insert(
                     ConvertList.toEntity(item)
             )
         }
+        viewWillAppear()
     }
 
     fun updateItem() {
+        viewDidLoad()
         Coroutines.io {
         liveUpdate.value?.let {
                 customRepository.update(
@@ -63,20 +87,25 @@ class MainViewModel : AndroidViewModel {
                 )
             }
         }
+        viewWillAppear()
     }
 
     fun deleteItem(item : CustomModel) {
+        viewDidLoad()
         Coroutines.io {
             customRepository.delete(
                     ConvertList.toEntity(item)
             )
         }
+        viewWillAppear()
     }
 
     fun deleteAll() {
+        viewDidLoad()
         Coroutines.io {
             customRepository.deleteAll()
         }
+        viewWillAppear()
     }
 
     fun getItems() : LiveData<MutableList<CustomModel>> {

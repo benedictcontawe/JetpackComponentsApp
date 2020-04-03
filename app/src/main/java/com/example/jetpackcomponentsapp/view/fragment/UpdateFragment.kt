@@ -14,6 +14,7 @@ import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.view.MainActivity
 
 
 class UpdateFragment : BaseDialogFragment() {
@@ -24,6 +25,7 @@ class UpdateFragment : BaseDialogFragment() {
         fun getTag() : String = "UpdateFragment"
     }
 
+    private val activity by lazy { (getActivity() as MainActivity) }
     private lateinit var binding : UpdateBinder
     private lateinit var viewModel : MainViewModel
 
@@ -40,7 +42,7 @@ class UpdateFragment : BaseDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -60,6 +62,11 @@ class UpdateFragment : BaseDialogFragment() {
                 dismiss()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.viewWillAppear()
     }
 
     private fun showSoftKeyboard() {

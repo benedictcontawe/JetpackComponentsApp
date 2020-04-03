@@ -5,7 +5,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
@@ -18,33 +21,57 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var binding : MainBinder
     private lateinit var viewModel : MainViewModel
 
+    val standByDialog by lazy {
+        val builder = this.let { AlertDialog.Builder(it) }
+        val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
+        val message = dialogView.findViewById<TextView>(R.id.loadingText)
+        message.text = "Processing. Please wait…"
+        builder.setView(dialogView)
+        builder.setCancelable(false)
+        builder.create()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        //binding.setViewModel(viewModel)
+        //binding.setLifecycleOwner(this)
 
         if (savedInstanceState == null) {
             callMainFragment()
-            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-            //binding.setViewModel(viewModel)
-            //binding.setLifecycleOwner(this)
+            getLoadState()
         }
     }
 
+    private fun getLoadState() {
+        viewModel.getLoadState().observe(this, object : Observer<Boolean> {
+            override fun onChanged(isLoading : Boolean) {
+                when(isLoading) {
+                    true -> standByDialog.show()
+                    false -> standByDialog.dismiss()
+                }
+            }
+        })
+    }
+
     private fun callMainFragment() {
+        viewModel.viewDidLoad()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitNow()
     }
 
     fun callAddFragment() {
+        viewModel.viewDidLoad()
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, AddFragment.newInstance())
-                .addToBackStack(
-                        AddFragment.getTag())
+                .addToBackStack(AddFragment.getTag())
                 .commit()
     }
 
     fun callUpdateFragment() {
+        viewModel.viewDidLoad()
         UpdateFragment
                 .newInstance()
                 .show(

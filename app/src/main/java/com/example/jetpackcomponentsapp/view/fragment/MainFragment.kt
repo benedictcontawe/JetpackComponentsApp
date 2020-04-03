@@ -26,6 +26,7 @@ class MainFragment : BaseFragment(), CustomListeners {
         fun newInstance() : MainFragment = MainFragment()
     }
 
+    private val activity by lazy { (getActivity() as MainActivity) }
     private lateinit var binding: MainBinder
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter : CustomAdapter
@@ -39,13 +40,18 @@ class MainFragment : BaseFragment(), CustomListeners {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
-        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
+        //viewModel = ViewModelProviders.of(activity).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         setRecyclerView()
         setFloatingActionButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.viewWillAppear()
     }
 
     private fun setRecyclerView() {
@@ -84,13 +90,13 @@ class MainFragment : BaseFragment(), CustomListeners {
     }
 
     private fun onAdd() {
-        (activity as MainActivity).callAddFragment()
+        activity.callAddFragment()
         //viewModel.setItems()
     }
 
     override fun onUpdate(item : CustomModel, position : Int) {
         viewModel.setUpdate(item)
-        (activity as MainActivity).callUpdateFragment()
+        activity.callUpdateFragment()
     }
 
     override fun onDelete(item : CustomModel, position : Int) {

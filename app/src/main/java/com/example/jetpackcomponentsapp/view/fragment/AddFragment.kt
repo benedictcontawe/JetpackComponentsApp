@@ -13,6 +13,7 @@ import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.view.MainActivity
 
 
 class AddFragment : BaseFragment() {
@@ -25,6 +26,7 @@ class AddFragment : BaseFragment() {
         }
     }
 
+    private val activity by lazy { (getActivity() as MainActivity) }
     private lateinit var binding : AddBinder
     private lateinit var viewModel : MainViewModel
 
@@ -36,7 +38,7 @@ class AddFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -47,9 +49,14 @@ class AddFragment : BaseFragment() {
             override fun onClick(view : View) {
                 viewModel.insertItem(CustomModel(binding.editText.text.toString()))
                 hideSoftKeyboard()
-                activity!!.supportFragmentManager.popBackStack()
+                activity.supportFragmentManager.popBackStack()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.viewWillAppear()
     }
 
     private fun showSoftKeyboard() {
