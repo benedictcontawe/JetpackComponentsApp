@@ -2,15 +2,13 @@ package com.example.jetpackcomponentsapp.view.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
-import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.MainActivity
@@ -31,8 +29,13 @@ class AddFragment : BaseFragment() {
     private lateinit var viewModel : MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add_fragment,container,false)
+        Log.d(getTag(),"onCreateView()")
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(getTag(),"onViewCreated()")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,7 +59,7 @@ class AddFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.viewWillAppear()
+        viewModel.checkIfFragmentLoaded(this)
     }
 
     private fun showSoftKeyboard() {

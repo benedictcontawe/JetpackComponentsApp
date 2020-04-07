@@ -28,7 +28,16 @@ class MainViewModel : AndroidViewModel {
         liveStandBy.setValue(true)
     }
 
+    fun checkIfFragmentLoaded(baseFragment: Fragment) {
+        Log.d("MainViewModel","checkIfFragmentLoaded")
+        Coroutines.default {
+            while (!baseFragment.isVisible) delay(100)
+            viewWillAppear()
+        }
+    }
+
     fun viewWillAppear() {
+        Log.d("MainViewModel","viewWillAppear")
         Coroutines.main {
             delay(500)
             liveStandBy.setValue(false)
@@ -59,8 +68,8 @@ class MainViewModel : AndroidViewModel {
 
     fun setUpdate(item : CustomModel) {
         viewDidLoad()
-        Coroutines.main {
-            liveUpdate.value = item
+        Coroutines.default {
+            liveUpdate.postValue(item)
         }
     }
 
@@ -113,6 +122,10 @@ class MainViewModel : AndroidViewModel {
                 customRepository.getAll()
         )
         return liveList
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }
 

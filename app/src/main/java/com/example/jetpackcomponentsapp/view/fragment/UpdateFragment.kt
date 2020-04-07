@@ -64,9 +64,13 @@ class UpdateFragment : BaseDialogFragment() {
         })
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+    }
+
     override fun onResume() {
         super.onResume()
-        viewModel.viewWillAppear()
+        viewModel.checkIfFragmentLoaded(this)
     }
 
     private fun showSoftKeyboard() {

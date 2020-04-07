@@ -51,7 +51,7 @@ class MainFragment : BaseFragment(), CustomListeners {
 
     override fun onResume() {
         super.onResume()
-        viewModel.viewWillAppear()
+        viewModel.checkIfFragmentLoaded(this)
     }
 
     private fun setRecyclerView() {

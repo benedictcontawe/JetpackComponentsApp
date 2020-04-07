@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity() {
         UpdateFragment
                 .newInstance()
                 .show(
-                        supportFragmentManager.beginTransaction(),
-                        UpdateFragment.getTag()
+                    supportFragmentManager.beginTransaction(),
+                    UpdateFragment.getTag()
                 )
     }
 
