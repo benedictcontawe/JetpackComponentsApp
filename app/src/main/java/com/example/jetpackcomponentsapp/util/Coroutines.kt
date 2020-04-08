@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 object Coroutines {
     //UI contexts
     fun main(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.Main.immediate).launch {
                 work()
             }
     // I/O operations
