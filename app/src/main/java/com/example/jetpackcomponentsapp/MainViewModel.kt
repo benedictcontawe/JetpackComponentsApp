@@ -14,7 +14,7 @@ class MainViewModel : AndroidViewModel {
         repository = CustomRepository.getInstance(application)!!
 
 
-        // 1 -if data hold by customModelLiveData changes, second argument of switchMap() is invoked the resulting liveData assigned to stringLiveData, or
+        // 1 - if data hold by customModelLiveData changes, second argument of switchMap() is invoked the resulting liveData assigned to stringLiveData, or
         // 2 - if the data hold by liveData which is returned from second argument of switchMap changes,
         // for example customModel in Room Db changes, then the resulting liveData assigned to stringLiveData
         stringLiveData = switchMap(customModelLiveData, { customModel -> processData(customModel) });
