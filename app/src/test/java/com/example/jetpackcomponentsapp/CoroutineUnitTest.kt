@@ -159,4 +159,37 @@ class CoroutineUnitTest {
 
         assert(true)
     }
+
+    @Test
+    public fun random_number_until_one() {
+        println("random_number_until_one()")
+        val randomInteger = (1..10000).shuffled().first()
+        println("randomInteger - $randomInteger")
+        when(randomInteger) {
+            1 -> {
+                println("randomInteger is now one")
+                assert(true)
+            }
+            else -> {
+                println("recall")
+                random_number_until_one()
+            }
+        }
+    }
+
+    @Test
+    public fun check_string() {
+        println("check_string()")
+        val x = "+00"
+        when {
+            x == "+00" -> {
+                println("+00")
+                assert(true)
+            }
+            else -> {
+                println("else")
+                assert(false)
+            }
+        }
+    }
 }
