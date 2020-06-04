@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.MainActivity
@@ -30,6 +32,7 @@ class AddFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(getTag(),"onCreateView()")
+        binding = DataBindingUtil.inflate(inflater, R.layout.add_fragment,container,false)
         return binding.root
     }
 
