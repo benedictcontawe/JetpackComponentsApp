@@ -60,7 +60,7 @@ class MainFragment : Fragment(), CustomListeners {
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
             override fun onChanged(list : List<CustomModel>) {
                 Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                binding.recyclerView.removeAllViews()
+                //binding.recyclerView.removeAllViews()
                 adapter.setItems(list)
             }
         })
