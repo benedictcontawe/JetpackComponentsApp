@@ -11,13 +11,13 @@ class CustomModel {
 
     constructor(name : String) {
         this.name = name
-        this.icon = R.drawable.ic_launcher_foreground
+        this.icon = R.drawable.ic_android_black
     }
 
-    constructor(id : Int, name : String) {
+    constructor(id : Int?, name : String) {
         this.id = id
         this.name = name
-        this.icon = R.drawable.ic_launcher_foreground
+        this.icon = R.drawable.ic_android_black
     }
 
     constructor(id : Int, name : String, icon : Int) {

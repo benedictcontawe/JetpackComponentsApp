@@ -3,6 +3,7 @@ package com.example.jetpackcomponentsapp.repository
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import androidx.paging.*
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
@@ -56,8 +57,23 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
         }
     }
 
-    fun getAll() : LiveData<List<CustomEntity>> {
+    fun getAllDataSourceFactory() : DataSource.Factory<Int, CustomEntity> {
         return customDao.getAll()
     }
+
+    fun getAllLivePageList() : LiveData<PagedList<CustomEntity>> {
+        return customDao.getAll().toLiveData(
+                getConfig()
+        )
+    }
     //endregion
+    fun getConfig() : PagedList.Config {
+        return Config(
+                pageSize = 10,
+                initialLoadSizeHint = 10, //default: page size * 3
+                prefetchDistance = 10, //default: page size
+                //maxSize = PagedList.Config.MAX_SIZE_UNBOUNDED,
+                enablePlaceholders = false //default: true
+        )
+    }
 }

@@ -14,18 +14,19 @@ class CustomViewHolder : BaseViewHolder {
         this.customBinder = customBinder
     }
 
-    override fun bindDataToViewHolder(item: CustomModel, position: Int) {
-        setId(item.id?:0)
+    override fun bindDataToViewHolder(item : CustomModel?, position: Int) {
+        customBinder.executePendingBindings()
+        setId(item?.id?:0)
         //customBinder.imageView.setBackgroundResource(item.icon?:0)
-        customBinder.imageView.setImageResource(item.icon?:0)
+        customBinder.imageView.setImageResource(item?.icon?:0)
         customBinder.buttonEdit.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                getListener().onUpdate(item,position)
+                item?.let { getListener().onUpdate(it,position) }
             }
         })
         customBinder.buttonDelete.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                getListener().onDelete(item,position)
+                item?.let { getListener().onDelete(it,position) }
             }
         })
     }

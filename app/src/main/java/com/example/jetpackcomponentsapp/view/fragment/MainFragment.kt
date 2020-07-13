@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 //import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,9 +45,9 @@ class MainFragment : Fragment(), CustomListeners {
         viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
         setRecyclerView()
         setFloatingActionButton()
+        viewModel.setItems()
     }
 
     private fun setRecyclerView() {
@@ -57,11 +58,13 @@ class MainFragment : Fragment(), CustomListeners {
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
 
-        viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
-            override fun onChanged(list : List<CustomModel>) {
-                Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+        viewModel.getItems().observe(viewLifecycleOwner, object : Observer<PagedList<CustomModel>> {
+            override fun onChanged(pageList : PagedList<CustomModel>) {
+                Log.d("MainFragment","${pageList.size} ID ${pageList.map { it?.id }}, Name ${pageList.map { it?.name }}")
                 //binding.recyclerView.removeAllViews()
-                adapter.setItems(list)
+                //adapter.setItems(pageList)
+                //pageList.distinct()
+                adapter.submitList(pageList)
             }
         })
         //binding.recyclerView.scrollToPosition(0)

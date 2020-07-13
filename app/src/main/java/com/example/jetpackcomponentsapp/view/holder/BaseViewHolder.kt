@@ -14,7 +14,7 @@ abstract class BaseViewHolder : RecyclerView.ViewHolder {
     /**Data */
     private var id : Int? = null
 
-    constructor(context: Context, customListeners: CustomListeners, view : View) : super(view) {
+    constructor(context : Context, customListeners : CustomListeners, view : View) : super(view) {
         this.context = context
         this.customListeners = customListeners
     }
@@ -35,5 +35,5 @@ abstract class BaseViewHolder : RecyclerView.ViewHolder {
         return customListeners
     }
 
-    abstract fun bindDataToViewHolder(item : CustomModel, position : Int)
+    abstract fun bindDataToViewHolder(item : CustomModel?, position : Int)
 }
