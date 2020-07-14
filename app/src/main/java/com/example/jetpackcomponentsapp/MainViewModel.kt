@@ -1,7 +1,6 @@
 package com.example.jetpackcomponentsapp
 
 import android.app.Application
-import android.os.AsyncTask
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
