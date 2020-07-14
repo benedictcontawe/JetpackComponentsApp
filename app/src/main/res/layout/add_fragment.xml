@@ -25,7 +25,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:weightSum="1">
@@ -33,10 +33,10 @@
                 <ImageView
                     android:id="@+id/image_view"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:contentDescription="Image"
-                    app:srcCompat="@drawable/ic_launcher_foreground"/>
+                    app:srcCompat="@drawable/ic_android_black"/>
 
                 <TextView
                     android:id="@+id/text_view"
@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
                     android:text="Add Name"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal" />
 
             </LinearLayout>
 
@@ -65,7 +66,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-
 
 </layout>

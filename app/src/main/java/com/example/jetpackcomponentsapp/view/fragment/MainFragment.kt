@@ -47,6 +47,7 @@ class MainFragment : Fragment(), CustomListeners {
 
         setRecyclerView()
         setFloatingActionButton()
+        //viewModel.setItems()
     }
 
     private fun setRecyclerView() {
@@ -56,6 +57,8 @@ class MainFragment : Fragment(), CustomListeners {
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
+
+        (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
 
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
             override fun onChanged(list : List<CustomModel>) {
