@@ -1,5 +1,7 @@
 package com.example.jetpackcomponentsapp.util
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,6 +56,12 @@ object Coroutines {
             CoroutineScope(Dispatchers.IO).launch {
                 work()
             }
+
+    fun io(viewModel : ViewModel, work : suspend (() -> Unit)) {
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
+            work()
+        }
+    }
     // Uses heavy CPU computation
     fun default(work : suspend (() -> Unit)) =
             CoroutineScope(Dispatchers.Default).launch {
