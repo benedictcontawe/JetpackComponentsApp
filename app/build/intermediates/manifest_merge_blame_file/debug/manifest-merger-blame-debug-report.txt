@@ -15,7 +15,7 @@
 12        android:allowBackup="true"
 12-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:5:9-35
 13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-13-->[androidx.core:core:1.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\e9dab9c67c1ee3668e0bbf86c6d8cbd8\core-1.1.0\AndroidManifest.xml:24:18-86
+13-->[androidx.core:core:1.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\1cd7eff88f5e86d0249af2958bf465f0\core-1.1.0\AndroidManifest.xml:24:18-86
 14        android:debuggable="true"
 15        android:icon="@mipmap/ic_launcher"
 15-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:6:9-43
@@ -25,34 +25,33 @@
 17-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:8:9-54
 18        android:supportsRtl="true"
 18-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:9:9-35
-19        android:testOnly="true"
-20        android:theme="@style/AppTheme" >
-20-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:10:9-40
-21        <activity android:name="com.example.jetpackcomponentsapp.MainActivity" >
-21-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:11:9-17:20
-21-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:11:19-79
-22            <intent-filter>
-22-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:12:13-16:29
-23                <action android:name="android.intent.action.MAIN" />
-23-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:13:17-69
-23-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:13:25-66
-24                <!-- <category android:name="android.intent.category.DEFAULT"/> -->
-25                <category android:name="android.intent.category.LAUNCHER" />
-25-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:15:17-77
-25-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:15:27-74
-26            </intent-filter>
-27        </activity>
-28
-29        <provider
-29-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\3c03e0805bdfd6180afbf0af0c9cd9a0\lifecycle-process-2.1.0\AndroidManifest.xml:23:9-27:43
-30            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-30-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\3c03e0805bdfd6180afbf0af0c9cd9a0\lifecycle-process-2.1.0\AndroidManifest.xml:24:13-79
-31            android:authorities="com.example.databindingmvvmapp.lifecycle-process"
-31-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\3c03e0805bdfd6180afbf0af0c9cd9a0\lifecycle-process-2.1.0\AndroidManifest.xml:25:13-69
-32            android:exported="false"
-32-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\3c03e0805bdfd6180afbf0af0c9cd9a0\lifecycle-process-2.1.0\AndroidManifest.xml:26:13-37
-33            android:multiprocess="true" />
-33-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\3c03e0805bdfd6180afbf0af0c9cd9a0\lifecycle-process-2.1.0\AndroidManifest.xml:27:13-40
-34    </application>
-35
-36</manifest>
+19        android:theme="@style/AppTheme" >
+19-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:10:9-40
+20        <activity android:name="com.example.jetpackcomponentsapp.MainActivity" >
+20-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:11:9-17:20
+20-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:11:19-79
+21            <intent-filter>
+21-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:12:13-16:29
+22                <action android:name="android.intent.action.MAIN" />
+22-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:13:17-69
+22-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:13:25-66
+23                <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+24                <category android:name="android.intent.category.LAUNCHER" />
+24-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:15:17-77
+24-->C:\Users\Benedict\AndroidStudioProjects\JetpackComponentsApp\app\src\main\AndroidManifest.xml:15:27-74
+25            </intent-filter>
+26        </activity>
+27
+28        <provider
+28-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\47fd15a1beecdce990f8c0e18de79296\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:23:9-27:43
+29            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+29-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\47fd15a1beecdce990f8c0e18de79296\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:24:13-79
+30            android:authorities="com.example.databindingmvvmapp.lifecycle-process"
+30-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\47fd15a1beecdce990f8c0e18de79296\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:25:13-69
+31            android:exported="false"
+31-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\47fd15a1beecdce990f8c0e18de79296\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:26:13-37
+32            android:multiprocess="true" />
+32-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\Benedict\.gradle\caches\transforms-2\files-2.1\47fd15a1beecdce990f8c0e18de79296\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:27:13-40
+33    </application>
+34
+35</manifest>

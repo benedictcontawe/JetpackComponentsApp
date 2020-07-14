@@ -1,4 +1,4 @@
-#Sat Feb 01 13:20:09 SGT 2020
-base.0=C\:\\Users\\Benedict\\AndroidStudioProjects\\JetpackComponentsApp\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+#Tue Jul 14 21:19:00 SGT 2020
+base.0=C\:\\Users\\Benedict\\AndroidStudioProjects\\JetpackComponentsApp\\app\\build\\intermediates\\dex\\debug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
