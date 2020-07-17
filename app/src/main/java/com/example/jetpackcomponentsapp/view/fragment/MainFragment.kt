@@ -47,7 +47,7 @@ class MainFragment : Fragment(), CustomListeners {
         binding.lifecycleOwner = viewLifecycleOwner
         setRecyclerView()
         setFloatingActionButton()
-        viewModel.setItems()
+        //viewModel.setItems()
     }
 
     private fun setRecyclerView() {

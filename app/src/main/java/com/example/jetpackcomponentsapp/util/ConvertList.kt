@@ -39,6 +39,10 @@ class ConvertList {
             return itemList
         }
 
+        fun toModel(customEntity: CustomEntity) : CustomModel {
+            return CustomModel(customEntity.id,customEntity.name?:"")
+        }
+
         fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<MutableList<CustomModel>> {
             return Transformations.map<
                     List<CustomEntity>, //localList Data Type

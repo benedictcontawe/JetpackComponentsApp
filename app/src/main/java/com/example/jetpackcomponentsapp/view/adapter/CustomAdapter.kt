@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
@@ -35,11 +36,10 @@ class CustomAdapter : PagedListAdapter<CustomModel, CustomViewHolder> {
 
     override fun onBindViewHolder(holder : CustomViewHolder, position : Int) {
         customBinder.customModel = getItem(position)
-        holder.bindDataToViewHolder(getItem(position),position)
+        holder.bindDataToViewHolder(customBinder.customModel,position)
     }
-    /*
+
     override fun getItemId(position : Int) : Long {
-        return getItem(position)?.id?.toLong()?:RecyclerView.NO_ID
+        return getItem(position)?.id?.toLong()?: RecyclerView.NO_ID
     }
-    */
 }
