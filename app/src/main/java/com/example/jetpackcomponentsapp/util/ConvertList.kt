@@ -35,6 +35,8 @@ class ConvertList {
                 )
             }
             itemList.sortBy { it.id }
+            //itemList.sortWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.toString() })
+            //itemList.sortedWith(compareByDescending { item -> item.name })
             itemList.distinct()
             return itemList
         }

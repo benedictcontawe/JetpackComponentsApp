@@ -195,11 +195,11 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun getItems() : LiveData<PagedList<CustomModel>> {
+        /*
         return customRepository.getAllDataSourceFactory().map() {
             ConvertList.toModel(it)
         }.toLiveData(customRepository.getConfig())
-
-
+        */
         return customRepository.getAllDataSourceFactory().mapByPage() {
             ConvertList.toListModel(it)
         }.toLiveData(customRepository.getConfig())

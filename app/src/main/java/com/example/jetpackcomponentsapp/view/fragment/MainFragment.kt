@@ -63,6 +63,7 @@ class MainFragment : Fragment(), CustomListeners {
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<PagedList<CustomModel>> {
             override fun onChanged(pageList : PagedList<CustomModel>) {
                 Log.d("MainFragment","${pageList.size} ID ${pageList.map { it?.id }}, Name ${pageList.map { it?.name }}")
+                binding.recyclerView.invalidate()
                 //binding.recyclerView.removeAllViews()
                 //adapter.setItems(pageList)
                 //pageList.distinct()
