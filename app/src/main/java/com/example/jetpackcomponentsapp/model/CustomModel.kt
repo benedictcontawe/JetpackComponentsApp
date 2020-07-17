@@ -4,12 +4,12 @@ import com.example.jetpackcomponentsapp.R
 
 class CustomModel {
 
-    var id: Int? = null
-    var name: String? = null
-
-    var icon: Int? = null
+    var id: Int?
+    var name: String?
+    var icon: Int?
 
     constructor(name : String) {
+        this.id = null
         this.name = name
         this.icon = R.drawable.ic_android_black
     }

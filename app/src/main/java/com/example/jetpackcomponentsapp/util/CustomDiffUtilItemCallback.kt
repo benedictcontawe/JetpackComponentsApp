@@ -10,8 +10,8 @@ object CustomDiffUtilItemCallback : DiffUtil.ItemCallback<CustomModel>() {
     }
 
     override fun areContentsTheSame(oldItem : CustomModel, newItem : CustomModel) : Boolean {
-        return oldItem.id == newItem.id &&
-               oldItem.icon == newItem.icon &&
-               oldItem.name == newItem.name
+        //return oldItem.equals(newItem)
+        return oldItem.name == newItem.name &&
+               oldItem.icon == newItem.icon
     }
 }

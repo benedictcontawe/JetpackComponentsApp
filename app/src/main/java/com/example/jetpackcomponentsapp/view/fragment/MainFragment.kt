@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +48,7 @@ class MainFragment : Fragment(), CustomListeners {
         binding.lifecycleOwner = viewLifecycleOwner
         setRecyclerView()
         setFloatingActionButton()
-        //viewModel.setItems()
+        viewModel.setItems()
     }
 
     private fun setRecyclerView() {
@@ -57,6 +58,7 @@ class MainFragment : Fragment(), CustomListeners {
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
 
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<PagedList<CustomModel>> {
             override fun onChanged(pageList : PagedList<CustomModel>) {
@@ -65,11 +67,11 @@ class MainFragment : Fragment(), CustomListeners {
                 //adapter.setItems(pageList)
                 //pageList.distinct()
                 adapter.submitList(pageList)
+
             }
         })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)
-        binding.recyclerView.setHasFixedSize(true)
     }
 
     private fun setFloatingActionButton() {
