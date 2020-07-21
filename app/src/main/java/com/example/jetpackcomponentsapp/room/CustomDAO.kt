@@ -25,7 +25,7 @@ interface CustomDAO {
     fun deleteAll()
 
     //@Query("SELECT * FROM custom_table")
-    @Query("SELECT * FROM custom_table ORDER BY Id ASC")
+    @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC")
     //fun getAll() : LiveData<List<CustomEntity>>
     //fun getAll() : LiveData<DataSource.Factory<Int, CustomEntity>>
     fun getAll() : DataSource.Factory<Int, CustomEntity>

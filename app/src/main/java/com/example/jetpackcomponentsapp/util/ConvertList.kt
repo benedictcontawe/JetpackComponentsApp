@@ -34,10 +34,10 @@ class ConvertList {
                         CustomModel(it.id?:0, it.name?:"")
                 )
             }
-            itemList.sortBy { it.id }
+            //itemList.sortBy { it.id }
             //itemList.sortWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.toString() })
             //itemList.sortedWith(compareByDescending { item -> item.name })
-            itemList.distinct()
+            //itemList.distinct()
             return itemList
         }
 
