@@ -2,9 +2,7 @@ package com.example.jetpackcomponentsapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
@@ -42,12 +40,13 @@ import kotlinx.coroutines.launch
  */
 
 object Coroutines {
-    //UI contexts
+    //region UI contexts
     fun main(work : suspend (() -> Unit)) =
             CoroutineScope(Dispatchers.Main.immediate).launch {
                 work()
             }
-    // I/O operations
+    //endregion
+    //region I/O operations
     fun io(work : suspend (() -> Unit)) =
             CoroutineScope(Dispatchers.IO).launch {
                 work()
@@ -58,19 +57,29 @@ object Coroutines {
             work()
         }
     }
+    //endregion
+    //region Uses heavy CPU computation
+    fun defaultGlobal(work : suspend (() -> Unit)) {
+        GlobalScope.async(Dispatchers.Default) {
+            work()
+        }
+    }
+
     fun default(viewModel : ViewModel, work : suspend (() -> Unit)) {
         viewModel.viewModelScope.launch(Dispatchers.Default) {
             work()
         }
     }
-    // Uses heavy CPU computation
+
     fun default(work : suspend (() -> Unit)) =
             CoroutineScope(Dispatchers.Default).launch {
                 work()
             }
-    // No need to run on specific context
+    //endregion
+    //region No need to run on specific context
     fun unconfined(work : suspend (() -> Unit)) =
             CoroutineScope(Dispatchers.Unconfined).launch {
                 work()
             }
+    //endregion
 }

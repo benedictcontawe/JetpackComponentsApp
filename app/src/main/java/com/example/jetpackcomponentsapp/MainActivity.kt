@@ -80,7 +80,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
         recycler_view.addOnScrollListener(setScrollListener())
         ManifestPermission.checkSelfPermission(this@MainActivity, ManifestPermission.contactPermission,
                 isGranted = {
-                    viewModel.syncContacts()
+                    viewModel.syncAdded()
+                    viewModel.syncDeleted()
                     viewModel.syncNames()
                     viewModel.syncPhotos()
                     viewModel.syncNumbers()

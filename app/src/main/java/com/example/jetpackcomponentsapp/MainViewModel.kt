@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
 class MainViewModel : AndroidViewModel {
@@ -159,99 +160,108 @@ class MainViewModel : AndroidViewModel {
         return contactsProvider.updateContact(contactUri)
     }
 
-    private fun deleteContact(item : ContactModel) { Log.d(TAG,"deleteContact(${item})")
-        itemContactList.remove(item)
-    }
-
-    private fun deleteContact(contactsIDList : List<Long>) {
-        postLiveStandBy(DeleteContact,false)
-        loop@ for (index in itemContactList.size - 1 downTo 0  step 1) {
-            Log.d(TAG,"$index Deleting ${itemContactList.get(index).id} ${itemContactList.get(index).name}")
-            val condition : Boolean = contactsIDList.filter { ID -> itemContactList.get(index).id == ID }.none()
-            if (condition) { Log.d(TAG,"Deleted ${itemContactList.get(index).id} ${itemContactList.get(index).name}")
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { Log.d(TAG,"Build.VERSION.SDK_INT >= Build.VERSION_CODES.N")
-                    itemContactList.removeIf { it.id == itemContactList.get(index).id }
-                } else { Log.d(TAG,"Build.VERSION.SDK_INT < Build.VERSION_CODES.N")
-                    itemContactList.removeAll(itemContactList.filter { it.id == itemContactList.get(index).id })
-                }
-            }
-            if (isSameSize() && isSameId() || index == 0) {
-                break@loop
-            }
-        }
-        postLiveStandBy(DeleteContact,true)
-        postLiveContact()
-    }
-
     public fun deleteContact(item : ContactViewHolderModel, position : Int) {
-        Coroutines.default(this@MainViewModel) {
-            postLiveStandBy(DeleteContact,false)
-            when {
-                contactsProvider.deleteContact(getApplication(), item.id.toString()) > 0 -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Log.d(TAG,"Build.VERSION.SDK_INT >= Build.VERSION_CODES.N")
+        if(!isProcessing(DeleteContact)) {
+            AsyncTask.THREAD_POOL_EXECUTOR.execute {
+                postLiveStandBy(DeleteContact, false)
+                when {
+                    contactsProvider.deleteContact(getApplication(), item.id.toString()) > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+                        Log.d(TAG, "Build.VERSION.SDK_INT >= Build.VERSION_CODES.N")
                         itemContactList.removeIf { it.id == item.id }
-                    } else {
-                        Log.d(TAG,"Build.VERSION.SDK_INT < Build.VERSION_CODES.N")
+                        postLiveStandBy(DeleteContact, true)
+                        postLiveContact()
+                    }
+                    contactsProvider.deleteContact(getApplication(), item.id.toString()) > 0 && Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> {
+                        Log.d(TAG, "Build.VERSION.SDK_INT < Build.VERSION_CODES.N")
                         itemContactList.removeAll(itemContactList.filter { it.id == item.id })
+                        postLiveStandBy(DeleteContact, true)
+                        postLiveContact()
+                    }
+                    contactsProvider.getContact(getApplication(), item.id.toString()) == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+                        Log.d(TAG, "Build.VERSION.SDK_INT >= Build.VERSION_CODES.N")
+                        itemContactList.removeIf { it.id == item.id }
+                        postLiveStandBy(DeleteContact, true)
+                        postLiveContact()
+                    }
+                    contactsProvider.getContact(getApplication(), item.id.toString()) == null && Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> {
+                        Log.d(TAG, "Build.VERSION.SDK_INT < Build.VERSION_CODES.N")
+                        itemContactList.removeAll(itemContactList.filter { it.id == item.id })
+                        postLiveStandBy(DeleteContact, true)
+                        postLiveContact()
+                    }
+                    else -> {
+                        Log.e(TAG, "Error Deleting")
+                        postLiveStandBy(DeleteContact, true)
+                        syncDeleted()
                     }
                 }
-                else -> {
-                    Log.e(TAG,"Error Deleting")
-                }
             }
-            postLiveStandBy(DeleteContact,true)
-            postLiveContact()
         }
     }
 
-    public fun syncContacts() { Log.d(TAG, "syncContacts()")
+    public fun syncAdded() { Log.d(TAG,"syncNewContacts()")
         if(!isProcessing(SyncContacts)) {
-            Coroutines.default(this@MainViewModel) { Log.d(TAG, "syncContacts() Processing")
-                postLiveStandBy(SyncContacts,false)
-                val oldSize : Int = itemContactList.size
-                val newSize : Int = contactsProvider.getContactCount(getApplication())
-                val contactsIDList : List<Long>
-                Log.d(TAG, "Old ${oldSize}")
-                Log.d(TAG, "New ${newSize}")
+            Coroutines.default(this@MainViewModel) {
+                Log.d(TAG, "syncNewContacts() Processing")
+                postLiveStandBy(SyncContacts, false)
                 when {
-                    itemContactList.isEmpty() -> { Log.d(TAG, "Get All Contacts")
+                    itemContactList.isEmpty() -> {
+                        Log.d(TAG, "Get All Contacts")
                         //region Initialize Contacts
                         itemContactList.addAll(contactsProvider.getContacts(getApplication()))
                         //endregion
                     }
-                    itemContactList.isNotEmpty() && oldSize < newSize -> { Log.d(TAG, "New ${newSize - oldSize} Added Contacts")
-                        //region Add New Contacts
-                        contactsIDList = contactsProvider.getListID(getApplication())
-                        addContact(contactsIDList)
-                        //endregion
+                    itemContactList.isNotEmpty() -> {
+                        Log.d(TAG, "Adding New Contacts")
+                        contactsProvider.getListID(getApplication()).mapIndexed { index, id ->
+                            val condition: Boolean = itemContactList.filter { it.id == id }.none()
+                            if (condition) {
+                                contactsProvider.getContact(getApplication(), id.toString())?.let { newContact ->
+                                    Log.d(TAG, "Added ${newContact.id} ${newContact.name}")
+                                    itemContactList.add(index, newContact)
+                                }
+                            }
+                        }
                     }
-                    itemContactList.isNotEmpty() && oldSize > newSize -> { Log.d(TAG, "New ${oldSize - newSize} Deleted Contacts")
-                        //region Delete Old Contacts
-                        contactsIDList = contactsProvider.getListID(getApplication())
-                        deleteContact(contactsIDList)
-                        //endregion
-                    }
-                    itemContactList.isNotEmpty() && oldSize == newSize && isSameId() -> {
-                        Log.d(TAG, "Same ${oldSize} Size Contacts")
-                    }
-                    itemContactList.isNotEmpty() && oldSize == newSize && !isSameId() -> {
-                        Log.d(TAG, "Same ${oldSize} Size Contacts Not Same Id")
-                        contactsIDList = contactsProvider.getListID(getApplication())
-                        //region Delete Old Contact
-                        Log.d(TAG, "New ${1} Deleted Contacts")
-                        deleteContact(contactsIDList)
-                        //endregion
-                        //region Add New Contact
-                        Log.d(TAG, "New ${1} Added Contacts")
-                        addContact(contactsIDList)
-                        //endregion
-                    }
-                    else -> { Log.d(TAG, "else") }
                 }
-                postLiveStandBy(SyncContacts,true)
+                postLiveStandBy(SyncContacts, true)
                 postLiveContact()
-                Log.d(TAG, "syncContacts() Done")
+            }
+        }
+    }
+
+    public fun syncDeleted() { Log.d(TAG,"syncDeletedContacts()")
+        if(!isProcessing(DeleteContact)) {
+            Coroutines.default(this@MainViewModel) {
+                Log.d(TAG, "syncDeletedContacts() Processing")
+                postLiveStandBy(DeleteContact, false)
+                when {
+                    itemContactList.isEmpty() -> {
+                        Log.d(TAG, "Contact is Empty")
+                    }
+                    itemContactList.isNotEmpty() -> {
+                        Log.d(TAG, "Deleting Old Contacts")
+                        val contactsIDList: List<Long> = contactsProvider.getListID(getApplication())
+                        loop@ for (index in itemContactList.size - 1 downTo 0 step 1) {
+                            Log.d(TAG, "$index Deleting ${itemContactList.get(index).id} ${itemContactList.get(index).name}")
+                            val condition: Boolean = contactsIDList.filter { ID -> itemContactList.get(index).id == ID }.none()
+                            if (condition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                Log.d(TAG, "Deleted ${itemContactList.get(index).id} ${itemContactList.get(index).name}")
+                                Log.d(TAG, "Build.VERSION.SDK_INT >= Build.VERSION_CODES.N")
+                                itemContactList.removeIf { it.id == itemContactList.get(index).id }
+                            } else if (condition && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                Log.d(TAG, "Deleted ${itemContactList.get(index).id} ${itemContactList.get(index).name}")
+                                Log.d(TAG, "Build.VERSION.SDK_INT < Build.VERSION_CODES.N")
+                                itemContactList.removeAll(itemContactList.filter { it.id == itemContactList.get(index).id })
+                            }
+                            if (isSameSize() && isSameId() || index == 0) {
+                                break@loop
+                            }
+                        }
+                    }
+                }
+                postLiveStandBy(DeleteContact, true)
+                postLiveContact()
             }
         }
     }
@@ -403,19 +413,15 @@ class MainViewModel : AndroidViewModel {
                 if (itemContactList.isNotEmpty()) {
                     contactsProvider.getListID(getApplication()).mapIndexed { index, id ->
                         Log.d(TAG, "sortContacts() $index $id ${contactsProvider.getListID(getApplication()).indexOf(id)}  ${itemContactList.get(index).id}")
-                        when {
-                            id == itemContactList.get(index).id -> { Log.d(TAG, "sortContacts() Same Index $index") }
-                            contactsProvider.getListID(getApplication()).indexOf(itemContactList.get(index).id) > -1 -> { Log.d(TAG, "sortContacts() Not Same Index $index")
-                                val movingItem : ContactModel = itemContactList.get(index)
-                                Log.d(TAG, "movingItem ${movingItem.id} ${movingItem.name} ${contactsProvider.getListID(getApplication()).indexOf(movingItem.id)}")
-                                deleteContact(movingItem)
-                                itemContactList.add(contactsProvider.getListID(getApplication()).indexOf(movingItem.id), movingItem)
-                            }
-                            contactsProvider.getListID(getApplication()).indexOf(itemContactList.get(index).id) == -1 -> {
-                                deleteContact(itemContactList.get(index))
-                            }
-                            else -> {  }
-                        }
+                        if (id == itemContactList.get(index).id) {
+                            Log.d(TAG, "sortContacts() Same Index $index")
+                        } else if (id != itemContactList.get(index).id && itemContactList.filter { it.id == id }.isNotEmpty()) { Log.d(TAG, "sortContacts() Not Same Index $index")
+                            Collections.swap(
+                                    itemContactList,
+                                    index,
+                                    itemContactList.indexOf(itemContactList.filter { it.id == id }.first())
+                            )
+                        } else { }
                     }
                 }
                 postLiveStandBy(SortContacts, true)
@@ -534,7 +540,7 @@ class MainViewModel : AndroidViewModel {
                 itemProcessList.remove(ProgressID)
             }
         }
-        Log.e(TAG, "itemProgressList ${itemProcessList.map { it }}")
+        Log.i(TAG, "itemProgressList ${itemProcessList.map { it }}")
         liveStandBy.postValue(itemProcessList.isNotEmpty())
     }
 
