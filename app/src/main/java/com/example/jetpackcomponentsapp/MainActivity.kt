@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(){
 
     private var customSpinnerItemList = mutableListOf<CustomSpinnerModel>()
     private val names = arrayOf("A", "B", "C", "D", "E", "F", "G")
-    private val icons = intArrayOf(R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground)
+    private val icons = intArrayOf(R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android)
 
     private var isSpinnerTouch = false
     private var isCustomSpinnerTouch : Boolean = false
