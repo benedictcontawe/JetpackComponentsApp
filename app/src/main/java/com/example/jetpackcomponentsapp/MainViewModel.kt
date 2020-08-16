@@ -184,7 +184,7 @@ class MainViewModel : AndroidViewModel {
     }
 
     public fun deleteContact(item : ContactViewHolderModel, position : Int) {
-        AsyncTask.THREAD_POOL_EXECUTOR.execute {
+        Coroutines.default(this@MainViewModel) {
             postLiveStandBy(DeleteContact,false)
             when {
                 contactsProvider.deleteContact(getApplication(), item.id.toString()) > 0 -> {
@@ -207,7 +207,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun syncContacts() { Log.d(TAG, "syncContacts()")
         if(!isProcessing(SyncContacts)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute { Log.d(TAG, "syncContacts() Processing")
+            Coroutines.default(this@MainViewModel) { Log.d(TAG, "syncContacts() Processing")
                 postLiveStandBy(SyncContacts,false)
                 val oldSize : Int = itemContactList.size
                 val newSize : Int = contactsProvider.getContactCount(getApplication())
@@ -258,7 +258,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun syncNames() { Log.d(TAG,"syncNames()")
         if(!isProcessing(SyncNames)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute { Log.d(TAG, "syncNames() Processing")
+            Coroutines.default(this@MainViewModel) { Log.d(TAG, "syncNames() Processing")
                 postLiveStandBy(SyncNames, false)
                 when {
                     itemContactList.isEmpty() -> {
@@ -292,7 +292,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun syncPhotos() { Log.d(TAG,"syncPhotos()")
         if(!isProcessing(SyncPhotos)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute { Log.d(TAG, "syncPhotos() Processing")
+            Coroutines.default(this@MainViewModel) { Log.d(TAG, "syncPhotos() Processing")
                 postLiveStandBy(SyncPhotos, false)
                 when {
                     itemContactList.isEmpty() -> {
@@ -326,7 +326,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun syncNumbers() { Log.d(TAG,"syncNumbers()")
         if(!isProcessing(SyncNumbers)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute { Log.d(TAG, "syncNumbers() Processing")
+            Coroutines.default(this@MainViewModel) { Log.d(TAG, "syncNumbers() Processing")
                 postLiveStandBy(SyncNumbers, false)
                 when {
                     itemContactList.isEmpty() -> {
@@ -362,7 +362,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun syncEmails() { Log.d(TAG,"syncEmails()")
         if(!isProcessing(SyncEmails)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute { Log.d(TAG, "syncEmails() Processing")
+            Coroutines.default(this@MainViewModel) { Log.d(TAG, "syncEmails() Processing")
                 postLiveStandBy(SyncEmails, false)
                 when {
                     itemContactList.isEmpty() -> {
@@ -398,7 +398,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun sortContacts() { Log.d(TAG,"sortContacts()")
         if(!isProcessing(SortContacts)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute { Log.d(TAG, "sortContacts() Processing")
+            Coroutines.default(this@MainViewModel) { Log.d(TAG, "sortContacts() Processing")
                 postLiveStandBy(SortContacts, false)
                 if (itemContactList.isNotEmpty()) {
                     contactsProvider.getListID(getApplication()).mapIndexed { index, id ->
@@ -534,7 +534,7 @@ class MainViewModel : AndroidViewModel {
                 itemProcessList.remove(ProgressID)
             }
         }
-        Log.i(TAG, "itemProgressList ${itemProcessList.map { it }}")
+        Log.e(TAG, "itemProgressList ${itemProcessList.map { it }}")
         liveStandBy.postValue(itemProcessList.isNotEmpty())
     }
 
