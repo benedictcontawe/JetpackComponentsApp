@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CardView Radius -->
+    <dimen name="card_radius_macro">10dp</dimen>
+    <dimen name="card_radius">8dp</dimen>
+    <dimen name="card_radius_minimum">5dp</dimen>
+    <dimen name="card_radius_micro">3dp</dimen>
+
+    <!-- CardView Elavation -->
+    <dimen name="card_corner_radius_none">0dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_elevation_minimum">2dp</dimen>
+    <dimen name="card_elevation_none">0dp</dimen>
+
+    <dimen name="text_size_18">18sp</dimen>
+
+</resources>

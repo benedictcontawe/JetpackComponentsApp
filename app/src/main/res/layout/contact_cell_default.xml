@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/card_corner_radius_none"
+    app:cardElevation="@dimen/card_elevation_none"
+    app:cardMaxElevation="@dimen/card_elevation_none" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/constraint_layout" >
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:0.15"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <!--region Guide lines-->
+        <!--region Horizontal Guide lines-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_horizontal_leading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.20"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_horizontal_trailing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.80"/>
+        <!--endregion-->
+        <!--region Vertical Guide lines-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_leading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.02"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_trailing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.98"/>
+        <!--endregion-->
+        <!--endregion-->
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_person_grey"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_18"
+            tools:text="Tormund Giantsbane"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintEnd_toStartOf="@id/edit"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing" />
+
+        <ImageView
+            android:id="@+id/edit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:srcCompat="@drawable/ic_edit_gray"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing" />
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:srcCompat="@drawable/ic_delete_red"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

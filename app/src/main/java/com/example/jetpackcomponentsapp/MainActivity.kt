@@ -1,253 +1,188 @@
 package com.example.jetpackcomponentsapp
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.MotionEvent
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.example.jetpackcomponentsapp.databinding.MainBinder
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener {
 
-    private lateinit var binding : MainBinder
-    private lateinit var viewModel : MainViewModel
+    private val viewModel : MainViewModel by lazy(LazyThreadSafetyMode.NONE, initializer = {
+        ViewModelProvider(this@MainActivity).get(MainViewModel::class.java)
+    })
 
-    private var customSpinnerItemList = mutableListOf<CustomSpinnerModel>()
-    private val names = arrayOf("A", "B", "C", "D", "E", "F", "G")
-    private val icons = intArrayOf(R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android, R.drawable.ic_android)
+    private val contactAdapter : ContactAdapter by lazy(LazyThreadSafetyMode.NONE, initializer = {
+        ContactAdapter(this@MainActivity)
+    })
 
-    private var isSpinnerTouch = false
-    private var isCustomSpinnerTouch : Boolean = false
+    companion object {
+        private var TAG : String = MainActivity::class.java.simpleName
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+        fun newIntent(context : Context) : Intent {
+            val intent : Intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            return intent
+        }
+    }
+
+    override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
+        floating_action_button_add.setOnClickListener(this@MainActivity)
+        setRecyclerView()
+        checkManifestPermission()
+        viewModel.observeLiveStandBy().observe(this, object : Observer<Boolean> {
+            override fun onChanged(isLoading : Boolean) {
+                if (isLoading) {
+                    progress_bar.setVisibility(View.VISIBLE)
+                } else {
+                    progress_bar.setVisibility(View.GONE)
+                }
+            }
+        })
+        viewModel.observeLiveContact().observe(this, object : Observer<List<ContactViewHolderModel>>{
+            override fun onChanged(list : List<ContactViewHolderModel>) {
+                //recycler_view.invalidate()
+                recycler_view.removeAllViews()
+                contactAdapter.setItems(list)
+            }
+        })
+    }
 
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+    private fun setRecyclerView() {
+        //recycler_view.setLayoutManager(CustomLinearLayoutManager(this@MainActivity,RecyclerView.VERTICAL,false))
+        recycler_view.setAdapter(contactAdapter)
+        recycler_view.setHasFixedSize(true)
+    }
 
-        binding.viewModel = viewModel //binding.viewModel = viewModel
-        //binding.setLifecycleOwner(this)
-
-        setSpinnerAdapter()
-        setLiveDataObservers()
-        setEventListeners()
+    private fun checkManifestPermission() {
+        ManifestPermission.checkSelfPermission(this@MainActivity, ManifestPermission.contactPermission,
+                isDenied = {
+                    ManifestPermission.requestPermissions(this@MainActivity,
+                            ManifestPermission.contactPermission,
+                            ManifestPermission.CONTACT_PERMISSION_CODE
+                    )
+                }
+        )
     }
 
     override fun onResume() {
         super.onResume()
-
-        binding.viewModel?.setData("Test")
+        Log.d(TAG,"onResume()")
+        Log.d("MainViewModel", "Available Processors ${Runtime.getRuntime().availableProcessors()}")
+        recycler_view.addOnScrollListener(setScrollListener())
+        ManifestPermission.checkSelfPermission(this@MainActivity, ManifestPermission.contactPermission,
+                isGranted = {
+                    viewModel.syncContacts()
+                    viewModel.syncNames()
+                    viewModel.syncPhotos()
+                    viewModel.syncNumbers()
+                    viewModel.syncEmails()
+                    viewModel.sortContacts()
+                }
+        )
     }
 
-    private fun setSpinnerAdapter(){
-        val spinnerAdapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, names)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerSendData.adapter = spinnerAdapter
+    override fun onPause() {
+        super.onPause()
+        recycler_view.removeOnScrollListener(setScrollListener())
+    }
 
-
-        for (i in 0 until names.size){
-            customSpinnerItemList.add(CustomSpinnerModel(names[i],icons[i]))
+    override fun onClick(view : View) {
+        when(view) {
+            floating_action_button_add -> {
+                if (progress_bar.getVisibility() == View.GONE) {
+                    startActivity(viewModel.addContact())
+                }
+            }
         }
-        val customAdapter : CustomAdapter = CustomAdapter(this@MainActivity, R.layout.custom_spinner_items, customSpinnerItemList)
-        spinnerCustomSendData.adapter = customAdapter
     }
 
-    private fun setLiveDataObservers(){
-        viewModel.getData().observe(this, object : Observer<String> {
-            override fun onChanged(string: String) {
-                binding.textResult.text = string
-            }
-
-        })
-
-        viewModel.getProgressData().observe(this, object : Observer<Int> {
-            override fun onChanged(int: Int) {
-                binding.progressBarResult.progress = int
-            }
-
-        })
-    }
-
-    private fun setEventListeners(){
-        buttonSendData.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                binding.viewModel?.setData("Button Was Clicked")
-            }
-
-        })
-
-        switchSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                if (isChecked == true) {
-                    binding.viewModel?.setData("Switch is On")
-                } else if (isChecked == false) {
-                    binding.viewModel?.setData("Switch is Off")
-                }
-            }
-        })
-
-        toggleButtonSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView : CompoundButton , isChecked : Boolean) {
-                if (isChecked == true) {
-                    binding.viewModel?.setData("Toggle Button is On")
-                }
-                else if (isChecked == false) {
-                    binding.viewModel?.setData("Toggle Button is Off")
-                }
-            }
-        })
-
-        radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
-                when (findViewById<View>(checkedId).id) {
-                    R.id.radioOn -> {
-                        binding.viewModel?.setData("Radio Button is On of your selected Radio Group")
+    private fun setScrollListener() : RecyclerView.OnScrollListener {
+        return object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView : RecyclerView, dx : Int, dy : Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val canScrollUp : Boolean = recyclerView.canScrollVertically(-1)
+                val canScrollDown : Boolean = recyclerView.canScrollVertically(1)
+                when {
+                    canScrollUp && canScrollDown -> {
+                        Log.d(TAG,"Recycler View at Middle")
                     }
-                    R.id.radioOff -> {
-                        binding.viewModel?.setData("Radio Button is Off of your selected Radio Group")
+                    canScrollDown && !canScrollUp -> {
+                        Log.d(TAG,"Recycler View top reached")
+                    }
+                    canScrollUp && !canScrollDown -> {
+                        Log.d(TAG,"Recycler View bottom reached")
+                    }
+                }
+
+                when {
+                    dy > 0 -> {
+                        Log.d(TAG,"Recycler View Scrolling Down")
+                    }
+                    dy < 0 -> {
+                        Log.d(TAG,"Recycler View Scrolling Up")
                     }
                 }
             }
-        })
 
-        checkboxSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                if (isChecked == true) {
-                    binding.viewModel?.setData("Check Box is On")
-                    checkboxSendData.text = "On"
-                }
-                else if (isChecked == false) {
-                    binding.viewModel?.setData("Check Box is Off")
-                    checkboxSendData.text = "Off"
-                }
-            }
-
-        })
-
-        spinnerSendData.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-                isSpinnerTouch = true
-                return false
-            }
-        })
-
-        spinnerSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (isSpinnerTouch) {
-                    binding.viewModel?.setData("Spinner value selected is " + names[position])
+            override fun onScrollStateChanged(recyclerView : RecyclerView, newState : Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when {
+                    recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE && newState == RecyclerView.SCROLL_STATE_IDLE -> {
+                        Log.d(TAG,"Recycler View Scroll State IDLE")
+                        floating_action_button_add.show() //floating_action_button_add.setVisibility(View.VISIBLE)
+                    }
+                    recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && newState == RecyclerView.SCROLL_STATE_DRAGGING -> {
+                        Log.d(TAG,"Recycler View Scroll State DRAGGING")
+                        floating_action_button_add.hide() //floating_action_button_add.setVisibility(View.GONE)
+                    }
+                    recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_SETTLING && newState == RecyclerView.SCROLL_STATE_SETTLING -> {
+                        Log.d(TAG,"Recycler View Scroll State SETTLING")
+                    }
                 }
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.viewModel?.setData("Spinner Nothing selected")
-            }
-        }
-
-        spinnerCustomSendData.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-                isCustomSpinnerTouch = true
-                return false
-            }
-
-        })
-
-        spinnerCustomSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (isCustomSpinnerTouch) {
-                    binding.viewModel?.setData("Customize Spinner value selected is " + names[position])
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.viewModel?.setData("Customize Spinner Nothing selected")
-            }
-        }
-
-        ratingBarSendData.onRatingBarChangeListener = object :  RatingBar.OnRatingBarChangeListener {
-            override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-                binding.viewModel?.setData("Rating Bar value is ${rating}")
-            }
-        }
-
-        seekBarSendData.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekBar : SeekBar) {
-
-            }
-
-            override fun onProgressChanged(seekBar : SeekBar , progress : Int , fromUser : Boolean) {
-                binding.viewModel?.setProgressData(progress)
-                binding.viewModel?.setData("Seek Bar Value selected is " + progress)
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            }
-        })
-
-        seekBarDiscreteSendData.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekBar : SeekBar) {
-
-            }
-
-            override fun onProgressChanged(seekBar : SeekBar , progress : Int , fromUser : Boolean) {
-                binding.viewModel?.setProgressData(progress)
-                binding.viewModel?.setData("Customize Seek Bar Value selected is " + progress)
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            }
-        })
-
-        seekBarSendData.onFocusChangeListener = object : View.OnFocusChangeListener{
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                seekBarSendData.thumb = resources.getDrawable(
-                        when(hasFocus){
-                            true -> {
-                                R.drawable.ic_seeker_thumb_selected
-                            }
-                            false -> {
-                                R.drawable.ic_seeker_thumb_unselected
-                            }
-                        }
-                )
-            }
-
-        }
-
-        seekBarDiscreteSendData.onFocusChangeListener = object : View.OnFocusChangeListener{
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                seekBarDiscreteSendData.thumb = resources.getDrawable(
-                        when(hasFocus){
-                            true -> {
-                                R.drawable.ic_lever_selected
-                            }
-                            false -> {
-                                R.drawable.ic_lever_unselected
-                            }
-                        }
-                )
-            }
-
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onClickItemEdit(item : ContactViewHolderModel, position : Int) {
+        if (progress_bar.getVisibility() == View.GONE) {
+            startActivity(viewModel.updateContact(item))
+        }
+    }
 
-        viewModel.getData().observe(this, null!!)
-        buttonSendData.setOnClickListener(null)
-        switchSendData.setOnCheckedChangeListener(null)
-        toggleButtonSendData.setOnCheckedChangeListener(null)
-        radioGroup.setOnCheckedChangeListener(null)
-        checkboxSendData.setOnCheckedChangeListener(null)
-        spinnerSendData.onItemSelectedListener = null
-        spinnerCustomSendData.onItemSelectedListener = null
-        ratingBarSendData.onRatingBarChangeListener = null
+    override fun onClickItemDelete(item : ContactViewHolderModel, position : Int) {
+        if (progress_bar.getVisibility() == View.GONE) {
+            viewModel.deleteContact(item, position)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode : Int, permissions : Array<String>, grantResults : IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        ManifestPermission.checkPermissionsResult(this@MainActivity, permissions, grantResults,
+                isNeverAskAgain =  {
+                    if (requestCode == ManifestPermission.CONTACT_PERMISSION_CODE) {
+                        ManifestPermission.showRationalDialog(this@MainActivity)
+                    }
+                }, isDenied = {
+            if (requestCode == ManifestPermission.CONTACT_PERMISSION_CODE) {
+                checkManifestPermission()
+            }
+        }
+        )
+    }
+
+    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d(TAG,"onActivityResult($requestCode,$resultCode,$data)")
+        if (requestCode == ManifestPermission.SETTINGS_PERMISSION_CODE)
+            Toast.makeText(this,"PERMISSION_SETTINGS_CODE",Toast.LENGTH_SHORT).show()
     }
 }
