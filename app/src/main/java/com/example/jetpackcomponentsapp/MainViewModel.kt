@@ -139,22 +139,6 @@ class MainViewModel : AndroidViewModel {
         return contactsProvider.addContact()
     }
 
-    private fun addContact(contactsIDList : List<Long>) {
-        loop@ for (index in 0 until contactsIDList.size step 1) {
-            Log.d(TAG,"$index Adding ${contactsIDList.get(index)}")
-            val condition : Boolean = contactsIDList.get(index) != itemContactList.get(index).id
-            if (condition) {
-                contactsProvider.getContact(getApplication(),contactsIDList.get(index).toString())?.let {
-                    newContact -> Log.d(TAG,"Added ${newContact.id} ${newContact.name}")
-                    itemContactList.add(index, newContact)
-                }
-            }
-            if (isSameSize() && isSameId() || index == contactsIDList.size -1) {
-                break@loop
-            }
-        }
-    }
-
     public fun updateContact(item : ContactViewHolderModel) : Intent {
         val contactUri : Uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, item.id)
         return contactsProvider.updateContact(contactUri)

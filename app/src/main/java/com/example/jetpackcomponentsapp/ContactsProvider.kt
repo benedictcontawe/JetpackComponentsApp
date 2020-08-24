@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.provider.ContactsContract
 import android.util.Log
 
@@ -142,19 +143,23 @@ class ContactsProvider {
         }
     }
 
-    public fun addContact() : Intent { Log.d(TAG, "addContact()")
-        return Intent(InsertAction)
+    public fun addContact() : Intent { Log.d(TAG, "addContact() ${Build.VERSION.SDK_INT}")
+        return if (Build.VERSION.SDK_INT > 14)
+            Intent(InsertAction)
                 .setType(InsertContentType)
+                .putExtra("finishActivityOnSaveCompleted", true) // Fix for 4.0.3 +
                 //.putExtra(InsertEmail, "xxx@xxx.com")
                 //.putExtra(InsertEmailType, EmailTypeWork)
                 //.putExtra(InsertPhone, "000")
                 //.putExtra(InsertPhoneType, PhoneTypeWork)
+        else Intent(InsertAction)
+                .setType(InsertContentType)
     }
 
     public fun updateContact(contactUri : Uri) : Intent { Log.d(TAG, "updateContact()")
         return Intent(Intent.ACTION_EDIT, contactUri)
                 .setData(contactUri)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) //.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra("finishActivityOnSaveCompleted", true)
     }
 
