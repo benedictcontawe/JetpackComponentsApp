@@ -19,13 +19,21 @@ class ContactsProvider {
         //endregion
         //region ContactsContract.Contacts
         private final const val ContactID = ContactsContract.Contacts._ID
-        private final const val DisplayName = ContactsContract.Contacts.DISPLAY_NAME
         private final const val ContactsPhoto = ContactsContract.Contacts.PHOTO_URI
+        private final const val DisplayName = ContactsContract.Contacts.DISPLAY_NAME
         private final val ContactsContentUri = ContactsContract.Contacts.CONTENT_URI
         private final const val SortName = ContactsContract.Contacts.SORT_KEY_PRIMARY
+        private final const val Sorting = ContactsContract.Contacts.SORT_KEY_ALTERNATIVE
+        private final const val HasPhoneNumber = ContactsContract.Contacts.HAS_PHONE_NUMBER
         private final const val SortId = ContactsContract.Contacts.Entity.RAW_CONTACT_ID + " ASC"
         //endregion
+        //region ContactsContract.PhoneLookup
+        private final val ContentFilterURI = ContactsContract.PhoneLookup.CONTENT_FILTER_URI
+        private final const val PhoneLookUpDisplayName = ContactsContract.PhoneLookup.DISPLAY_NAME
+        private final const val PhoneLookUpID = ContactsContract.PhoneLookup._ID
+        //endregion
         //region ContactsContract.Intents.Insert
+        private  final const val InsertName = ContactsContract.Intents.Insert.NAME
         private  final const val InsertEmail = ContactsContract.Intents.Insert.EMAIL
         private  final const val InsertPhone = ContactsContract.Intents.Insert.PHONE
         private  final const val InsertAction = ContactsContract.Intents.Insert.ACTION
@@ -176,17 +184,15 @@ class ContactsProvider {
         try {
             contentResolver = context.getContentResolver()
             cursor = contentResolver.query(ContactsContentUri, null, null, null, SortName)
-            while (cursor?.moveToNext() == true) {
-                //val id : Long = cursor.getLong(cursor.getColumnIndex(ContactID))
-                //val name : String = cursor.getString(cursor.getColumnIndex(DisplayName))
-                //Log.d(TAG, "ID $id Name $name")
-                contactsSize++
-            }
+            contactsSize = cursor.getCount()
+            Log.e(TAG, "${cursor.getCount()} ${contactsSize}")
         } catch (ex : Exception) { ex.printStackTrace()
             Log.e(TAG, "getContactCount() Exception : ${ex.message}")
         } catch (ex : IllegalArgumentException) { ex.printStackTrace()
             Log.e(TAG, "getContactCount() IllegalArgumentException : ${ex.message}")
-        } finally {
+        } catch (ignore : java.lang.Exception) { ignore.printStackTrace()
+            Log.e(TAG, "getContactCount() java.lang.Exception : ${ignore.message}")
+        }finally {
             cursor?.close()
         }
         Log.i(TAG,"$contactsSize")
@@ -221,6 +227,37 @@ class ContactsProvider {
         return contact
     }
 
+    public fun getContact(context : Context, phoneNumber : Int) : ContactModel? {
+        Log.d(TAG, "getContact()")
+        var contact : ContactModel? = null
+        val contentResolver : ContentResolver
+        var cursor : Cursor? = null
+        try { Log.d(TAG, "try getContact($phoneNumber)")
+            contentResolver = context.getContentResolver()
+            val uri : Uri = Uri.withAppendedPath(ContentFilterURI, Uri.encode(phoneNumber.toString()))
+            cursor = contentResolver.query(uri, arrayOf(PhoneLookUpID), null, null, null)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst()
+                contact = getContact(context, cursor.getString(cursor.getColumnIndex(PhoneLookUpID)))
+                Log.d(TAG, "ID ${contact?.id} Name ${contact?.name} Photo ${contact?.photo} numbers ${contact?.numbers} emails ${contact?.emails}")
+            }
+        } catch (ex : Exception) { ex.printStackTrace()
+            Log.e(TAG, "getNativeContactName Exception : ${ex.message}")
+        } catch (ex : IllegalArgumentException) { ex.printStackTrace()
+            Log.e(TAG, "getNativeContactName IllegalArgumentException : ${ex.message}")
+        } finally { Log.d(TAG, "getNativeContactName finally")
+            cursor?.close()
+        }
+        Log.d(TAG, "getContact($phoneNumber) : ${contact}")
+        return contact ?: ContactModel (
+                id = 0,
+                name = "",
+                photo = "",
+                numbers = mutableMapOf<String, String>(),
+                emails = mutableMapOf<String, String>()
+        )
+    }
+
     public fun getListID(context : Context) : List<Long> { Log.d(TAG, "getListID()")
         val contactsIDList : MutableList<Long> = mutableListOf()
         val contentResolver : ContentResolver
@@ -252,6 +289,27 @@ class ContactsProvider {
                 emptyList()
             }
         }
+    }
+
+    public fun getContactName(context : Context, number : String) : String {
+        var name : String? = null
+        var cursor : Cursor? = null
+        try { Log.d(TAG, "try getContactName($number)")
+            val uri : Uri = Uri.withAppendedPath(ContentFilterURI, Uri.encode(number))
+            cursor = context.getContentResolver().query(uri, arrayOf(PhoneLookUpDisplayName), null, null, null)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst()
+                name = cursor.getString(0)
+            }
+        } catch (ex : Exception) { ex.printStackTrace()
+            Log.e(TAG, "getContactName Exception : ${ex.message}")
+        } catch (ex : IllegalArgumentException) { ex.printStackTrace()
+            Log.e(TAG, "getContactName IllegalArgumentException : ${ex.message}")
+        } finally { Log.d(TAG, "getContactName finally")
+            cursor?.close()
+        }
+        Log.d(TAG, "getNativeContactName($number) : ${name?:"Nil"}")
+        return name?:""
     }
 
     public fun getContactNames(context : Context) : List<ContactModel> { Log.d(TAG, "getContactNames()")
