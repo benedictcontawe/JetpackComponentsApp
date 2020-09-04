@@ -49,6 +49,7 @@ class MainViewModel : AndroidViewModel {
 
     constructor(application: Application) : super(application) {
         Log.d(TAG, "constructor()")
+        //contactsProvider.getContactCount(getApplication())
     }
     //region Transformations Map
     private fun convertContacts(contacts : List<ContactModel>) : List<ContactViewHolderModel> {
@@ -408,6 +409,7 @@ class MainViewModel : AndroidViewModel {
                         } else { }
                     }
                 }
+                //itemContactList.sortWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
                 postLiveStandBy(SortContacts, true)
                 postLiveContact()
                 Log.d(TAG, "sortContacts() Done")
