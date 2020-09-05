@@ -408,8 +408,9 @@ class MainViewModel : AndroidViewModel {
                             )
                         } else { }
                     }
+                    //itemContactList.sortWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
+                    //itemContactList.sortWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
                 }
-                //itemContactList.sortWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
                 postLiveStandBy(SortContacts, true)
                 postLiveContact()
                 Log.d(TAG, "sortContacts() Done")
