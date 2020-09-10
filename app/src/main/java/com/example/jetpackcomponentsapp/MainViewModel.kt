@@ -340,7 +340,8 @@ class MainViewModel : AndroidViewModel {
                             if (condition) {
                                 Log.d(TAG, "Numbers Not Synced ${updatedContact.id} ${updatedContact.numbers} Now Syncing. . .")
                                 itemContactList.filter { oldContact -> oldContact.id == updatedContact.id }.map {
-                                    it.numbers = updatedContact.numbers
+                                    it.numbers.clear()
+                                    it.numbers.putAll(updatedContact.numbers)
                                 }
                             } else {
                                 Log.d(TAG, "Numbers Synced ${updatedContact.id} ${updatedContact.numbers}")
@@ -376,7 +377,8 @@ class MainViewModel : AndroidViewModel {
                             if (condition) {
                                 Log.d(TAG, "Emails Not Synced ${updatedContact.id} ${updatedContact.emails} Now Syncing. . .")
                                 itemContactList.filter { oldContact -> oldContact.id == updatedContact.id }.map {
-                                    it.emails = updatedContact.emails
+                                    it.emails.clear()
+                                    it.emails.putAll(updatedContact.emails)
                                 }
                             } else {
                                 Log.d(TAG, "Emails Synced ${updatedContact.id} ${updatedContact.numbers}")
