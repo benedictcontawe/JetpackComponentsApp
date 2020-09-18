@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         floating_action_button_add.setOnClickListener(this@MainActivity)
+        floating_action_button_sort.setOnClickListener(this@MainActivity)
         setRecyclerView()
         checkManifestPermission()
         viewModel.observeLiveStandBy().observe(this, object : Observer<Boolean> {
@@ -101,6 +102,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
             floating_action_button_add -> {
                 if (progress_bar.getVisibility() == View.GONE) {
                     startActivity(viewModel.addContact())
+                }
+            }
+            floating_action_button_sort -> {
+                if (progress_bar.getVisibility() == View.GONE) {
+                    viewModel.sortContacts()
                 }
             }
         }

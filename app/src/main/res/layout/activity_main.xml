@@ -48,6 +48,18 @@ tools:context=".MainActivity">
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawingCacheQuality="high"
+        android:scaleType="fitXY"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_person_grey"
+        app:backgroundTint="@color/background_material_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing"/>
+
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button_add"
     android:layout_width="wrap_content"
