@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JetpackComponentsApp</string>
+    <string name="update">Update</string>
 </resources>

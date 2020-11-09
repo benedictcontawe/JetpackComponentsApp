@@ -1,74 +1,114 @@
 package com.example.jetpackcomponentsapp.view
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
-import com.example.jetpackcomponentsapp.view.fragment.AddFragment
-import com.example.jetpackcomponentsapp.view.fragment.MainFragment
-import com.example.jetpackcomponentsapp.view.fragment.UpdateFragment
+import com.example.jetpackcomponentsapp.databinding.MainBinder
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    //private lateinit var binding : MainBinder
-    private lateinit var viewModel : MainViewModel
+    companion object {
+        private val TAG : String = MainActivity::class.java.simpleName
+        private lateinit var binding : MainBinder
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        //setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this@MainActivity,R.layout.activity_main)
         if (savedInstanceState == null) {
-            callMainFragment()
-            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-            //binding.setViewModel(viewModel)
-            //binding.setLifecycleOwner(this)
+            binding.setViewModel(ViewModelProvider(this@MainActivity).get(MainViewModel::class.java))
+            binding.setLifecycleOwner(this@MainActivity)
+            observeBoolean()
+            observeString()
+            observeInt()
+            observeDouble()
+            observeLong()
         }
+        binding.buttonBoolean.setOnClickListener(this@MainActivity)
+        binding.buttonString.setOnClickListener(this@MainActivity)
+        binding.buttonInteger.setOnClickListener(this@MainActivity)
+        binding.buttonDouble.setOnClickListener(this@MainActivity)
+        binding.buttonLong.setOnClickListener(this@MainActivity)
     }
-
-    private fun callMainFragment() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
-    }
-
-    fun callAddFragment() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.container, AddFragment.newInstance())
-                .addToBackStack(
-                        AddFragment.getTag())
-                .commit()
-    }
-
-    fun callUpdateFragment() {
-        UpdateFragment
-                .newInstance()
-                .show(
-                        supportFragmentManager.beginTransaction(),
-                        UpdateFragment.getTag()
-                )
-    }
-
-    fun showSoftKeyboard(activity: Activity, showKeyboard : Boolean) {
-        var view = activity.currentFocus
-        when(showKeyboard){
-            true -> {
-                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-            }
-            false ->{
-                val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                //Find the currently focused view, so we can grab the correct window token from it.
-
-                //If no view currently has focus, create a new one, just so we can grab a window token from it
-                if (view == null) {
-                    view = View(activity)
+    //region Observer Methods
+    private fun observeBoolean() {
+        /*binding.getViewModel()?.observeBoolean()?.observe(this, object : Observer<Boolean> {
+                override fun onChanged(value : Boolean?) {
+                    Log.d(TAG,"observeBoolean() $value")
+                    binding.labelBoolean.setText(value.toString())
                 }
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
+        })*/
+    }
+
+    private fun observeString() {
+        /*binding.getViewModel()?.observeString()?.observe(this, object : Observer<String> {
+                override fun onChanged(value : String?) {
+                    Log.d(TAG,"observeString() $value")
+                    binding.labelString.setText(value.toString())
+                }
+        })*/
+    }
+
+    private fun observeInt() {
+        /*binding.getViewModel()?.observeInt()?.observe(this, object : Observer<Int> {
+                override fun onChanged(value : Int?) {
+                    Log.d(TAG,"observeInt() $value")
+                    binding.labelInteger.setText(value.toString())
+                }
+        })*/
+    }
+
+    private fun observeDouble() {
+        /*binding.getViewModel()?.observeDouble()?.observe(this, object : Observer<Double> {
+                override fun onChanged(value : Double?) {
+                    Log.d(TAG,"observeInt() $value")
+                    binding.labelDouble.setText(value.toString())
+                }
+        })*/
+    }
+
+    private fun observeLong() {
+        /*binding.getViewModel()?.observeLong()?.observe(this, object : Observer<Long> {
+                override fun onChanged(value : Long?) {
+                    Log.d(TAG,"observeInt() $value")
+                }
+        })*/
+    }
+    //endregion
+    override fun onClick(view : View) {
+        when(view) {
+            binding.buttonBoolean -> {
+                binding.getViewModel()?.update(
+                        binding.checkBoxBoolean.isChecked()
+                )
+            }
+            binding.buttonString -> {
+                binding.getViewModel()?.update(
+                        binding.editTextString.getText().toString()
+                )
+            }
+            binding.buttonInteger -> {
+                binding.getViewModel()?.update(
+                        binding.editTextInteger.getText().toString().toInt()
+                )
+            }
+            binding.buttonDouble -> {
+                //Toast.makeText(this,"Double Not Supported!",Toast.LENGTH_SHORT).show()
+                binding.getViewModel()?.update(
+                        binding.editTextDouble.getText().toString().toDouble()
+                )
+            }
+            binding.buttonLong -> {
+                binding.getViewModel()?.update(
+                        binding.editTextLong.getText().toString().toLong()
+                )
             }
         }
     }
