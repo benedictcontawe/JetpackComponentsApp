@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.databinding.MainBinder
+import com.example.jetpackcomponentsapp.model.CustomModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             observeInt()
             observeDouble()
             observeLong()
+            observeCustomModel()
         }
         binding.buttonBoolean.setOnClickListener(this@MainActivity)
         binding.buttonString.setOnClickListener(this@MainActivity)
@@ -78,7 +80,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.getViewModel()?.observeLong()?.observe(this, object : Observer<Long> {
                 override fun onChanged(value : Long?) {
                     Log.d(TAG,"observeInt() $value")
+                    binding.labelLong.setText(value.toString())
                 }
+        })
+    }
+
+    private fun observeCustomModel() {
+        binding.getViewModel()?.observeCustomModel()?.observe(this, object : Observer<List<CustomModel>> {
+            override fun onChanged(value : List<CustomModel>?) {
+                Log.d(TAG,"observeCustomModel() $value")
+            }
         })
     }
     //endregion

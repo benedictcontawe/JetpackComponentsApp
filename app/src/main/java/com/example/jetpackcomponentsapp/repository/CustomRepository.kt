@@ -6,6 +6,7 @@ import androidx.datastore.preferences.*
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import com.example.jetpackcomponentsapp.model.CustomModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
@@ -116,12 +117,17 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
             preference.get(PreferenceKeys.LONG_KEY) ?: 0L
         } ?: emptyFlow()
     }
-    /*
-    fun getItems() : Flow<List<CustomModel>> {
-        return dataStore?.data?.map {
-            it.get(PreferenceKeys.LIST_MODEL_KEY) ?: emptyList<CustomModel>()
+
+    fun getCustomModel() : Flow<List<CustomModel>> {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }?.map { preference ->
+            preference.get(PreferenceKeys.LIST_MODEL_KEY) ?: emptyList<CustomModel>()
         } ?: emptyFlow()
     }
-    */
     //endregion
 }
