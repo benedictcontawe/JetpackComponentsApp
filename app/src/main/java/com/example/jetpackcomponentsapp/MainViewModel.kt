@@ -50,23 +50,23 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun observeBoolean() : LiveData<Boolean> {
-        return customRepository.getBoolean().asLiveData(viewModelScope.coroutineContext)
+        return customRepository.getBoolean().asLiveData(/*viewModelScope.coroutineContext*/)
     }
 
     fun observeString() : LiveData<String> {
-        return customRepository.getString().asLiveData(viewModelScope.coroutineContext)
+        return customRepository.getString().asLiveData(/*viewModelScope.coroutineContext*/)
     }
 
     fun observeInt() : LiveData<Int> {
-        return customRepository.getInteger().asLiveData(viewModelScope.coroutineContext)
+        return customRepository.getInteger().asLiveData(/*viewModelScope.coroutineContext*/)
     }
 
     fun observeDouble() : LiveData<Double> {
-        return customRepository.getDouble().asLiveData(viewModelScope.coroutineContext)
+        return customRepository.getDouble().asLiveData(/*viewModelScope.coroutineContext*/)
     }
 
     fun observeLong() : LiveData<Long> {
-        return customRepository.getLong().asLiveData(viewModelScope.coroutineContext)
+        return customRepository.getLong().asLiveData(/*viewModelScope.coroutineContext*/)
     }
 }
 /*

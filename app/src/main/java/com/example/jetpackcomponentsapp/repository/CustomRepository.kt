@@ -1,8 +1,11 @@
 package com.example.jetpackcomponentsapp.repository
 
 import android.app.Application
-import androidx.datastore.DataStore
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
@@ -23,44 +26,43 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     init {
         dataStore = applicationContext.getBaseContext().createDataStore(name = "data_store")
     }
-
     //region CRUD Operation
     override suspend fun update(booleanKey : Boolean) {
-        dataStore?.edit {
-            it.set(PreferenceKeys.BOOLEAN_KEY, booleanKey)
+        dataStore?.edit { preference ->
+            preference.set(PreferenceKeys.BOOLEAN_KEY, booleanKey)
         }
     }
 
     override suspend fun update(stringKey : String) {
-        dataStore?.edit {
-            it.set(PreferenceKeys.STRING_KEY, stringKey)
+        dataStore?.edit { preference ->
+            preference.set(PreferenceKeys.STRING_KEY, stringKey)
         }
     }
 
     override suspend fun update(integerKey : Int) {
-        dataStore?.edit {
-            it.set(PreferenceKeys.INTEGER_KEY, integerKey)
+        dataStore?.edit { preference ->
+            preference.set(PreferenceKeys.INTEGER_KEY, integerKey)
         }
     }
 
     override suspend fun update(doubleKey : Double) {
-        dataStore?.edit {
-            it.set(PreferenceKeys.DOUBLE_KEY, doubleKey)
+        dataStore?.edit { preference ->
+            preference.set(PreferenceKeys.DOUBLE_KEY, doubleKey)
         }
     }
 
     override suspend fun update(longKey : Long) {
-        dataStore?.edit {
-            it.set(PreferenceKeys.LONG_KEY, longKey)
+        dataStore?.edit { preference ->
+            preference.set(PreferenceKeys.LONG_KEY, longKey)
         }
     }
 
     fun getBoolean() : Flow<Boolean> {
-        return dataStore?.data?.catch {
-            if (it is IOException) {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                throw it
+                throw exception
             }
         }?.map { preference ->
             preference.get(PreferenceKeys.BOOLEAN_KEY) ?: false
@@ -68,11 +70,11 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     fun getString() : Flow<String> {
-        return dataStore?.data?.catch {
-            if (it is IOException) {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                throw it
+                throw exception
             }
         }?.map { preference ->
             preference.get(PreferenceKeys.STRING_KEY) ?: "Nil"
@@ -80,11 +82,11 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     fun getInteger() : Flow<Int> {
-        return dataStore?.data?.catch {
-            if (it is IOException) {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                throw it
+                throw exception
             }
         }?.map { preference ->
             preference.get(PreferenceKeys.INTEGER_KEY) ?: 0
@@ -92,11 +94,11 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     fun getDouble() : Flow<Double> {
-        return dataStore?.data?.catch {
-            if (it is IOException) {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                throw it
+                throw exception
             }
         }?.map { preference ->
             preference.get(PreferenceKeys.DOUBLE_KEY) ?: 0.00
@@ -104,11 +106,11 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     fun getLong() : Flow<Long> {
-        return dataStore?.data?.catch {
-            if (it is IOException) {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                throw it
+                throw exception
             }
         }?.map { preference ->
             preference.get(PreferenceKeys.LONG_KEY) ?: 0L

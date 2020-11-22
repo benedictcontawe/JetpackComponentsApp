@@ -29,10 +29,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.40"/>
+            app:layout_constraintGuide_percent="0.20"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/constraint_guideline_vertical_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_third"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -89,14 +96,70 @@
             app:layout_constraintGuide_percent="0.95" />
         <!--endregion-->
         <!--endregion-->
-        <!--region Horizontal Guidlines-->
-        <CheckBox
-            android:id="@+id/check_box_boolean"
+        <!--region Labels-->
+        <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:gravity="start|center"
+            android:text="@string/_boolean"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_top"
             app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_first"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="start|center"
+            android:text="@string/_string"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_first"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_second"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="start|center"
+            android:text="@string/_integer"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_third"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="start|center"
+            android:text="@string/_double"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_third"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_fourth"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="start|center"
+            android:text="@string/_long"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_fourth"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_bottom"/>
+        <!--endregion-->
+        <!--region Inputs-->
+        <CheckBox
+            android:id="@+id/check_box_boolean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_top"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_first"/>
 
         <EditText
@@ -104,8 +167,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_first"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_second"/>
 
         <EditText
@@ -113,8 +176,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_second"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_third"/>
 
         <EditText
@@ -122,8 +185,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_third"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_fourth"/>
 
         <EditText
@@ -131,8 +194,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_fourth"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_bottom"/>
         <!--endregion-->
         <!--region Buttons-->
@@ -141,9 +204,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/update"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_top"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_first"/>
 
         <Button
@@ -151,9 +216,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/update"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_first"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_second"/>
 
         <Button
@@ -161,9 +228,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/update"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_second"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_third"/>
 
         <Button
@@ -171,9 +240,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/update"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_third"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_fourth"/>
 
         <Button
@@ -181,19 +252,23 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/update"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_fourth"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_first"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_bottom"/>
         <!--endregion-->
-        <!--region TextView-->
+        <!--region Values-->
         <TextView
             android:id="@+id/label_boolean"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="@string/update"
+            android:gravity="center"
+            tools:text="@string/value"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_top"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_first"/>
 
@@ -201,9 +276,11 @@
             android:id="@+id/label_string"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="@string/update"
+            android:gravity="center"
+            tools:text="@string/value"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_first"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_second"/>
 
@@ -211,9 +288,11 @@
             android:id="@+id/label_integer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="@string/update"
+            android:gravity="center"
+            tools:text="@string/value"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_second"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_third"/>
 
@@ -221,9 +300,11 @@
             android:id="@+id/label_double"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="@string/update"
+            android:gravity="center"
+            tools:text="@string/value"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_third"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_fourth"/>
 
@@ -231,9 +312,11 @@
             android:id="@+id/label_long"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="@string/update"
+            android:gravity="center"
+            tools:text="@string/value"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_fourth"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_second"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_third"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_bottom"/>
         <!--endregion-->

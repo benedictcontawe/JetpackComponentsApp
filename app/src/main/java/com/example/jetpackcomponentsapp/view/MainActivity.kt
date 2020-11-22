@@ -39,47 +39,47 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
     //region Observer Methods
     private fun observeBoolean() {
-        /*binding.getViewModel()?.observeBoolean()?.observe(this, object : Observer<Boolean> {
+        binding.getViewModel()?.observeBoolean()?.observe(this, object : Observer<Boolean> {
                 override fun onChanged(value : Boolean?) {
                     Log.d(TAG,"observeBoolean() $value")
                     binding.labelBoolean.setText(value.toString())
                 }
-        })*/
+        })
     }
 
     private fun observeString() {
-        /*binding.getViewModel()?.observeString()?.observe(this, object : Observer<String> {
+        binding.getViewModel()?.observeString()?.observe(this, object : Observer<String> {
                 override fun onChanged(value : String?) {
                     Log.d(TAG,"observeString() $value")
                     binding.labelString.setText(value.toString())
                 }
-        })*/
+        })
     }
 
     private fun observeInt() {
-        /*binding.getViewModel()?.observeInt()?.observe(this, object : Observer<Int> {
+        binding.getViewModel()?.observeInt()?.observe(this, object : Observer<Int> {
                 override fun onChanged(value : Int?) {
                     Log.d(TAG,"observeInt() $value")
                     binding.labelInteger.setText(value.toString())
                 }
-        })*/
+        })
     }
 
     private fun observeDouble() {
-        /*binding.getViewModel()?.observeDouble()?.observe(this, object : Observer<Double> {
+        binding.getViewModel()?.observeDouble()?.observe(this, object : Observer<Double> {
                 override fun onChanged(value : Double?) {
                     Log.d(TAG,"observeInt() $value")
                     binding.labelDouble.setText(value.toString())
                 }
-        })*/
+        })
     }
 
     private fun observeLong() {
-        /*binding.getViewModel()?.observeLong()?.observe(this, object : Observer<Long> {
+        binding.getViewModel()?.observeLong()?.observe(this, object : Observer<Long> {
                 override fun onChanged(value : Long?) {
                     Log.d(TAG,"observeInt() $value")
                 }
-        })*/
+        })
     }
     //endregion
     override fun onClick(view : View) {

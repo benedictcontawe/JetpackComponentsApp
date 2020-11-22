@@ -1,7 +1,7 @@
 package com.example.jetpackcomponentsapp.repository
 
-import androidx.datastore.preferences.Preferences
-import androidx.datastore.preferences.preferencesKey
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.preferencesKey
 //import com.example.jetpackcomponentsapp.model.CustomModel
 
 object PreferenceKeys {
