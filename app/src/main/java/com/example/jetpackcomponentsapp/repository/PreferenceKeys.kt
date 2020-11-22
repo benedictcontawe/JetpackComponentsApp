@@ -10,5 +10,5 @@ object PreferenceKeys {
     val INTEGER_KEY : Preferences.Key<Int> = preferencesKey<Int>("integer_key")
     val DOUBLE_KEY : Preferences.Key<Double> = preferencesKey<Double>("double_key")
     val LONG_KEY : Preferences.Key<Long> = preferencesKey<Long>("long_key")
-    val LIST_MODEL_KEY : Preferences.Key<List<CustomModel>> = preferencesKey<List<CustomModel>>("list_model_key")
+    //val LIST_MODEL_KEY : Preferences.Key<List<CustomModel>> = preferencesKey<List<CustomModel>>("list_model_key")
 }

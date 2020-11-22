@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             observeInt()
             observeDouble()
             observeLong()
-            observeCustomModel()
+            //observeCustomModel()
         }
         binding.buttonBoolean.setOnClickListener(this@MainActivity)
         binding.buttonString.setOnClickListener(this@MainActivity)
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
         })
     }
-
+    /*
     private fun observeCustomModel() {
         binding.getViewModel()?.observeCustomModel()?.observe(this, object : Observer<List<CustomModel>> {
             override fun onChanged(value : List<CustomModel>?) {
@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
     }
+    */
     //endregion
     override fun onClick(view : View) {
         when(view) {
@@ -125,11 +126,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
+        /*
         if (supportFragmentManager.backStackEntryCount == 0) {
             super.onBackPressed()
         }
         else {
             supportFragmentManager.popBackStack()
         }
+        */
     }
 }

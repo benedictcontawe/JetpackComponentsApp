@@ -67,8 +67,9 @@ class MainViewModel : AndroidViewModel {
     fun observeLong() : LiveData<Long> {
         return customRepository.getLong().asLiveData(/*viewModelScope.coroutineContext*/)
     }
-
+    /*
     fun observeCustomModel() : LiveData<List<CustomModel>> {
         return customRepository.getCustomModel().asLiveData()
     }
+    */
 }

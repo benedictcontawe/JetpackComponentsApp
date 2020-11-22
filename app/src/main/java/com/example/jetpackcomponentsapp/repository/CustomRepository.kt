@@ -117,7 +117,7 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
             preference.get(PreferenceKeys.LONG_KEY) ?: 0L
         } ?: emptyFlow()
     }
-
+    /*
     fun getCustomModel() : Flow<List<CustomModel>> {
         return dataStore?.data?.catch { exception ->
             if (exception is IOException) {
@@ -129,5 +129,6 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
             preference.get(PreferenceKeys.LIST_MODEL_KEY) ?: emptyList<CustomModel>()
         } ?: emptyFlow()
     }
+    */
     //endregion
 }
