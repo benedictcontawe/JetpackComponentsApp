@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(){
         spinnerSendData.adapter = spinnerAdapter
 
 
-        for (i in 0 until names.size){
+        for (i in 0 until names.size) {
             customSpinnerItemList.add(CustomSpinnerModel(names[i],icons[i]))
         }
         val customAdapter : CustomAdapter = CustomAdapter(this@MainActivity, R.layout.custom_spinner_items, customSpinnerItemList)
