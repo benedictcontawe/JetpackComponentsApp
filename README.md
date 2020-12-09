@@ -9,3 +9,7 @@
 - [Removing extras from passed-in Intent](https://stackoverflow.com/questions/4520961/removing-extras-from-passed-in-intent)
 
 - [Calling startActivity() from outside of an Activity context](https://stackoverflow.com/questions/3918517/calling-startactivity-from-outside-of-an-activity-context)
+
+- [WorkManager in practice Part I: One Time Workers RETROFIT](https://developer-tutorials.blogspot.com/2019/03/workmanager-in-practice-part-i-one-time.html)
+
+
