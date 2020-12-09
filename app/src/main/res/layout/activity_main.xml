@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data class="MainBinder">
@@ -13,200 +13,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1"
-        android:background="#FFF">
+        android:background="@color/white"
+        android:gravity="center">
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_text_name"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.23"
-            android:orientation="vertical"
-            android:weightSum="1"
-            >
+            android:layout_height="wrap_content"
+            android:hint="Worker Name"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textResult"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:text="@{viewModel.data}"/>
-
-            <ProgressBar
-                android:id="@+id/progressBarResult"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:progressTint="#FF0000"
-                android:max="10"
-                android:progress="@{viewModel.progressData}"/>
-
-        </LinearLayout>
-
-        <View
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_text_int"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.02"
-            android:background="#FF0000"
-            android:elevation="10dp"
-            />
+            android:layout_height="wrap_content"
+            android:hint="Worker Int Value"
+            android:imeOptions="actionDone"
+            android:inputType="number" />
 
-        <ScrollView
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_text_string"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".75"
-            android:background="#FFE">
+            android:layout_height="wrap_content"
+            android:hint="Worker String Value"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_text_long"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Worker Long Value"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Send Data"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enqueue Work" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:thumb="@drawable/custom_switch_thumb"
-                    android:text=""
-                    app:track="@drawable/custom_switch_track"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <ToggleButton
-                    android:id="@+id/toggleButtonSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:textOn="On"
-                    android:textOff="Off"
-                    android:theme="@style/AppTheme.ToggleButton"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton
-                        android:id="@+id/radioOn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#E75748"
-                        android:checked="true"
-                        android:text="On"/>
-
-                    <RadioButton
-                        android:id="@+id/radioOff"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#E75748"
-                        android:checked="false"
-                        android:text="Off"/>
-
-
-                </RadioGroup>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkboxSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:scaleX="2"
-                    android:scaleY="2"
-                    android:text="Off"
-                    android:theme="@style/AppTheme.CheckBox"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <Spinner
-                    android:id="@+id/spinnerSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <Spinner
-                    android:id="@+id/spinnerCustomSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <androidx.appcompat.widget.AppCompatRatingBar
-                    android:id="@+id/ratingBarSendData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/RatingBar"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <SeekBar
-                    android:id="@+id/seekBarSendData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:thumb="@drawable/ic_seeker_thumb_unselected"
-                    android:thumbOffset="0dp"
-                    android:progressTint="#000"
-                    android:progressBackgroundTint="@android:color/darker_gray"
-                    android:progress="5"
-                    android:max="10"
-                    android:splitTrack="false"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-                <SeekBar
-                    android:id="@+id/seekBarDiscreteSendData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:thumb="@drawable/ic_lever_unselected"
-                    android:thumbOffset="0dp"
-                    android:progressTint="#000"
-                    android:progressBackgroundTint="@android:color/darker_gray"
-                    android:progress="5"
-                    android:max="10"
-                    android:splitTrack="false"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-            </LinearLayout>
-
-        </ScrollView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="[DATA]"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
