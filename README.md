@@ -2,4 +2,12 @@
 
 ##Referrences
 
-https://stackoverflow.com/questions/13397933/android-spinner-avoid-onitemselected-calls-during-initialization
+- [Problem 1: Matching a decimal numbers](https://regexone.com/problem/matching_decimal_numbers)
+
+- [Introducing WorkManager](https://medium.com/androiddevelopers/introducing-workmanager-2083bcfc4712)
+
+- [Schedule a work on a specific time with WorkManager](https://stackoverflow.com/questions/50363541/schedule-a-work-on-a-specific-time-with-workmanager)
+
+- [What are the retry strategy/ mechanism for WorkManager's OneTimeWorkRequest](https://stackoverflow.com/questions/50485490/what-are-the-retry-strategy-mechanism-for-workmanagers-onetimeworkrequest)
+
+- [WorkManager in practice Part I: One Time Workers Retrofit](https://developer-tutorials.blogspot.com/2019/03/workmanager-in-practice-part-i-one-time.html)
