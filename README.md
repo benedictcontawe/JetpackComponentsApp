@@ -12,4 +12,4 @@
 
 - [WorkManager in practice Part I: One Time Workers RETROFIT](https://developer-tutorials.blogspot.com/2019/03/workmanager-in-practice-part-i-one-time.html)
 
-
+- [Kotlin basics: visibility modifiers. public, internal , protected and private.](https://medium.com/@HugoMatilla/kotlin-basics-visibility-modifiers-public-internal-protected-and-private-c3bf972aee11)
