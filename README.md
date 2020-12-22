@@ -13,3 +13,5 @@ Kotlin Work Manager Sample
 - [What are the retry strategy/ mechanism for WorkManager's OneTimeWorkRequest](https://stackoverflow.com/questions/50485490/what-are-the-retry-strategy-mechanism-for-workmanagers-onetimeworkrequest)
 
 - [WorkManager in practice Part I: One Time Workers Retrofit](https://developer-tutorials.blogspot.com/2019/03/workmanager-in-practice-part-i-one-time.html)
+
+- [Android WorkManager Tutorial in Kotlin](https://www.youtube.com/watch?v=HNYr1ay3yjo)
