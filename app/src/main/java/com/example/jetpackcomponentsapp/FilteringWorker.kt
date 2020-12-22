@@ -2,7 +2,7 @@ package com.example.jetpackcomponentsapp
 
 import android.content.Context
 import android.util.Log
-import androidx.work.Data
+import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 
@@ -16,18 +16,18 @@ class FilteringWorker : Worker {
 
     }
 
-    override fun doWork() : Result {
+    override fun doWork() : ListenableWorker.Result {
         return try {
-            if (getRunAttemptCount() > 3) Result.failure()
+            if (getRunAttemptCount() > 3) ListenableWorker.Result.failure()
             else {
                 for (index : Int in 0..300) {
                     Log.d(TAG,"Filtering $index")
                 }
-                Result.success()
+                ListenableWorker.Result.success()
                             }
         } catch (ex : Exception) {
             Log.e(TAG,"FilteringWorker doWork() Error ${ex.message}")
-            Result.retry()
+            ListenableWorker.Result.retry()
         }
     }
 }

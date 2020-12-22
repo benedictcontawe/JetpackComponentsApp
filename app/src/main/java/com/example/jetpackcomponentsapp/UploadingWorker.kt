@@ -6,10 +6,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 
-class CompressingWorker : CoroutineWorker {
+class UploadingWorker : CoroutineWorker {
 
     companion object {
-        private val TAG : String = CompressingWorker::class.java.getSimpleName()
+        private val TAG : String = UploadingWorker::class.java.getSimpleName()
     }
 
     constructor(context : Context, params : WorkerParameters) : super(context, params) {
@@ -21,12 +21,12 @@ class CompressingWorker : CoroutineWorker {
             if (getRunAttemptCount() > 3) ListenableWorker.Result.failure()
             else {
                 for (index : Int in 0..300) {
-                    Log.d(TAG,"Compressing $index")
+                    Log.d(TAG,"Uploading $index")
                 }
                 ListenableWorker.Result.success()
             }
         } catch (ex : Exception) {
-            Log.e(TAG,"CompressingWorker doWork() Error ${ex.message}")
+            Log.e(TAG,"UploadingWorker doWork() Error ${ex.message}")
             ListenableWorker.Result.retry()
         }
     }

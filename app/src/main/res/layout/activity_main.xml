@@ -49,10 +49,16 @@
             android:inputType="numberDecimal" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button"
+            android:id="@+id/buttonEnqueueWork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enqueue Work" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonChainWork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chain Work" />
 
         <Space
             android:layout_width="wrap_content"
