@@ -149,6 +149,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
+    private fun setPeriodWorkRequest() { Log.d(TAG, "setPeriodWorkRequest()")
+        val periodicWorkRequest : PeriodicWorkRequest = PeriodicWorkRequest
+                .Builder(DownloadingWorker::class.java, 15, TimeUnit.MINUTES)
+                .build()
+        WorkManager.getInstance(getApplicationContext()).enqueue(periodicWorkRequest)
+    }
+
     private fun clearInputs() {
         binding.editTextName.getText()?.clear()
         binding.editTextInt.getText()?.clear()
