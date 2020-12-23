@@ -2,6 +2,8 @@
 
 - [Convert a List to a String in Kotlin](https://www.techiedelight.com/convert-list-to-string-kotlin/)
 
+- [Kotlin Object Vs Companion Object](https://medium.com/mindorks/kotlin-object-vs-companion-object-a1907c76a2af)
+
 - [Kotlin List & Mutable List tutorial with examples](https://bezkoder.com/kotlin-list-mutable-list/)
 
 - [StringUtils.isBlank() vs String.isEmpty()](https://stackoverflow.com/questions/23419087/stringutils-isblank-vs-string-isempty)
