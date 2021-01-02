@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity(){
         for (i in 0 until names.size) {
             customSpinnerItemList.add(CustomSpinnerModel(names[i],icons[i]))
         }
-        val customAdapter : CustomAdapter = CustomAdapter(this@MainActivity, R.layout.custom_spinner_items, customSpinnerItemList)
-        spinnerCustomSendData.adapter = customAdapter
+        val customSpinnerAdapter : CustomSpinnerAdapter = CustomSpinnerAdapter(this@MainActivity, R.layout.custom_spinner_items, customSpinnerItemList)
+        spinnerCustomSendData.adapter = customSpinnerAdapter
     }
 
     private fun setLiveDataObservers(){

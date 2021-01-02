@@ -8,14 +8,14 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 
-class CustomAdapter : ArrayAdapter<CustomSpinnerModel>{
+class CustomSpinnerAdapter : ArrayAdapter<CustomSpinnerModel>{
 
-    private var CustomSpinnerItems: List<CustomSpinnerModel>
+    private var customSpinnerItems: List<CustomSpinnerModel>
 
     init {}
 
     constructor(context : Context, resource : Int, pickerItems : List<CustomSpinnerModel>) : super(context, resource, pickerItems){
-        this.CustomSpinnerItems = pickerItems
+        this.customSpinnerItems = pickerItems
     }
 
     override fun getView(position : Int, convertView : View?, parent : ViewGroup) : View {
@@ -27,20 +27,28 @@ class CustomAdapter : ArrayAdapter<CustomSpinnerModel>{
     override fun getDropDownView(position : Int, convertView : View?, parent : ViewGroup) : View {
         val layoutInflater : LayoutInflater = parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val customView : View = convertView?:layoutInflater.inflate(R.layout.custom_spinner_items, parent, false)
-        return CustomSpinnerViewHolder(position, customView)
+        return CustomSpinnerDropDownViewHolder(position, customView)
     }
 
-    private fun CustomSpinnerViewHolder(position : Int, convertView : View) : View {
+    private fun CustomSpinnerViewHolder(position : Int, convertedView : View) : View {
         //Declaring and initializing the widgets in custom layout
-        val imageView = convertView.findViewById(R.id.imageView) as ImageView
-        val textView = convertView.findViewById(R.id.textView) as TextView
+        val textView : TextView? = convertedView.findViewById(R.id.textView)
+        val imageView : ImageView? = convertedView.findViewById(R.id.imageView)
         //displaying the data
         //drawable items are mapped with name prefixed with 'zx_' also image names are containing underscore instead of spaces.
         //val imageRef = "zx_" + CustomSpinnerItems[position].name!!.toLowerCase().replace(" ", "_")
         //val resID = context.resources.getIdentifier(imageRef, "drawable", context.packageName)
-        imageView.setImageResource(CustomSpinnerItems[position].image!!)
-        //imageView.setImageDrawable();geResource(getApplicationContext(),getImageId(CustomSpinnerItems.get(position).getName()));
-        textView.setText(CustomSpinnerItems[position].name)
-        return convertView
+        textView?.setText(customSpinnerItems[position].name)
+        //imageView?.setVisibility(View.INVISIBLE)
+        imageView?.setImageResource(customSpinnerItems[position].image!!)
+        return convertedView
+    }
+
+    private fun CustomSpinnerDropDownViewHolder(position : Int, convertedView : View) : View {
+        val textView : TextView? = convertedView.findViewById(R.id.textView)
+        val imageView : ImageView? = convertedView.findViewById(R.id.imageView)
+        textView?.setText(customSpinnerItems[position].name)
+        imageView?.setImageResource(customSpinnerItems[position].image!!)
+        return convertedView
     }
 }
