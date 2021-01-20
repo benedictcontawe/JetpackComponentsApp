@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.work.*
 import com.example.jetpackcomponentsapp.databinding.MainBinder
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,50 +32,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view : View) {
         if (view == binding.buttonEnqueueWork) {
-            setOneTimeWorkRequest()
+            binding.getViewModel()?.setOneTimeWorkRequest(
+                    binding.editTextName.getText().toString(),
+                    binding.editTextInt.getText().toString(),
+                    binding.editTextString.getText().toString(),
+                    binding.editTextLong.getText().toString()
+            )
+            observeWorkRequests()
+            clearInputs()
         } else if (view == binding.buttonChainWork) {
-            setChainingWorkers()
+            binding.getViewModel()?.setChainingWorkers(
+                    binding.editTextName.getText().toString()
+            )
+            observeWorkRequests()
+            clearInputs()
         }
     }
 
-    private fun setOneTimeWorkRequest() { Log.d(TAG,"setOneTimeWorkRequest()")
-        val workManager : WorkManager = WorkManager.getInstance(getApplicationContext())
-        val data : Data = Data.Builder()
-                .putString(Constants.WORKER_NAME,
-                        binding.editTextName.getText().toString()
-                )
-                .putInt(Constants.WORKER_INT,
-                        binding.getViewModel()!!.getInteger(
-                                binding.editTextInt.getText().toString()
-                        )
-                )
-                .putString(Constants.WORKER_STRING,
-                        binding.editTextString.getText().toString()
-                )
-                .putLong(Constants.WORKER_LONG,
-                        binding.getViewModel()!!.getLong(
-                                binding.editTextLong.getText().toString()
-                        )
-                ).build()
-        val constraints : Constraints =
-                Constraints.Builder()
-                        .setRequiresCharging(false)
-                        .setRequiresBatteryNotLow(false)
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-        workManager.cancelAllWorkByTag(binding.editTextName.getText().toString())
-        val oneTimeWorkRequest : OneTimeWorkRequest =
-                OneTimeWorkRequest.Builder(CustomWorker::class.java)
-                        .setInitialDelay(binding.getViewModel()!!.getScheduleWork(0,1),TimeUnit.MICROSECONDS)
-                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
-                        .setConstraints(constraints)
-                        .setInputData(data)
-                        .addTag(binding.editTextName.getText().toString())
-                        .build()
-        workManager.enqueue(oneTimeWorkRequest)
-        workManager.getWorkInfoByIdLiveData(oneTimeWorkRequest.getId()).observe(this@MainActivity, object : Observer<WorkInfo> {
+    private fun observeWorkRequests() {
+        binding.getViewModel()?.observeOneTimeWorkRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
-                Log.d(TAG, "CustomWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal}")
+                Log.d(TAG, "CustomWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal} Run Attempt Count ${workInfo.getRunAttemptCount()} Progress ${workInfo.getProgress()}")
                 binding.textResult.setText(workInfo.getState().name)
                 if (workInfo.getState().isFinished()) {
                     Log.d(TAG, "CustomWorker WorkInfo Output Data Name ${workInfo.getOutputData().getString(Constants.WORKER_OUTPUT_NAME)}")
@@ -88,72 +64,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         })
-        clearInputs()
-    }
-
-    private fun setChainingWorkers() { Log.d(TAG,"setChainingWorkers()")
-        Log.d(TAG,"Chaining Workers Filter -> Compress -> Upload")
-        val WORK_NAME = "SingleBackupWorker"
-        val workManager : WorkManager = WorkManager.getInstance(getApplicationContext())
-        val constraints : Constraints =
-                Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-        workManager.cancelAllWorkByTag(binding.editTextName.getText().toString())
-        val filteringWorRequest : OneTimeWorkRequest =
-                OneTimeWorkRequest.Builder(FilteringWorker::class.java)
-                        .build()
-        val compressingWorkRequest : OneTimeWorkRequest =
-                OneTimeWorkRequest.Builder(CompressingWorker::class.java)
-                        .build()
-        val uploadingWorRequest : OneTimeWorkRequest =
-                OneTimeWorkRequest.Builder(UploadingWorker::class.java)
-                        .build()
-        val downloadingWorRequest : OneTimeWorkRequest =
-                OneTimeWorkRequest.Builder(DownloadingWorker::class.java)
-                        .build()
-        val parallelWorks : MutableList<OneTimeWorkRequest> = mutableListOf<OneTimeWorkRequest>()
-        parallelWorks.add(downloadingWorRequest)
-        parallelWorks.add(filteringWorRequest)
-
-        //workManager.enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
-        workManager
-                .beginWith(parallelWorks)
-                //.beginWith(filteringWorRequest)
-                .then(compressingWorkRequest)
-                .then(uploadingWorRequest)
-                .enqueue()
-        workManager.getWorkInfoByIdLiveData(filteringWorRequest.getId()).observe(this@MainActivity, object : Observer<WorkInfo> {
+        binding.getViewModel()?.observeFilteringWorRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
                 Log.d(TAG, "FilteringWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal}")
                 binding.textResult.setText(workInfo.getState().name)
             }
         })
-        workManager.getWorkInfoByIdLiveData(compressingWorkRequest.getId()).observe(this@MainActivity, object : Observer<WorkInfo> {
+        binding.getViewModel()?.observeCompressingWorRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
                 Log.d(TAG, "CompressingWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal}")
                 binding.textResult.setText(workInfo.getState().name)
             }
         })
-        workManager.getWorkInfoByIdLiveData(uploadingWorRequest.getId()).observe(this@MainActivity, object : Observer<WorkInfo> {
+        binding.getViewModel()?.observeUploadingWorRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
                 Log.d(TAG, "UploadingWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal}")
                 binding.textResult.setText(workInfo.getState().name)
             }
         })
-        workManager.getWorkInfoByIdLiveData(downloadingWorRequest.getId()).observe(this@MainActivity, object : Observer<WorkInfo> {
+        binding.getViewModel()?.observeDownloadingWorRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
                 Log.d(TAG, "DownloadingWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal}")
                 binding.textResult.setText(workInfo.getState().name)
             }
         })
-    }
-
-    private fun setPeriodWorkRequest() { Log.d(TAG, "setPeriodWorkRequest()")
-        val periodicWorkRequest : PeriodicWorkRequest = PeriodicWorkRequest
-                .Builder(DownloadingWorker::class.java, 15, TimeUnit.MINUTES)
-                .build()
-        WorkManager.getInstance(getApplicationContext()).enqueue(periodicWorkRequest)
     }
 
     private fun clearInputs() {
