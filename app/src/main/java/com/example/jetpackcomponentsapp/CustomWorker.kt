@@ -27,7 +27,8 @@ class CustomWorker : CoroutineWorker {
                     //setForeground()
                     setProgress(
                             Data.Builder()
-                                    .putInt(Constants.WORKER_PROGRESS, index)
+                                    .putInt(Constants.WORKER_INT_PROGRESS, index)
+                                    .putString(Constants.WORKER_STRING_PROGRESS, "workerName $index")
                                     .build()
                     )
 

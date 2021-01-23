@@ -41,19 +41,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             )
             observeWorkRequests()
             clearInputs()
+            checkWorkRequest()
         } else if (view == binding.buttonChainWork) {
             binding.getViewModel()?.setChainingWorkers(
                     binding.editTextName.getText().toString()
             )
             observeWorkRequests()
             clearInputs()
+            checkWorkRequest()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkWorkRequest()
+    }
+
+    private fun checkWorkRequest() {
+        val workSpec = binding.getViewModel()?.getOneTimeWorkRequestWorkSpec()
+        val workInfo = binding.getViewModel()?.getOneTimeWorkRequestWorkInfo()
+        Log.d(TAG, "onResume() WorkSpec worker_class_name ${workSpec?.workerClassName}  calculate Next Run Time ${workSpec?.calculateNextRunTime()} ${MainViewModel.getDate(workSpec?.calculateNextRunTime())}")
+        Log.d(TAG, "onResume() WorkInfo State ${workInfo?.getState()?.name} ordinal ${workInfo?.getState()?.ordinal} Run Attempt Count ${workInfo?.getRunAttemptCount()} Progress ${workInfo?.getProgress()} ${workInfo?.getProgress()?.getInt(Constants.WORKER_INT_PROGRESS,0)} is Finished ${workInfo?.getState()?.isFinished()}")
+        Log.d(TAG, "CustomWorker WorkInfo Output Data Name ${workInfo?.getOutputData()?.getString(Constants.WORKER_OUTPUT_NAME)}")
+        Log.d(TAG, "CustomWorker WorkInfo Output Data Values ${workInfo?.getOutputData()?.getString(Constants.WORKER_OUTPUT_VALUE)}")
     }
 
     private fun observeWorkRequests() {
         binding.getViewModel()?.observeOneTimeWorkRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
-                Log.d(TAG, "CustomWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal} Run Attempt Count ${workInfo.getRunAttemptCount()} Progress ${workInfo.getProgress()} ${workInfo.getProgress().getInt(Constants.WORKER_PROGRESS,0)}")
+                Log.d(TAG, "CustomWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal} Run Attempt Count ${workInfo.getRunAttemptCount()} Progress ${workInfo.getProgress()} ${workInfo.getProgress().getInt(Constants.WORKER_INT_PROGRESS,0)}")
                 binding.textResult.setText(workInfo.getState().name)
                 if (workInfo.getState().isFinished()) {
                     Log.d(TAG, "CustomWorker WorkInfo Output Data Name ${workInfo.getOutputData().getString(Constants.WORKER_OUTPUT_NAME)}")

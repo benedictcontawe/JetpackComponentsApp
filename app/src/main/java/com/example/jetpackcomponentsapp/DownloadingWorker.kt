@@ -23,7 +23,7 @@ class DownloadingWorker : Worker {
                     //setForegroundAsync()
                     setProgressAsync(
                             Data.Builder()
-                                    .putInt(Constants.WORKER_PROGRESS, index)
+                                    .putInt(Constants.WORKER_INT_PROGRESS, index)
                                     .build()
                     )
                 }
