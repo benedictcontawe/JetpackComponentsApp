@@ -15,3 +15,5 @@ Kotlin Work Manager Sample
 - [WorkManager in practice Part I: One Time Workers Retrofit](https://developer-tutorials.blogspot.com/2019/03/workmanager-in-practice-part-i-one-time.html)
 
 - [Android WorkManager Tutorial in Kotlin](https://www.youtube.com/watch?v=HNYr1ay3yjo)
+
+- [Showing detailed progress for running WorkManager workers](https://stackoverflow.com/questions/50542223/showing-detailed-progress-for-running-workmanager-workers)
