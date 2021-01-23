@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.setLifecycleOwner(this@MainActivity)
         binding.buttonEnqueueWork.setOnClickListener(this@MainActivity)
         binding.buttonChainWork.setOnClickListener(this@MainActivity)
+        observeWorkRequests()
     }
 
     override fun onClick(view : View) {
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun observeWorkRequests() {
         binding.getViewModel()?.observeOneTimeWorkRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
-                Log.d(TAG, "CustomWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal} Run Attempt Count ${workInfo.getRunAttemptCount()} Progress ${workInfo.getProgress()}")
+                Log.d(TAG, "CustomWorker WorkInfo State ${workInfo.getState().name} ordinal ${workInfo.getState().ordinal} Run Attempt Count ${workInfo.getRunAttemptCount()} Progress ${workInfo.getProgress()} ${workInfo.getProgress().getInt(Constants.WORKER_PROGRESS,0)}")
                 binding.textResult.setText(workInfo.getState().name)
                 if (workInfo.getState().isFinished()) {
                     Log.d(TAG, "CustomWorker WorkInfo Output Data Name ${workInfo.getOutputData().getString(Constants.WORKER_OUTPUT_NAME)}")

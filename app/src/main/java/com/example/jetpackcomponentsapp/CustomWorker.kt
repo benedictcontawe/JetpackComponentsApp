@@ -2,11 +2,9 @@ package com.example.jetpackcomponentsapp
 
 import android.content.Context
 import android.util.Log
-import androidx.work.Data
-import androidx.work.Worker
-import androidx.work.WorkerParameters
+import androidx.work.*
 
-class CustomWorker : Worker {
+class CustomWorker : CoroutineWorker {
 
     companion object {
         private val TAG : String = CustomWorker::class.java.getSimpleName()
@@ -16,9 +14,9 @@ class CustomWorker : Worker {
 
     }
 
-    override fun doWork() : Result {
+    override suspend fun doWork() : ListenableWorker.Result {
         return try {
-            if (getRunAttemptCount() > 3) Result.failure()
+            if (getRunAttemptCount() > 3) ListenableWorker.Result.failure()
             else {
                 val workerName : String = getInputData().getString(Constants.WORKER_NAME)?:"Nil"
                 val workerInt : Int = getInputData().getInt(Constants.WORKER_INT,0)
@@ -26,8 +24,15 @@ class CustomWorker : Worker {
                 val workerLong : Long = getInputData().getLong(Constants.WORKER_LONG,0L)
                 for (index : Int in 0 until 100) {
                     Log.d(TAG,"Uploading $index")
+                    //setForeground()
+                    setProgress(
+                            Data.Builder()
+                                    .putInt(Constants.WORKER_PROGRESS, index)
+                                    .build()
+                    )
+
                 }
-                Result.success(
+                ListenableWorker.Result.success(
                         Data.Builder()
                             .putString(Constants.WORKER_OUTPUT_NAME, "Worker Name $workerName ${MainViewModel.getDate()}")
                             .putString(Constants.WORKER_OUTPUT_VALUE, "Worker Values $workerInt $workerString $workerLong")
@@ -36,7 +41,7 @@ class CustomWorker : Worker {
             }
         } catch (ex : Exception) {
             Log.e(TAG,"CustomWorker doWork() Error ${ex.message}")
-            Result.retry()
+            ListenableWorker.Result.retry()
         }
     }
 }

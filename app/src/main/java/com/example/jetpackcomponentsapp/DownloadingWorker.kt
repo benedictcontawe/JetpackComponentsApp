@@ -2,11 +2,9 @@ package com.example.jetpackcomponentsapp
 
 import android.content.Context
 import android.util.Log
-import androidx.work.CoroutineWorker
-import androidx.work.ListenableWorker
-import androidx.work.WorkerParameters
+import androidx.work.*
 
-class DownloadingWorker : CoroutineWorker {
+class DownloadingWorker : Worker {
 
     companion object {
         private val TAG : String = UploadingWorker::class.java.getSimpleName()
@@ -16,12 +14,18 @@ class DownloadingWorker : CoroutineWorker {
 
     }
 
-    override suspend fun doWork() : ListenableWorker.Result {
+    override fun doWork() : ListenableWorker.Result {
         return try {
             if (getRunAttemptCount() > 3) ListenableWorker.Result.failure()
             else {
                 for (index : Int in 0..300) {
                     Log.d(TAG,"Downloading $index")
+                    //setForegroundAsync()
+                    setProgressAsync(
+                            Data.Builder()
+                                    .putInt(Constants.WORKER_PROGRESS, index)
+                                    .build()
+                    )
                 }
                 ListenableWorker.Result.success()
             }
