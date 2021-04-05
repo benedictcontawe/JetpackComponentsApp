@@ -1,10 +1,3 @@
 <resources>
-    <string name="app_name">Data Store</string>
-    <string name="_boolean">Boolean :</string>
-    <string name="_string">String :</string>
-    <string name="_integer">Integer :</string>
-    <string name="_double">Double :</string>
-    <string name="_long">Long :</string>
-    <string name="update">Update</string>
-    <string name="value">Value</string>
+    <string name="app_name">View Pager 2</string>
 </resources>

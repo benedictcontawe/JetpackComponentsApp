@@ -17,6 +17,6 @@
     <dimen name="auto_size_step_granularity">1sp</dimen>
 
     <!-- Recycler View Extra Scroll Height -->
-    <dimen name="extra_scroll">5dp</dimen>
+    <dimen name="extra_scroll">72dp</dimen>
 
 </resources>

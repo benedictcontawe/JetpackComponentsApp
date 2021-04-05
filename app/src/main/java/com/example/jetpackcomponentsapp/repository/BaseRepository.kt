@@ -1,14 +1,9 @@
 package com.example.jetpackcomponentsapp.repository
 
+import com.example.jetpackcomponentsapp.model.CustomModel
+
 interface BaseRepository {
 
-    suspend fun update(booleanKey : Boolean)
+    public fun getItems() : List<CustomModel>
 
-    suspend fun update(stringKey : String)
-
-    suspend fun update(integerKey : Int)
-
-    suspend fun update(doubleKey : Double)
-
-    suspend fun update(longKey : Long)
 }
