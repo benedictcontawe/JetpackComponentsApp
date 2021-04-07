@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:viewportWidth="750.0"
     android:viewportHeight="750.0"
-    android:width="20dp"
-    android:height="20dp">
+    android:width="@dimen/indicator_diameter_medium"
+    android:height="@dimen/indicator_diameter_medium" >
 
     <path
         android:fillColor="@color/gray"

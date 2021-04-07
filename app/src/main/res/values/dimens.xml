@@ -16,7 +16,13 @@
     <dimen name="auto_size_max_text_size">15sp</dimen>
     <dimen name="auto_size_step_granularity">1sp</dimen>
 
-    <!-- Recycler View Extra Scroll Height -->
-    <dimen name="extra_scroll">72dp</dimen>
+    <!--region Circle Indicator-->
+    <dimen name="indicator_width">0dp</dimen>
+    <dimen name="indicator_height">0dp</dimen>
+    <dimen name="indicator_diameter_large">18dp</dimen>
+    <dimen name="indicator_diameter_medium">15dp</dimen>
+    <dimen name="indicator_diameter_small">12dp</dimen>
+    <dimen name="indicator_extra_scroll">54dp</dimen>
+    <!--endregion-->
 
 </resources>

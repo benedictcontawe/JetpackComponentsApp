@@ -16,6 +16,22 @@
         android:layout_height="match_parent"
         tools:context=".view.MainActivity" >
         <!--region Guide lines-->
+        <!--region Guide lines-->
+        <!--region Vertical Guide lines-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_leading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_trailing_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75"/>
+        <!--endregion-->
         <!--region Horizontal Guidlines-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/constraint_guideline_horizontal_bottom_indicator"
@@ -40,33 +56,23 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/black_50"
+            android:background="@color/black_50_transparent"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_bottom_indicator"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
-
-        <Space
-            android:id="@+id/indicator_area"
-            android:layout_width="168dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_bottom_indicator"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-        
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/indicator_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/indicator_width"
+            android:layout_height="@dimen/indicator_height"
             android:orientation="horizontal"
             tools:listitem="@layout/cell_circle_large"
             tools:itemCount="4"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_bottom_indicator"
-            app:layout_constraintStart_toStartOf="@id/indicator_area"
-            app:layout_constraintEnd_toEndOf="@id/indicator_area"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading_indicator"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing_indicator"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

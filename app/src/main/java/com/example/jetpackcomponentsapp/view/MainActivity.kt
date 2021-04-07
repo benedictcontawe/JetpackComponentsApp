@@ -57,7 +57,7 @@ public class MainActivity : AppCompatActivity(), View.OnTouchListener {
                 indicatorAdapter.setSelected(position)
                 //binding.indicatorRecyclerView.scrollToPosition(position)
                 //binding.indicatorRecyclerView.getLayoutManager()?.scrollToPosition(position)
-                indicatorLinearLayoutManager.scrollToPositionWithOffset(position,resources.getDimensionPixelSize(R.dimen.extra_scroll))
+                indicatorLinearLayoutManager.scrollToPositionWithOffset(position, getResources().getDimensionPixelSize(R.dimen.indicator_extra_scroll))
             }
 
             override fun onPageScrollStateChanged(state : Int) {
@@ -66,7 +66,7 @@ public class MainActivity : AppCompatActivity(), View.OnTouchListener {
                     ViewPager2.SCROLL_STATE_IDLE -> {
                         Log.d(TAG,"onPageScrollStateChanged($state) : ViewPager2.SCROLL_STATE_IDLE")
                     }
-                    ViewPager2 . SCROLL_STATE_DRAGGING -> {
+                    ViewPager2.SCROLL_STATE_DRAGGING -> {
                         Log.d(TAG,"onPageScrollStateChanged($state) : ViewPager2 . SCROLL_STATE_DRAGGING")
                     }
                     ViewPager2.SCROLL_STATE_SETTLING -> {
