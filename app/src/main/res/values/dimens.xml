@@ -18,7 +18,6 @@
 
     <!--region Circle Indicator-->
     <dimen name="indicator_width">0dp</dimen>
-    <dimen name="indicator_height">0dp</dimen>
     <dimen name="indicator_diameter_large">18dp</dimen>
     <dimen name="indicator_diameter_medium">15dp</dimen>
     <dimen name="indicator_diameter_small">12dp</dimen>

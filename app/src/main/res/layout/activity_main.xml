@@ -65,7 +65,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/indicator_recycler_view"
             android:layout_width="@dimen/indicator_width"
-            android:layout_height="@dimen/indicator_height"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             tools:listitem="@layout/cell_circle_large"
             tools:itemCount="4"

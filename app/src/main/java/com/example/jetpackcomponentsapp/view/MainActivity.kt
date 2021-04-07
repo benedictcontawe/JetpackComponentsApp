@@ -18,7 +18,8 @@ public class MainActivity : AppCompatActivity(), View.OnTouchListener {
 
     companion object {
         private val TAG : String = MainActivity::class.java.getSimpleName()
-        private lateinit var binding : MainBinder
+        private lateinit var dataBinding : MainBinder
+        //private lateinit var viewBinding : ActivityMainBinding
         private lateinit var indicatorAdapter : IndicatorAdapter
         private lateinit var indicatorLinearLayoutManager : LinearLayoutManager
     }
@@ -26,27 +27,34 @@ public class MainActivity : AppCompatActivity(), View.OnTouchListener {
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-        binding = DataBindingUtil.setContentView(this@MainActivity,R.layout.activity_main)
+        //region For View Binding
+        //viewBinding = ActivityMainBinding.inflate(getLayoutInflater())
+        //setContentView(viewBinding.getRoot())
+        //endregion
+        dataBinding = DataBindingUtil.setContentView(this@MainActivity,R.layout.activity_main)
         if (savedInstanceState == null) {
-            binding.setViewModel(ViewModelProvider(this@MainActivity).get(MainViewModel::class.java))
-            binding.setLifecycleOwner(this@MainActivity)
+            dataBinding.setViewModel(ViewModelProvider(this@MainActivity).get(MainViewModel::class.java))
+            dataBinding.setLifecycleOwner(this@MainActivity)
             setViewPager()
             setIndicator()
         }
     }
 
     private fun setViewPager() {
-        binding.viewPagerTwo.setAdapter(CustomViewPagerAdapter(binding.getViewModel()?.getItems()))
+        //region For View Binding
+        //viewBinding.viewPagerTwo.setAdapter(CustomViewPagerAdapter(dataBinding.getViewModel()?.getItems()))
+        //endregion
+        dataBinding.viewPagerTwo.setAdapter(CustomViewPagerAdapter(dataBinding.getViewModel()?.getItems()))
         //binding.viewPagerTwo.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
     }
 
     private fun setIndicator() {
-        indicatorAdapter = IndicatorAdapter(binding.getViewModel()?.getItemCount())
+        indicatorAdapter = IndicatorAdapter(dataBinding.getViewModel()?.getItemCount())
         indicatorLinearLayoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-        binding.indicatorRecyclerView.setOnTouchListener(this@MainActivity)
-        binding.indicatorRecyclerView.setAdapter(indicatorAdapter)
-        binding.indicatorRecyclerView.setLayoutManager(indicatorLinearLayoutManager)
-        binding.indicatorRecyclerView.setHasFixedSize(true)
+        dataBinding.indicatorRecyclerView.setOnTouchListener(this@MainActivity)
+        dataBinding.indicatorRecyclerView.setAdapter(indicatorAdapter)
+        dataBinding.indicatorRecyclerView.setLayoutManager(indicatorLinearLayoutManager)
+        dataBinding.indicatorRecyclerView.setHasFixedSize(true)
     }
 
     private fun getOnPageChangeCallback() : ViewPager2.OnPageChangeCallback {
@@ -82,18 +90,18 @@ public class MainActivity : AppCompatActivity(), View.OnTouchListener {
     }
 
     override fun onTouch(view : View?, event : MotionEvent?) : Boolean {
-        return if (view == binding.indicatorRecyclerView) true
+        return if (view == dataBinding.indicatorRecyclerView) true
         else false
     }
 
     override fun onResume() {
         super.onResume()
-        binding.viewPagerTwo.registerOnPageChangeCallback(getOnPageChangeCallback())
+        dataBinding.viewPagerTwo.registerOnPageChangeCallback(getOnPageChangeCallback())
     }
 
     override fun onPause() {
         super.onPause()
-        binding.viewPagerTwo.unregisterOnPageChangeCallback(getOnPageChangeCallback())
+        dataBinding.viewPagerTwo.unregisterOnPageChangeCallback(getOnPageChangeCallback())
     }
 
     override fun onBackPressed() {
