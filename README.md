@@ -17,3 +17,5 @@
 - [Kotlin basics: visibility modifiers. public, internal , protected and private.](https://medium.com/@HugoMatilla/kotlin-basics-visibility-modifiers-public-internal-protected-and-private-c3bf972aee11)
 
 - [Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $](https://stackoverflow.com/questions/39918814/use-jsonreader-setlenienttrue-to-accept-malformed-json-at-line-1-column-1-path)
+
+- [View Binding](https://github.com/android/architecture-components-samples)
