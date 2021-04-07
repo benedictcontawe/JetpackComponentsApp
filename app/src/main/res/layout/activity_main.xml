@@ -16,7 +16,6 @@
         android:layout_height="match_parent"
         tools:context=".view.MainActivity" >
         <!--region Guide lines-->
-        <!--region Guide lines-->
         <!--region Vertical Guide lines-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/constraint_guideline_vertical_leading_indicator"
