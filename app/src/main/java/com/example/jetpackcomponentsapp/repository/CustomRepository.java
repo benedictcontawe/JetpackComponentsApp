@@ -8,7 +8,7 @@ import com.example.jetpackcomponentsapp.model.CustomModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomRepository implements BaseRepository{
+public class CustomRepository implements BaseRepository {
 
     static volatile private  CustomRepository INSTANCE;
 
@@ -25,7 +25,7 @@ public class CustomRepository implements BaseRepository{
 
     }
 
-    public CustomModel getItem(int id) {
+    private CustomModel getItem(int id) {
         return new CustomModel(id, String.valueOf(id), R.drawable.ic_android_black);
     }
 

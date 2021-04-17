@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 abstract public class BaseViewHolder extends RecyclerView.ViewHolder {
 
-    static private final String TAG = BaseViewPagerHolder.class.getSimpleName();
+    static private final String TAG = BaseViewHolder.class.getSimpleName();
 
     protected final Context context;
 
