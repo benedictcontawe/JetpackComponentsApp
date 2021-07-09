@@ -23,3 +23,5 @@
 - [How to check if a “lateinit” variable has been initialized?](https://stackoverflow.com/questions/37618738/how-to-check-if-a-lateinit-variable-has-been-initialized)
 
 - [Add a background image to shape in XML Android](https://stackoverflow.com/questions/21002224/add-a-background-image-to-shape-in-xml-android)
+
+- [Method Chaining In Java with Examples](https://www.geeksforgeeks.org/method-chaining-in-java-with-examples/)
