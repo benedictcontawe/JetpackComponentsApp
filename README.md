@@ -25,3 +25,5 @@
 - [Add a background image to shape in XML Android](https://stackoverflow.com/questions/21002224/add-a-background-image-to-shape-in-xml-android)
 
 - [Method Chaining In Java with Examples](https://www.geeksforgeeks.org/method-chaining-in-java-with-examples/)
+
+- [SharedPreferences in Android](https://heartbeat.fritz.ai/sharedpreferences-in-android-818e3b614b85)
