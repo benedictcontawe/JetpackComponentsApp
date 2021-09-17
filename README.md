@@ -27,3 +27,5 @@
 - [Method Chaining In Java with Examples](https://www.geeksforgeeks.org/method-chaining-in-java-with-examples/)
 
 - [SharedPreferences in Android](https://heartbeat.fritz.ai/sharedpreferences-in-android-818e3b614b85)
+
+- [Allow insecure protocols, android gradle](https://stackoverflow.com/questions/68585885/allow-insecure-protocols-android-gradle)
