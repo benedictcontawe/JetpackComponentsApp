@@ -29,3 +29,7 @@
 - [SharedPreferences in Android](https://heartbeat.fritz.ai/sharedpreferences-in-android-818e3b614b85)
 
 - [Allow insecure protocols, android gradle](https://stackoverflow.com/questions/68585885/allow-insecure-protocols-android-gradle)
+
+- [What's the difference between !! and ? in Kotlin?](https://stackoverflow.com/questions/44536114/whats-the-difference-between-and-in-kotlin)
+
+
