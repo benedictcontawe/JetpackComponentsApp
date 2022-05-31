@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
-
+import com.example.jetpackcomponentsapp.util.Coroutines
+import kotlinx.coroutines.flow.FlowCollector
 
 class UpdateFragment : DialogFragment() {
 
@@ -37,25 +38,27 @@ class UpdateFragment : DialogFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        viewModel.getUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
-            override fun onChanged(item : CustomModel) {
-                binding.editText.setText(item.name)
-                binding.editText.requestFocus()
-                binding.editText.selectAll()
-                showSoftKeyboard()
-            }
+        Coroutines.main(lifecycleScope, {
+            viewModel.getUpdate().collect(object : FlowCollector<CustomModel> {
+                override suspend fun emit(item : CustomModel) {
+                    binding.editText.setText(item.name)
+                    binding.editText.requestFocus()
+                    binding.editText.selectAll()
+                    showSoftKeyboard()
+                }
+            })
         })
+
 
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                viewModel.updateItem()
+                viewModel.updateItem(binding.editText.getText().toString())
                 hideSoftKeyboard()
                 dismiss()
             }

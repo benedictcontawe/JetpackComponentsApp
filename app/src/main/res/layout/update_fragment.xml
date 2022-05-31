@@ -24,7 +24,6 @@
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={viewModel.update.name}"
             android:hint="Update Name"
             android:inputType="text"
             android:imeOptions="actionDone" />

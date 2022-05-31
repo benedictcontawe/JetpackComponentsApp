@@ -2,8 +2,10 @@ package com.example.jetpackcomponentsapp.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.asFlow
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
+import kotlinx.coroutines.flow.*
 
 class ConvertList {
 
@@ -26,6 +28,20 @@ class ConvertList {
                     localList,
                     Companion::toListModel
             )
+        }
+
+        suspend fun toSharedFlowListModel(localList : SharedFlow<List<CustomEntity>>) : SharedFlow<MutableList<CustomModel>> {
+            val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
+            //val liveList : MutableSharedFlow<MutableList<CustomModel>> = MutableSharedFlow()
+            localList.collect{ list ->
+                list.map { item ->
+                    itemList.add(
+                        CustomModel(item.id ?: 0, item.name ?: "")
+                    )
+                }
+            }
+            //liveList.emit(itemList)
+            //return liveList
         }
 
         fun toEntity(customModel: CustomModel) : CustomEntity {

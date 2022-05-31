@@ -1,11 +1,12 @@
 package com.example.jetpackcomponentsapp.repository
 
 import android.app.Application
-import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
@@ -25,38 +26,30 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     //region CRUD Operation
-    override fun insert(customEntity: CustomEntity) {
-        AsyncTask.execute {
-            customDao.insert(
-                    customEntity
-            )
-        }
+    override suspend fun insert(customEntity: CustomEntity) {
+        customDao.insert(
+                customEntity
+        )
     }
 
-    override fun update(customEntity: CustomEntity) {
-        AsyncTask.execute {
-            customDao.update(
-                    customEntity
-            )
-        }
+    override suspend fun update(customEntity: CustomEntity) {
+        customDao.update(
+                customEntity
+        )
     }
 
-    override fun delete(customEntity: CustomEntity) {
+    override suspend fun delete(customEntity: CustomEntity) {
         println("${customEntity.id}")
-        AsyncTask.execute {
-            customDao.delete(
-                    customEntity.id
-            )
-        }
+        customDao.delete(
+                customEntity.id
+        )
     }
 
-    override fun deleteAll() {
-        AsyncTask.execute {
-            customDao.deleteAll()
-        }
+    override suspend fun deleteAll() {
+        customDao.deleteAll()
     }
 
-    fun getAll() : LiveData<List<CustomEntity>> {
+    override fun getAll() : LiveData<List<CustomEntity>> {
         return customDao.getAll()
     }
     //endregion

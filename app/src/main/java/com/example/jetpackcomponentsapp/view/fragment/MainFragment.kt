@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-//import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.view.CustomListeners
@@ -18,8 +18,10 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.MainBinder
+import com.example.jetpackcomponentsapp.util.Coroutines
 import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
+import kotlinx.coroutines.flow.FlowCollector
 
 class MainFragment : Fragment(), CustomListeners {
 
@@ -41,8 +43,8 @@ class MainFragment : Fragment(), CustomListeners {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
@@ -51,7 +53,7 @@ class MainFragment : Fragment(), CustomListeners {
 
         setRecyclerView()
         setFloatingActionButton()
-        viewModel.setItems()
+        //viewModel.setItems()
     }
 
     private fun setRecyclerView() {
@@ -67,7 +69,7 @@ class MainFragment : Fragment(), CustomListeners {
 
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
             override fun onChanged(list : List<CustomModel>) {
-                Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                 //binding.recyclerView.removeAllViews()
                 adapter.setItems(list)
             }
