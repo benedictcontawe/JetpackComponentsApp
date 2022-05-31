@@ -19,6 +19,7 @@ class MainViewModel : AndroidViewModel {
         liveList = MutableLiveData()
         liveUpdate = MutableLiveData()
     }
+
     @Deprecated("For Static Data")
     fun setItems() {
         customRepository.deleteAll()
