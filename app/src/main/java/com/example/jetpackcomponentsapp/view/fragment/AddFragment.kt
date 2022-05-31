@@ -14,14 +14,13 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 
-
 class AddFragment : Fragment() {
 
     companion object {
         fun newInstance() : AddFragment = AddFragment()
 
         fun getTag() : String {
-            return "AddFragment"
+            return AddFragment::class.java.getSimpleName()
         }
     }
 
@@ -36,7 +35,7 @@ class AddFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -47,18 +46,18 @@ class AddFragment : Fragment() {
             override fun onClick(view : View) {
                 viewModel.insertItem(CustomModel(binding.editText.text.toString()))
                 hideSoftKeyboard()
-                activity!!.supportFragmentManager.popBackStack()
+                requireActivity().supportFragmentManager.popBackStack()
             }
         })
     }
 
     private fun showSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
     private fun hideSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 }

@@ -25,6 +25,10 @@ class MainFragment : Fragment(), CustomListeners {
 
     companion object {
         fun newInstance() : MainFragment = MainFragment()
+
+        fun getTag() : String {
+            return MainFragment::class.java.getSimpleName()
+        }
     }
 
     private lateinit var binding: MainBinder
@@ -41,7 +45,7 @@ class MainFragment : Fragment(), CustomListeners {
         super.onActivityCreated(savedInstanceState)
 
         //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
-        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -51,7 +55,7 @@ class MainFragment : Fragment(), CustomListeners {
     }
 
     private fun setRecyclerView() {
-        adapter = CustomAdapter(context!!, this)
+        adapter = CustomAdapter(requireContext(), this@MainFragment)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)

@@ -21,7 +21,7 @@ class UpdateFragment : DialogFragment() {
     companion object {
         fun newInstance() : UpdateFragment = UpdateFragment()
 
-        fun getTag() : String = "UpdateFragment"
+        fun getTag() : String = UpdateFragment::class.java.getSimpleName()
     }
 
     private lateinit var binding : UpdateBinder
@@ -40,7 +40,7 @@ class UpdateFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProvider(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -63,16 +63,15 @@ class UpdateFragment : DialogFragment() {
     }
 
     private fun showSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
     private fun hideSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 }
-
 /*
 AlertDialog.Builder(activity)
 .setTitle("Update Name")
