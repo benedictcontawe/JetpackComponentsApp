@@ -32,4 +32,5 @@
 
 - [What's the difference between !! and ? in Kotlin?](https://stackoverflow.com/questions/44536114/whats-the-difference-between-and-in-kotlin)
 
+- [How to write ternary conditional operator?](https://stackoverflow.com/questions/16336500/how-to-write-ternary-conditional-operator)
 
