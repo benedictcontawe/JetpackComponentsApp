@@ -174,7 +174,7 @@ class MainViewModel : AndroidViewModel {
         return liveUpdate
     }
 
-    fun insertItem(item : CustomModel) {4
+    fun insertItem(item : CustomModel) {
         Coroutines.io(this@MainViewModel, {
             customRepository.insert(
                     ConvertList.toEntity(item)
