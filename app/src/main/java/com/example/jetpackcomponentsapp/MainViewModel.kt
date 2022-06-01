@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.*
 
 class MainViewModel : AndroidViewModel {
 
-    private lateinit var customRepository : CustomRepository
-    private lateinit var liveUpdate : MutableStateFlow<CustomModel>
+    private lateinit var customRepository: CustomRepository
+    private lateinit var liveUpdate: MutableStateFlow<CustomModel>
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
@@ -21,10 +21,10 @@ class MainViewModel : AndroidViewModel {
 
     @Deprecated("For Static Data")
     fun setItems() {
-        Coroutines.default (this@MainViewModel, {
+        Coroutines.default(this@MainViewModel, {
             customRepository.deleteAll()
             for (index in 0 until 500) {
-                customRepository.insert(ConvertList.toEntity(CustomModel(index,"name $index")))
+                customRepository.insert(ConvertList.toEntity(CustomModel(index, "name $index")))
             }
             /*
             customRepository.insert(ConvertList.toEntity(CustomModel(0,"name 0")))
@@ -162,25 +162,25 @@ class MainViewModel : AndroidViewModel {
         })
     }
 
-    fun setUpdate(item : CustomModel) {
+    fun setUpdate(item: CustomModel) {
         Coroutines.io(this@MainViewModel) {
             liveUpdate.emit(item)
         }
     }
 
-    fun getUpdate() : StateFlow<CustomModel> {
+    fun getUpdate(): StateFlow<CustomModel> {
         return liveUpdate
     }
 
-    fun insertItem(item : CustomModel) {
+    fun insertItem(item: CustomModel) {
         Coroutines.io(this@MainViewModel, {
             customRepository.insert(
-                    ConvertList.toEntity(item)
+                ConvertList.toEntity(item)
             )
         })
     }
 
-    fun updateItem(updated : String) {
+    fun updateItem(updated: String) {
         Coroutines.io(this@MainViewModel, {
             liveUpdate.value.name = updated
             customRepository.update(
@@ -189,10 +189,10 @@ class MainViewModel : AndroidViewModel {
         })
     }
 
-    fun deleteItem(item : CustomModel) {
+    fun deleteItem(item: CustomModel) {
         Coroutines.io(this@MainViewModel, {
             customRepository.delete(
-                    ConvertList.toEntity(item)
+                ConvertList.toEntity(item)
             )
         })
     }
@@ -203,13 +203,7 @@ class MainViewModel : AndroidViewModel {
         })
     }
 
-    suspend fun getItems() : StateFlow<List<CustomModel>> {
-        return customRepository.getAll().mapLatest { entityList ->
-            val item : MutableList<CustomModel> = mutableListOf<CustomModel>()
-            entityList.map { entity ->
-               item.add(CustomModel(entity.id?:0, entity.name?:""))
-            }
-            item.toList()
-        }.stateIn(scope = viewModelScope)
+    suspend fun getItems(): StateFlow<List<CustomModel>> {
+        return ConvertList.toStateFlowListModel(customRepository.getAll(), viewModelScope)
     }
 }

@@ -16,7 +16,6 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     /**Main */
     private lateinit var context : Context
     private lateinit var customListeners : CustomListeners
-
     private lateinit var customBinder : CustomBinder
 
     private var list : MutableList<CustomModel> = mutableListOf()

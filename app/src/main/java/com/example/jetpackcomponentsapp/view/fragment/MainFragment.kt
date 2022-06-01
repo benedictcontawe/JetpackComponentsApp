@@ -58,17 +58,13 @@ class MainFragment : Fragment(), CustomListeners {
     private fun setRecyclerView() {
         adapter = CustomAdapter(requireContext(), this@MainFragment)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
-
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
-
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
-
         Coroutines.main(lifecycleScope, {
             viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
-                override suspend fun emit(list: List<CustomModel>) {
+                override suspend fun emit(list : List<CustomModel>) {
                     Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                     binding.recyclerView.removeAllViews()
                     adapter.setItems(list)

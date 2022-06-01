@@ -1,11 +1,11 @@
 package com.example.jetpackcomponentsapp.room
 
 import android.content.Context
-import android.os.AsyncTask
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.jetpackcomponentsapp.util.Coroutines
 
 @Database(
         entities = [CustomEntity::class],
@@ -42,7 +42,7 @@ abstract class CustomDatabase : RoomDatabase() {
                 //Initialize Database if no database attached to the App
                 super.onCreate(db)
                 //PopulateDbAsyncTask(instance).execute()
-                AsyncTask.execute {
+                Coroutines.io {
                     //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 0")))
                     //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 1")))
                     //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 2")))
@@ -54,18 +54,6 @@ abstract class CustomDatabase : RoomDatabase() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 //Re-open Database if it has database attached to the App
                 super.onOpen(db)
-            }
-        }
-
-        class PopulateDbAsyncTask(db : CustomDatabase?) : AsyncTask<Unit,Unit,Unit>() {
-            //private val customDAO = db?.customDao()
-
-            override fun doInBackground(vararg param : Unit) {
-                //customDAO?.insert(CustomEntity("name 0"))
-                //customDAO?.insert(CustomEntity("name 1"))
-                //customDAO?.insert(CustomEntity("name 2"))
-                //customDAO?.insert(CustomEntity("name 3"))
-                //customDAO?.insert(CustomEntity("name 4"))
             }
         }
     }
