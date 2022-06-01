@@ -23,9 +23,10 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     constructor(context : Context, customListeners : CustomListeners) : super() {
         this.context = context
         this.customListeners = customListeners
+        setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : CustomViewHolder {
         customBinder = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_sample,
@@ -38,6 +39,11 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         customBinder.customModel = list.get(position)
         holder.bindDataToViewHolder(list[position],position)
+    }
+
+    override fun getItemId(position : Int) : Long {
+        //return super.getItemId(position)
+        return list[position].id?.toLong()?:RecyclerView.NO_ID
     }
 
     override fun getItemCount(): Int {

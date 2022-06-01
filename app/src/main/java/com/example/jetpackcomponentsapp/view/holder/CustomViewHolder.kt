@@ -15,6 +15,7 @@ class CustomViewHolder : BaseViewHolder {
     }
 
     override fun bindDataToViewHolder(item: CustomModel, position: Int) {
+        customBinder.executePendingBindings()
         setId(item.id?:0)
         //customBinder.imageView.setBackgroundResource(item.icon?:0)
         customBinder.imageView.setImageResource(item.icon?:0)
