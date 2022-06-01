@@ -1,11 +1,9 @@
 package com.example.jetpackcomponentsapp.view.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -16,13 +14,12 @@ import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.MainActivity
 
-
 class UpdateFragment : BaseDialogFragment() {
 
     companion object {
         fun newInstance() : UpdateFragment = UpdateFragment()
 
-        fun getTag() : String = "UpdateFragment"
+        fun getTag() : String = UpdateFragment::class.java.getSimpleName()
     }
 
     private val activity by lazy { (getActivity() as MainActivity) }
@@ -32,6 +29,8 @@ class UpdateFragment : BaseDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment)
+        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
+        binding.viewModel = viewModel
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -39,11 +38,8 @@ class UpdateFragment : BaseDialogFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.getUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
@@ -71,16 +67,6 @@ class UpdateFragment : BaseDialogFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.checkIfFragmentLoaded(this)
-    }
-
-    private fun showSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-    }
-
-    private fun hideSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 }
 

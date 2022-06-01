@@ -30,6 +30,5 @@ interface CustomDAO {
     @Transaction
     suspend fun resetDAO() {
         deleteAll()
-
     }
 }

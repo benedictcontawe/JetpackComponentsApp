@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showSoftKeyboard(activity: Activity, showKeyboard : Boolean) {
         var view = activity.currentFocus
-        when(showKeyboard){
+        when(showKeyboard) {
             true -> {
                 val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)

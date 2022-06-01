@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 class MainViewModel : AndroidViewModel {
 
     private lateinit var customRepository : CustomRepository
-    private lateinit var liveList : LiveData<MutableList<CustomModel>>
+    private lateinit var liveList : LiveData<List<CustomModel>>
     private lateinit var liveUpdate : MutableLiveData<CustomModel>
     private lateinit var liveStandBy : MutableLiveData<Boolean>
 
@@ -111,7 +111,7 @@ class MainViewModel : AndroidViewModel {
         viewWillAppear()
     }
 
-    fun deleteAll() {
+    public fun deleteAll() {
         viewDidLoad()
         Coroutines.io {
             customRepository.deleteAll()
@@ -119,7 +119,7 @@ class MainViewModel : AndroidViewModel {
         viewWillAppear()
     }
 
-    fun getItems() : LiveData<MutableList<CustomModel>> {
+    public fun getItems() : LiveData<List<CustomModel>> {
         liveList = ConvertList.toLiveDataListModel(
                 customRepository.getAll()
         )

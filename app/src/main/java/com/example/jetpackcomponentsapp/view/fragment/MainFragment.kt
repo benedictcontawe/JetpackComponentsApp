@@ -24,6 +24,10 @@ class MainFragment : BaseFragment(), CustomListeners {
 
     companion object {
         fun newInstance() : MainFragment = MainFragment()
+
+        fun getTag() : String {
+            return MainFragment::class.java.getSimpleName()
+        }
     }
 
     private val activity by lazy { (getActivity() as MainActivity) }
@@ -32,16 +36,19 @@ class MainFragment : BaseFragment(), CustomListeners {
     private lateinit var adapter : CustomAdapter
     //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //viewModel = ViewModelProviders.of(activity).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment,container,false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        //viewModel = ViewModelProviders.of(activity).get(MainViewModel::class.java)
-        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -55,10 +62,10 @@ class MainFragment : BaseFragment(), CustomListeners {
     }
 
     private fun setRecyclerView() {
-        adapter = CustomAdapter(context!!, this)
+        adapter = CustomAdapter(requireContext(), this)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false)
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
 
