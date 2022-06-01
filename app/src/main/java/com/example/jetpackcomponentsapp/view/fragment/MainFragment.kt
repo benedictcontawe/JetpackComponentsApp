@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,12 +66,14 @@ class MainFragment : Fragment(), CustomListeners {
 
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
 
-        viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
-            override fun onChanged(list : List<CustomModel>) {
-                Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                //binding.recyclerView.removeAllViews()
-                adapter.setItems(list)
-            }
+        Coroutines.main(lifecycleScope, {
+            viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
+                override suspend fun emit(list: List<CustomModel>) {
+                    Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                    binding.recyclerView.removeAllViews()
+                    adapter.setItems(list)
+                }
+            })
         })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)

@@ -2,23 +2,21 @@ package com.example.jetpackcomponentsapp
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.repository.CustomRepository
-import com.example.jetpackcomponentsapp.room.CustomEntity
 import com.example.jetpackcomponentsapp.util.Coroutines
 import kotlinx.coroutines.flow.*
 
 class MainViewModel : AndroidViewModel {
 
     private lateinit var customRepository : CustomRepository
-    private lateinit var liveUpdate : MutableSharedFlow<CustomModel>
+    private lateinit var liveUpdate : MutableStateFlow<CustomModel>
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
-        liveUpdate = MutableSharedFlow()
+        liveUpdate = MutableStateFlow(CustomModel())
     }
 
     @Deprecated("For Static Data")
@@ -165,12 +163,12 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun setUpdate(item : CustomModel) {
-        Coroutines.io {
+        Coroutines.io(this@MainViewModel) {
             liveUpdate.emit(item)
         }
     }
 
-    fun getUpdate() : SharedFlow<CustomModel> {
+    fun getUpdate() : StateFlow<CustomModel> {
         return liveUpdate
     }
 
@@ -184,12 +182,10 @@ class MainViewModel : AndroidViewModel {
 
     fun updateItem(updated : String) {
         Coroutines.io(this@MainViewModel, {
-            liveUpdate.map {
-                it.name = updated
-                customRepository.update(
-                    ConvertList.toEntity(it)
-                )
-            }
+            liveUpdate.value.name = updated
+            customRepository.update(
+                ConvertList.toEntity(liveUpdate.value)
+            )
         })
     }
 
@@ -207,15 +203,13 @@ class MainViewModel : AndroidViewModel {
         })
     }
 
-    fun getItems() : LiveData<MutableList<CustomModel>> {
-        //return  liveList
-        return ConvertList.toLiveDataListModel(
-                customRepository.getAll()
-        )
-        /*
-        return ConvertList.toSharedFlowListModel(
-            customRepository.getAll().shareIn(this@MainViewModel.viewModelScope, started = SharingStarted.Eagerly, replay = 0)
-        )
-        */
+    suspend fun getItems() : StateFlow<List<CustomModel>> {
+        return customRepository.getAll().mapLatest { entityList ->
+            val item : MutableList<CustomModel> = mutableListOf<CustomModel>()
+            entityList.map { entity ->
+               item.add(CustomModel(entity.id?:0, entity.name?:""))
+            }
+            item.toList()
+        }.stateIn(scope = viewModelScope)
     }
 }

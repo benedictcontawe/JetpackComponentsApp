@@ -1,12 +1,10 @@
 package com.example.jetpackcomponentsapp.repository
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
@@ -26,30 +24,30 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     //region CRUD Operation
-    override suspend fun insert(customEntity: CustomEntity) {
+    override public suspend fun insert(customEntity: CustomEntity) {
         customDao.insert(
                 customEntity
         )
     }
 
-    override suspend fun update(customEntity: CustomEntity) {
+    override public suspend fun update(customEntity: CustomEntity) {
         customDao.update(
                 customEntity
         )
     }
 
-    override suspend fun delete(customEntity: CustomEntity) {
+    override public suspend fun delete(customEntity: CustomEntity) {
         println("${customEntity.id}")
         customDao.delete(
                 customEntity.id
         )
     }
 
-    override suspend fun deleteAll() {
+    override public suspend fun deleteAll() {
         customDao.deleteAll()
     }
 
-    override fun getAll() : LiveData<List<CustomEntity>> {
+    override public fun getAll() : Flow<List<CustomEntity>> {
         return customDao.getAll()
     }
     //endregion

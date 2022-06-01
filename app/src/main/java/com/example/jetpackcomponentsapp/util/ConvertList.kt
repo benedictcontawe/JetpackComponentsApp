@@ -30,7 +30,7 @@ class ConvertList {
             )
         }
 
-        suspend fun toSharedFlowListModel(localList : SharedFlow<List<CustomEntity>>) : SharedFlow<MutableList<CustomModel>> {
+        suspend fun toStateFlowListModel(localList : StateFlow<List<CustomEntity>>) : StateFlow<MutableList<CustomModel>> {
             val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
             //val liveList : MutableSharedFlow<MutableList<CustomModel>> = MutableSharedFlow()
             localList.collect{ list ->

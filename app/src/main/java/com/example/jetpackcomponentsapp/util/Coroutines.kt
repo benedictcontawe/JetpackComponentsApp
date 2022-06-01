@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
  */
 
 object Coroutines {
-    //UI contexts
+    //region UI contexts
     fun main(work : suspend (() -> Unit)) =
         CoroutineScope(Dispatchers.Main.immediate).launch {
             work()
@@ -54,8 +54,8 @@ object Coroutines {
         lifecycleCoroutineScope.launchWhenStarted {
             work()
         }
-
-    // I/O operations
+    //endregion
+    //region I/O operations
     fun io(work : suspend (() -> Unit)) =
         CoroutineScope(Dispatchers.IO).launch {
             work()
@@ -66,7 +66,8 @@ object Coroutines {
             work()
         }
     }
-    // Uses heavy CPU computation
+    //endregion
+    //region Uses heavy CPU computation
     fun default(work : suspend (() -> Unit)) =
         CoroutineScope(Dispatchers.Default).launch {
             work()
@@ -76,9 +77,11 @@ object Coroutines {
         viewModel.viewModelScope.launch(Dispatchers.Default) {
             work()
         }
-    // No need to run on specific context
+    //endregion
+    //region No need to run on specific context
     fun unconfined(work : suspend (() -> Unit)) =
         CoroutineScope(Dispatchers.Unconfined).launch {
             work()
         }
+    //endregion
 }
