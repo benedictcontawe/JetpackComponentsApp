@@ -34,3 +34,4 @@
 
 - [How to write ternary conditional operator?](https://stackoverflow.com/questions/16336500/how-to-write-ternary-conditional-operator)
 
+- [Clean StateFlow Transformations in Kotlin](https://proandroiddev.com/clean-stateflow-transformations-in-kotlin-608f4c7de5ab)
