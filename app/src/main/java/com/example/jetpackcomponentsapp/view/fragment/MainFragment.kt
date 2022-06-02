@@ -21,6 +21,7 @@ import com.example.jetpackcomponentsapp.util.Coroutines
 import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collectLatest
 
 class MainFragment : Fragment(), CustomListeners {
 
@@ -63,12 +64,19 @@ class MainFragment : Fragment(), CustomListeners {
         binding.recyclerView.adapter = adapter
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
         Coroutines.main(lifecycleScope, {
+            /*
             viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
                 override suspend fun emit(list : List<CustomModel>) {
                     Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                     binding.recyclerView.removeAllViews()
                     adapter.setItems(list)
                 }
+            })
+            */
+            viewModel.getItems().collectLatest( action = { list ->
+                Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                binding.recyclerView.removeAllViews()
+                adapter.setItems(list)
             })
         })
         //binding.recyclerView.scrollToPosition(0)
