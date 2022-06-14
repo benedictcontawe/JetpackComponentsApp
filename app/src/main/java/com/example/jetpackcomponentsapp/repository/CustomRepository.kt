@@ -1,7 +1,5 @@
 package com.example.jetpackcomponentsapp.repository
 
-import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,22 +10,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CustomRepository(applicationContext: Application) {
+class CustomRepository {
 
-    private lateinit var context : Context
-    private lateinit var countryAPI : CountryAPI
+    //private val context : Context
+    private val countryAPI : CountryAPI
 
     companion object {
-        @Volatile private var INSTANCE  : CustomRepository? = null
+        //@Volatile private var INSTANCE  : CustomRepository? = null
 
-        fun getInstance(applicationContext : Application) : CustomRepository {
-            return INSTANCE ?: CustomRepository(applicationContext)
+        fun getInstance(/*applicationContext : Application*/) : CustomRepository {
+            return /*INSTANCE ?:*/ CustomRepository(/*applicationContext*/)
         }
     }
 
-    init {
-        context = applicationContext
+    constructor(/*applicationContext: Application*/) {
 
+    }
+
+    init {
+        //context = applicationContext
         countryAPI = NetworkClient.createService(CountryAPI::class.java)
     }
 
@@ -51,7 +52,6 @@ class CustomRepository(applicationContext: Application) {
                 countryResponseLiveList.value = null
             }
         })
-
         return countryResponseLiveList
     }
 }
