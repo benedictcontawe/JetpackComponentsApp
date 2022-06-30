@@ -89,6 +89,10 @@ class SampleUnitTest {
         return number?.isNotBlank() == true && StringUtils.isNumeric(number)
     }
 
+    private fun isNotWholeNumber() : Boolean {
+        return number?.isBlank() == true || !StringUtils.isNumeric(number)
+    }
+
     @After
     fun after() {
         System.out.println("Done Testing")
