@@ -1,8 +1,6 @@
 package com.example.jetpackcomponentsapp.util
 
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,6 +51,13 @@ object Coroutines {
     fun main(lifecycleCoroutineScope : LifecycleCoroutineScope, work : suspend (() -> Unit)) =
         lifecycleCoroutineScope.launchWhenStarted {
             work()
+        }
+
+    fun main(lifecycleCoroutineScope : LifecycleCoroutineScope, lifecycle : Lifecycle, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        lifecycleCoroutineScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
         }
     //endregion
     //region I/O operations
