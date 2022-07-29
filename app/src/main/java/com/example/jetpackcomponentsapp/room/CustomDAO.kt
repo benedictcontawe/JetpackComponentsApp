@@ -5,14 +5,13 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CustomDAO {
-
     //@Insert
     //@Insert(onConflict = OnConflictStrategy.REPLACE)
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(customEntity: CustomEntity)
+    suspend fun insert(customEntity : CustomEntity)
 
     @Update
-    suspend fun update(customEntity: CustomEntity)
+    suspend fun update(customEntity : CustomEntity)
 
     //@Delete
     //fun delete(customEntity: CustomEntity)

@@ -18,4 +18,8 @@ data class CustomModel (
     constructor(id : Int, name : String) : this(id = id, name = name, icon = R.drawable.ic_android_black) {
 
     }
+
+    override fun toString() : String {
+        return "CustomModel(Id=$id, Name=$name, Icon=$icon)" ?: super.toString()
+    }
 }
