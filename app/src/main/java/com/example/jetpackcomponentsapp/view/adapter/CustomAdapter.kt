@@ -14,26 +14,24 @@ import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
     /**Main */
-    private lateinit var context : Context
-    private lateinit var customListeners : CustomListeners
+    private val customListeners : CustomListeners
     private lateinit var customBinder : CustomBinder
+    private val list : MutableList<CustomModel>
 
-    private var list : MutableList<CustomModel> = mutableListOf()
-
-    constructor(context : Context, customListeners : CustomListeners) : super() {
-        this.context = context
+    constructor(customListeners : CustomListeners) : super() {
         this.customListeners = customListeners
+        this.list = mutableListOf()
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : CustomViewHolder {
+    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : CustomViewHolder {
         customBinder = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_sample,
                 parent,
                 false
         )
-        return CustomViewHolder(context, customListeners, customBinder)
+        return CustomViewHolder(parent.context, customListeners, customBinder)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
@@ -46,7 +44,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
         return list[position].id?.toLong()?:RecyclerView.NO_ID
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount() : Int {
         return list.size
     }
 

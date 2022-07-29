@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
@@ -45,7 +44,7 @@ class UpdateFragment : DialogFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         Coroutines.main(this@UpdateFragment, {
-            viewModel.getUpdate().collect(object : FlowCollector<CustomModel> {
+            viewModel.observeUpdate().collect(object : FlowCollector<CustomModel> {
                 override suspend fun emit(item : CustomModel) {
                     binding.editText.setText(item.name)
                     binding.editText.requestFocus()

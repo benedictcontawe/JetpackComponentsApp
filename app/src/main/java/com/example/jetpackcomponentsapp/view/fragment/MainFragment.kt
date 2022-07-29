@@ -55,7 +55,7 @@ class MainFragment : Fragment(), CustomListeners {
     }
 
     private fun setRecyclerView() {
-        adapter = CustomAdapter(requireContext(), this@MainFragment)
+        adapter = CustomAdapter(this@MainFragment)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
@@ -74,7 +74,7 @@ class MainFragment : Fragment(), CustomListeners {
             })
             */
             scope.launch ( block = {
-                viewModel.getItems().collectLatest( action = { list ->
+                viewModel.observeItems().collectLatest( action = { list ->
                     Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                     binding.recyclerView.removeAllViews()
                     adapter.setItems(list)

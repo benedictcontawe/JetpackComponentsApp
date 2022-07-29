@@ -8,9 +8,9 @@ import com.example.jetpackcomponentsapp.databinding.CustomBinder
 
 class CustomViewHolder : BaseViewHolder {
 
-    private lateinit var customBinder : CustomBinder
+    private val customBinder : CustomBinder
 
-    constructor(context: Context, customListeners: CustomListeners, customBinder : CustomBinder) : super(context, customListeners, customBinder.root) {
+    constructor(context : Context, customListeners : CustomListeners, customBinder : CustomBinder) : super(context, customListeners, customBinder.root) {
         this.customBinder = customBinder
     }
 

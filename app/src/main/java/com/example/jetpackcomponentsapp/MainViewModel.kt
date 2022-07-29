@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.*
 
 class MainViewModel : AndroidViewModel {
 
-    private lateinit var customRepository: CustomRepository
-    private lateinit var liveUpdate: MutableStateFlow<CustomModel>
+    private val customRepository : CustomRepository
+    private val liveUpdate : MutableStateFlow<CustomModel>
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
@@ -165,7 +165,7 @@ class MainViewModel : AndroidViewModel {
         liveUpdate.emit(item)
     } }
 
-    fun getUpdate() : StateFlow<CustomModel> {
+    fun observeUpdate() : StateFlow<CustomModel> {
         return liveUpdate
     }
 
@@ -189,10 +189,10 @@ class MainViewModel : AndroidViewModel {
     }) }
 
     fun deleteAll() { Coroutines.io(this@MainViewModel, {
-            customRepository.deleteAll()
+        customRepository.deleteAll()
     }) }
 
-    suspend fun getItems(): StateFlow<List<CustomModel>> {
+    suspend fun observeItems(): StateFlow<List<CustomModel>> {
         return ConvertList.toStateFlowListModel(customRepository.getAll() ?: emptyFlow<List<CustomEntity>>(), viewModelScope)
     }
 

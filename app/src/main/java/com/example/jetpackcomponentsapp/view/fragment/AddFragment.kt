@@ -36,8 +36,8 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(getViewLifecycleOwner())
         binding.editText.requestFocus()
         showSoftKeyboard()
 

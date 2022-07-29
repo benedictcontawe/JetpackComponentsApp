@@ -9,13 +9,11 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 abstract class BaseViewHolder : RecyclerView.ViewHolder {
 
     /**Main */
-    private lateinit var context : Context
-    private lateinit var customListeners : CustomListeners
+    private val customListeners : CustomListeners
     /**Data */
     private var id : Int? = null
 
-    constructor(context: Context, customListeners: CustomListeners, view : View) : super(view) {
-        this.context = context
+    constructor(context : Context, customListeners : CustomListeners, view : View) : super(view) {
         this.customListeners = customListeners
     }
 
@@ -24,11 +22,7 @@ abstract class BaseViewHolder : RecyclerView.ViewHolder {
     }
 
     fun getId() : Int{
-        return id?:0
-    }
-
-    fun getContext() : Context {
-        return context
+        return id ?: 0
     }
 
     fun getListener() : CustomListeners {
