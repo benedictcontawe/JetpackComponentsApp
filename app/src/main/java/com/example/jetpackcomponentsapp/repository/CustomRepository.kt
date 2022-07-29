@@ -9,7 +9,7 @@ import com.example.jetpackcomponentsapp.room.CustomEntity
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
-    private lateinit var customDao : CustomDAO
+    private var customDao : CustomDAO?
 
     companion object {
         @Volatile private var INSTANCE  : CustomRepository? = null
@@ -20,14 +20,14 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     init {
-        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.applicationContext)
-        customDao = database!!.customDao()
+        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.applicationContext, "custom_database.db")
+        customDao = database?.customDao()
     }
 
     //region CRUD Operation
     override fun insert(customEntity: CustomEntity) {
         AsyncTask.execute {
-            customDao.insert(
+            customDao?.insert(
                     customEntity
             )
         }
@@ -35,7 +35,7 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
 
     override fun update(customEntity: CustomEntity) {
         AsyncTask.execute {
-            customDao.update(
+            customDao?.update(
                     customEntity
             )
         }
@@ -44,7 +44,7 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     override fun delete(customEntity: CustomEntity) {
         println("${customEntity.id}")
         AsyncTask.execute {
-            customDao.delete(
+            customDao?.delete(
                     customEntity.id
             )
         }
@@ -52,12 +52,12 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
 
     override fun deleteAll() {
         AsyncTask.execute {
-            customDao.deleteAll()
+            customDao?.deleteAll()
         }
     }
 
     fun getAll() : LiveData<List<CustomEntity>> {
-        return customDao.getAll()
+        return customDao!!.getAll()
     }
     //endregion
 }

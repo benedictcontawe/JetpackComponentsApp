@@ -27,7 +27,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : CustomViewHolder {
+    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : CustomViewHolder {
         customBinder = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_sample,

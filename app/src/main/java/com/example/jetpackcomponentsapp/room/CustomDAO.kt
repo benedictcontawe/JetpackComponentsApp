@@ -9,10 +9,10 @@ interface CustomDAO {
     //@Insert
     //@Insert(onConflict = OnConflictStrategy.REPLACE)
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(customEntity: CustomEntity)
+    fun insert(customEntity : CustomEntity)
 
     @Update
-    fun update(customEntity: CustomEntity)
+    fun update(customEntity : CustomEntity)
 
     //@Delete
     //fun delete(customEntity: CustomEntity)

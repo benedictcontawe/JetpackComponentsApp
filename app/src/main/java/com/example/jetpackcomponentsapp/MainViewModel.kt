@@ -10,14 +10,14 @@ import com.example.jetpackcomponentsapp.repository.CustomRepository
 
 class MainViewModel : AndroidViewModel {
 
-    private lateinit var customRepository : CustomRepository
-    private lateinit var liveList : MutableLiveData<MutableList<CustomModel>>
-    private lateinit var liveUpdate : MutableLiveData<CustomModel>
+    private val customRepository : CustomRepository
+    private val liveList : MutableLiveData<MutableList<CustomModel>>
+    private val liveUpdate : MutableLiveData<CustomModel>
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
-        liveList = MutableLiveData()
-        liveUpdate = MutableLiveData()
+        liveList = MutableLiveData<MutableList<CustomModel>>()
+        liveUpdate = MutableLiveData<CustomModel>()
     }
 
     @Deprecated("For Static Data")
@@ -162,7 +162,7 @@ class MainViewModel : AndroidViewModel {
     }
 
     fun setUpdate(item : CustomModel) {
-        liveUpdate.value = item
+        liveUpdate.setValue(item)
     }
 
     fun getUpdate() : LiveData<CustomModel> {
@@ -193,8 +193,7 @@ class MainViewModel : AndroidViewModel {
         customRepository.deleteAll()
     }
 
-    fun getItems() : LiveData<MutableList<CustomModel>> {
-        //return  liveList
+    fun getItems() : LiveData<List<CustomModel>> { //return  liveList
         return ConvertList.toLiveDataListModel(
                 customRepository.getAll()
         )

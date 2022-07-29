@@ -18,10 +18,10 @@ class ConvertList {
             return itemList
         }
 
-        fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<MutableList<CustomModel>> {
+        fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
             return Transformations.map<
                     List<CustomEntity>, //localList Data Type
-                    MutableList<CustomModel> //toListModel List Data Type
+                    List<CustomModel> //toListModel List Data Type
                     >(
                     localList,
                     Companion::toListModel
