@@ -8,12 +8,13 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.view.holder.BaseViewHolder
 import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
-class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
+class CustomAdapter : RecyclerView.Adapter<BaseViewHolder> {
 
     /**Main */
-    private var customListeners : CustomListeners
+    private val customListeners : CustomListeners
     private lateinit var customBinder : CustomBinder
 
     private var list : MutableList<CustomModel> = mutableListOf()
@@ -23,17 +24,17 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : CustomViewHolder {
+    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : BaseViewHolder {
         customBinder = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_sample,
                 parent,
                 false
         )
-        return CustomViewHolder(parent.context, customListeners, customBinder)
+        return CustomViewHolder(customListeners, customBinder)
     }
 
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder : BaseViewHolder, position : Int) {
         customBinder.customModel = list.get(position)
         holder.bindDataToViewHolder(list[position],position)
     }
