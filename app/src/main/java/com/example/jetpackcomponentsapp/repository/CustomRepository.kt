@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
-    private lateinit var customDao : CustomDAO
+    private var customDao : CustomDAO?
+    private var database : CustomDatabase?
 
     companion object {
         @Volatile private var INSTANCE  : CustomRepository? = null
@@ -19,36 +20,39 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     init {
-        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.applicationContext)
-        customDao = database!!.customDao()
+        database = CustomDatabase.getInstance(applicationContext.applicationContext)
+        customDao = database?.customDao()
     }
-
     //region CRUD Operation
     override public suspend fun insert(customEntity: CustomEntity) {
-        customDao.insert(
+        customDao?.insert(
                 customEntity
         )
     }
 
     override public suspend fun update(customEntity: CustomEntity) {
-        customDao.update(
+        customDao?.update(
                 customEntity
         )
     }
 
     override public suspend fun delete(customEntity: CustomEntity) {
         println("${customEntity.id}")
-        customDao.delete(
+        customDao?.delete(
                 customEntity.id
         )
     }
 
     override public suspend fun deleteAll() {
-        customDao.deleteAll()
+        customDao?.deleteAll()
     }
 
-    override public fun getAll() : Flow<List<CustomEntity>> {
-        return customDao.getAll()
+    override public fun getAll() : Flow<List<CustomEntity>>? {
+        return customDao?.getAll()
     }
     //endregion
+    override suspend fun onCLose() {
+        database?.onCLose()
+        database?.onDestroy()
+    }
 }

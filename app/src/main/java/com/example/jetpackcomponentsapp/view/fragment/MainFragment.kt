@@ -20,8 +20,9 @@ import com.example.jetpackcomponentsapp.databinding.MainBinder
 import com.example.jetpackcomponentsapp.util.Coroutines
 import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), CustomListeners {
 
@@ -63,21 +64,26 @@ class MainFragment : Fragment(), CustomListeners {
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
-        Coroutines.main(lifecycleScope, {
+        Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
             /*
-            viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
-                override suspend fun emit(list : List<CustomModel>) {
+            scope.launch ( block = {
+                viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
+                    override suspend fun emit(list : List<CustomModel>) {
+                        Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                        binding.recyclerView.removeAllViews()
+                        adapter.setItems(list)
+                    }
+                })
+            })
+            */
+            scope.launch ( block = {
+                viewModel.getItems().collectLatest( action = { list ->
                     Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                     binding.recyclerView.removeAllViews()
                     adapter.setItems(list)
-                }
+                })
             })
-            */
-            viewModel.getItems().collectLatest( action = { list ->
-                Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                binding.recyclerView.removeAllViews()
-                adapter.setItems(list)
-            })
+
         })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)

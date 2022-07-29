@@ -1,5 +1,8 @@
 package com.example.jetpackcomponentsapp.util
 
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,15 +50,21 @@ object Coroutines {
         CoroutineScope(Dispatchers.Main.immediate).launch {
             work()
         }
-
-    fun main(lifecycleCoroutineScope : LifecycleCoroutineScope, work : suspend (() -> Unit)) =
-        lifecycleCoroutineScope.launchWhenStarted {
-            work()
+    fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        activity.lifecycleScope.launch {
+            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
         }
-
-    fun main(lifecycleCoroutineScope : LifecycleCoroutineScope, lifecycle : Lifecycle, work : suspend ((scope : CoroutineScope) -> Unit)) =
-        lifecycleCoroutineScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+    fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : DialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
                 work(this)
             }
         }

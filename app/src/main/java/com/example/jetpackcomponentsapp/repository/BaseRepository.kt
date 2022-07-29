@@ -13,5 +13,7 @@ interface BaseRepository {
 
     public suspend fun  deleteAll()
 
-    public fun getAll() : Flow<List<CustomEntity>>
+    public fun getAll() : Flow<List<CustomEntity>>?
+
+    public suspend fun  onCLose()
 }

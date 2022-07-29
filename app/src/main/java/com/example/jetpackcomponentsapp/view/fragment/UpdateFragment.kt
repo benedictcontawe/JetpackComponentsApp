@@ -44,7 +44,7 @@ class UpdateFragment : DialogFragment() {
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        Coroutines.main(lifecycleScope, {
+        Coroutines.main(this@UpdateFragment, {
             viewModel.getUpdate().collect(object : FlowCollector<CustomModel> {
                 override suspend fun emit(item : CustomModel) {
                     binding.editText.setText(item.name)

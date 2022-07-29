@@ -18,7 +18,7 @@ abstract class CustomDatabase : RoomDatabase() {
     companion object {
         @Volatile private var instance : CustomDatabase? = null
 
-        fun getInstance(context: Context): CustomDatabase? {
+        fun getInstance(context : Context) : CustomDatabase? {
             if (instance == null) {
                 synchronized(CustomDatabase::class) {
                     instance = Room.databaseBuilder(
@@ -31,10 +31,6 @@ abstract class CustomDatabase : RoomDatabase() {
                 }
             }
             return instance
-        }
-
-        fun destroyInstance() {
-            instance = null
         }
 
         private val roomCallback : RoomDatabase.Callback = object : RoomDatabase.Callback() {
@@ -56,5 +52,13 @@ abstract class CustomDatabase : RoomDatabase() {
                 super.onOpen(db)
             }
         }
+    }
+
+    fun onCLose() {
+        instance?.close()
+    }
+
+    fun onDestroy() {
+        instance = null
     }
 }

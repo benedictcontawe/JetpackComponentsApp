@@ -46,15 +46,15 @@ class ConvertList {
             return when(customModel.id) {
                 null -> {
                     CustomEntity(
-                            customModel.name?:"",
-                            customModel.icon?:0
+                        customModel.name?:"",
+                        customModel.icon?:0
                     )
                 }
                 else -> {
                     CustomEntity(
-                            customModel.id!!,
-                            customModel.name?:"",
-                            customModel.icon?:0
+                        customModel.id!!,
+                        customModel.name?:"",
+                        customModel.icon?:0
                     )
                 }
             }
