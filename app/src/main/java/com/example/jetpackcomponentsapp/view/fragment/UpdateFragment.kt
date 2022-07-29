@@ -29,8 +29,7 @@ class UpdateFragment : BaseDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment)
-        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -40,9 +39,9 @@ class UpdateFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        viewModel.getUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(getViewLifecycleOwner())
+        viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
             override fun onChanged(item : CustomModel) {
                 binding.editText.setText(item.name)
                 binding.editText.requestFocus()
@@ -50,10 +49,9 @@ class UpdateFragment : BaseDialogFragment() {
                 showSoftKeyboard()
             }
         })
-
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                viewModel.updateItem()
+                viewModel.updateItem(binding.editText.getText().toString())
                 hideSoftKeyboard()
                 dismiss()
             }

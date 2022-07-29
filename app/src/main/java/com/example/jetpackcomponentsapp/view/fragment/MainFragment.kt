@@ -39,7 +39,7 @@ class MainFragment : BaseFragment(), CustomListeners {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //viewModel = ViewModelProviders.of(activity).get(MainViewModel::class.java)
-        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,20 +49,19 @@ class MainFragment : BaseFragment(), CustomListeners {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(getViewLifecycleOwner())
         setRecyclerView()
         setFloatingActionButton()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkIfFragmentLoaded(this)
+        viewModel.checkIfFragmentLoaded(this@MainFragment)
     }
 
     private fun setRecyclerView() {
-        adapter = CustomAdapter(requireContext(), this)
+        adapter = CustomAdapter(this@MainFragment)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false)

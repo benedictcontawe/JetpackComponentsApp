@@ -14,36 +14,34 @@ import kotlinx.coroutines.delay
 
 class MainViewModel : AndroidViewModel {
 
-    private lateinit var customRepository : CustomRepository
-    private lateinit var liveList : LiveData<List<CustomModel>>
-    private lateinit var liveUpdate : MutableLiveData<CustomModel>
-    private lateinit var liveStandBy : MutableLiveData<Boolean>
+    private var customRepository : CustomRepository
+    private var liveList : LiveData<List<CustomModel>>
+    private var liveUpdate : MutableLiveData<CustomModel>
+    private var liveStandBy : MutableLiveData<Boolean>
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
-        liveList = MutableLiveData()
-        liveUpdate = MutableLiveData()
-        liveStandBy = MutableLiveData()
+        liveList = MutableLiveData(emptyList<CustomModel>())
+        liveUpdate = MutableLiveData(CustomModel())
+        liveStandBy = MutableLiveData(null)
     }
 
     fun viewDidLoad() {
         liveStandBy.setValue(true)
     }
 
-    fun checkIfFragmentLoaded(baseFragment: Fragment) {
-        Log.d("MainViewModel","checkIfFragmentLoaded")
-        Coroutines.default {
+    fun checkIfFragmentLoaded(baseFragment: Fragment) { Log.d("MainViewModel","checkIfFragmentLoaded")
+        Coroutines.default(this, {
             while (!baseFragment.isVisible) delay(100)
             viewWillAppear()
-        }
+        })
     }
 
-    fun viewWillAppear() {
-        Log.d("MainViewModel","viewWillAppear")
-        Coroutines.main {
+    fun viewWillAppear() { Log.d("MainViewModel","viewWillAppear")
+        Coroutines.main(this@MainViewModel, {
             delay(500)
             liveStandBy.setValue(false)
-        }
+        })
     }
 
     fun getLoadState() : LiveData<Boolean> {
@@ -70,34 +68,33 @@ class MainViewModel : AndroidViewModel {
 
     fun setUpdate(item : CustomModel) {
         viewDidLoad()
-        Coroutines.default {
+        Coroutines.io(this@MainViewModel, {
             liveUpdate.postValue(item)
-        }
+        } )
     }
 
-    fun getUpdate() : LiveData<CustomModel> {
+    fun observeUpdate() : LiveData<CustomModel> {
         return liveUpdate
     }
 
     fun insertItem(item : CustomModel) {
         viewDidLoad()
-        Coroutines.io {
+        Coroutines.io(this@MainViewModel, {
             customRepository.insert(
                     ConvertList.toEntity(item)
             )
-        }
+        } )
         viewWillAppear()
     }
 
-    fun updateItem() {
+    fun updateItem(updated : String) {
         viewDidLoad()
-        Coroutines.io {
-        liveUpdate.value?.let {
-                customRepository.update(
-                        ConvertList.toEntity(it)
-                )
-            }
-        }
+        Coroutines.io(this@MainViewModel, {
+            liveUpdate.getValue()?.name = updated
+            customRepository.update(
+                ConvertList.toEntity(liveUpdate.value ?: CustomModel())
+            )
+        })
         viewWillAppear()
     }
 
@@ -113,9 +110,9 @@ class MainViewModel : AndroidViewModel {
 
     public fun deleteAll() {
         viewDidLoad()
-        Coroutines.io {
+        Coroutines.io(this@MainViewModel, {
             customRepository.deleteAll()
-        }
+        })
         viewWillAppear()
     }
 

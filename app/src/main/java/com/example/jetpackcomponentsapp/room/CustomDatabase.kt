@@ -18,12 +18,13 @@ abstract class CustomDatabase : RoomDatabase() {
     companion object {
         @Volatile private var instance : CustomDatabase? = null
 
-        fun getInstance(context: Context): CustomDatabase? {
+        fun getInstance(context : Context, database : String): CustomDatabase? {
             if (instance == null) {
                 synchronized(CustomDatabase::class) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        CustomDatabase::class.java, "custom_database"
+                        CustomDatabase::class.java,
+                        database
                     )
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)

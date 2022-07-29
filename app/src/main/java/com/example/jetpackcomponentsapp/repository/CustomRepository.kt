@@ -19,7 +19,7 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     init {
-        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.applicationContext)
+        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.applicationContext, "custom_database.db")
         customDao = database!!.customDao()
     }
     //region CRUD Operation

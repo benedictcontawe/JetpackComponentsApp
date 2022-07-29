@@ -30,7 +30,7 @@ class AddFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(AddFragment.getTag(),"onCreate()")
-        viewModel = ViewModelProvider(activity).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,12 +42,10 @@ class AddFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(AddFragment.getTag(),"onViewCreated()")
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(getViewLifecycleOwner())
         binding.editText.requestFocus()
         showSoftKeyboard()
-
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
                 viewModel.insertItem(CustomModel(binding.editText.text.toString()))

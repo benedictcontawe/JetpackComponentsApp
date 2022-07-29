@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -14,14 +13,12 @@ import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
     /**Main */
-    private lateinit var context : Context
-    private lateinit var customListeners : CustomListeners
+    private var customListeners : CustomListeners
     private lateinit var customBinder : CustomBinder
 
     private var list : MutableList<CustomModel> = mutableListOf()
 
-    constructor(context : Context, customListeners : CustomListeners) : super() {
-        this.context = context
+    constructor(customListeners : CustomListeners) : super() {
         this.customListeners = customListeners
         setHasStableIds(true)
     }
@@ -33,7 +30,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
                 parent,
                 false
         )
-        return CustomViewHolder(context, customListeners, customBinder)
+        return CustomViewHolder(parent.context, customListeners, customBinder)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {

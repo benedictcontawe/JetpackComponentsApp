@@ -1,12 +1,12 @@
 package com.example.jetpackcomponentsapp.util
 
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 /**
  * https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
 +-----------------------------------+
@@ -42,17 +42,33 @@ import kotlinx.coroutines.launch
 | - DiffUtils                       |
 +-----------------------------------+
  */
-
 object Coroutines {
     //region UI contexts
     fun main(work : suspend (() -> Unit)) =
         CoroutineScope(Dispatchers.Main.immediate).launch {
             work()
         }
-
-    fun main(lifecycleCoroutineScope : LifecycleCoroutineScope, work : suspend (() -> Unit)) =
-        lifecycleCoroutineScope.launchWhenStarted {
+    fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        activity.lifecycleScope.launch {
+            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(viewModel : ViewModel, work : suspend (() -> Unit)) =
+        viewModel.viewModelScope.launch(Dispatchers.Main) {
             work()
+        }
+    fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : DialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
         }
     //endregion
     //region I/O operations
