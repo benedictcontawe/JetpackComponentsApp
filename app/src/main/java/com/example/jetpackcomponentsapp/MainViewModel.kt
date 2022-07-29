@@ -161,28 +161,28 @@ class MainViewModel : AndroidViewModel {
         */
     }) }
 
-    fun setUpdate(item: CustomModel) { Coroutines.io(this@MainViewModel) {
+    fun setUpdate(item : CustomModel) { Coroutines.io(this@MainViewModel) {
         liveUpdate.emit(item)
     } }
 
-    fun getUpdate(): StateFlow<CustomModel> {
+    fun getUpdate() : StateFlow<CustomModel> {
         return liveUpdate
     }
 
-    fun insertItem(item: CustomModel) { Coroutines.io(this@MainViewModel, {
+    fun insertItem(item : CustomModel) { Coroutines.io(this@MainViewModel, {
         customRepository.insert(
             ConvertList.toEntity(item)
         )
     }) }
 
-    fun updateItem(updated: String) { Coroutines.io(this@MainViewModel, {
+    fun updateItem(updated : String) { Coroutines.io(this@MainViewModel, {
         liveUpdate.value.name = updated
         customRepository.update(
             ConvertList.toEntity(liveUpdate.value)
         )
     }) }
 
-    fun deleteItem(item: CustomModel) { Coroutines.io(this@MainViewModel, {
+    fun deleteItem(item : CustomModel) { Coroutines.io(this@MainViewModel, {
         customRepository.delete(
             ConvertList.toEntity(item)
         )

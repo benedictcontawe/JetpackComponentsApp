@@ -6,7 +6,7 @@ import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
 import kotlinx.coroutines.flow.Flow
 
-class CustomRepository(applicationContext: Application) : BaseRepository {
+class CustomRepository(applicationContext : Application) : BaseRepository {
 
     private var customDao : CustomDAO?
     private var database : CustomDatabase?
@@ -20,26 +20,26 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     init {
-        database = CustomDatabase.getInstance(applicationContext.applicationContext)
+        database = CustomDatabase.getInstance(applicationContext.applicationContext, "custom_database.db")
         customDao = database?.customDao()
     }
     //region CRUD Operation
-    override public suspend fun insert(customEntity: CustomEntity) {
+    override public suspend fun insert(customEntity : CustomEntity) {
         customDao?.insert(
-                customEntity
+            customEntity
         )
     }
 
-    override public suspend fun update(customEntity: CustomEntity) {
+    override public suspend fun update(customEntity : CustomEntity) {
         customDao?.update(
-                customEntity
+            customEntity
         )
     }
 
-    override public suspend fun delete(customEntity: CustomEntity) {
+    override public suspend fun delete(customEntity : CustomEntity) {
         println("${customEntity.id}")
         customDao?.delete(
-                customEntity.id
+            customEntity.id
         )
     }
 
@@ -51,7 +51,7 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
         return customDao?.getAll()
     }
     //endregion
-    override suspend fun onCLose() {
+    override public suspend fun onCLose() {
         database?.onCLose()
         database?.onDestroy()
     }

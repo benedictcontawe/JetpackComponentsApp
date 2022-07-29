@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.view.CustomListeners
@@ -46,12 +45,10 @@ class MainFragment : Fragment(), CustomListeners {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(getViewLifecycleOwner())
         setRecyclerView()
         setFloatingActionButton()
         //viewModel.setItems()
@@ -83,7 +80,6 @@ class MainFragment : Fragment(), CustomListeners {
                     adapter.setItems(list)
                 })
             })
-
         })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)

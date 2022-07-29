@@ -18,12 +18,13 @@ abstract class CustomDatabase : RoomDatabase() {
     companion object {
         @Volatile private var instance : CustomDatabase? = null
 
-        fun getInstance(context : Context) : CustomDatabase? {
+        public fun getInstance(context : Context, database : String) : CustomDatabase? {
             if (instance == null) {
                 synchronized(CustomDatabase::class) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        CustomDatabase::class.java, "custom_database"
+                        CustomDatabase::class.java,
+                        database
                     )
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
@@ -34,10 +35,9 @@ abstract class CustomDatabase : RoomDatabase() {
         }
 
         private val roomCallback : RoomDatabase.Callback = object : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
+            override fun onCreate(db : SupportSQLiteDatabase) {
                 //Initialize Database if no database attached to the App
                 super.onCreate(db)
-                //PopulateDbAsyncTask(instance).execute()
                 Coroutines.io {
                     //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 0")))
                     //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 1")))
@@ -47,18 +47,18 @@ abstract class CustomDatabase : RoomDatabase() {
                 }
             }
 
-            override fun onOpen(db: SupportSQLiteDatabase) {
+            override fun onOpen(db : SupportSQLiteDatabase) {
                 //Re-open Database if it has database attached to the App
                 super.onOpen(db)
             }
         }
     }
 
-    fun onCLose() {
+    public fun onCLose() {
         instance?.close()
     }
 
-    fun onDestroy() {
+    public fun onDestroy() {
         instance = null
     }
 }
