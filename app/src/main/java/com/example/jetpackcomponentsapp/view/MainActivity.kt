@@ -39,8 +39,7 @@ class MainActivity : AppCompatActivity() {
     fun callAddFragment() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, AddFragment.newInstance())
-                .addToBackStack(
-                        AddFragment.getTag())
+                .addToBackStack( AddFragment.getTag() )
                 .commit()
     }
 
@@ -48,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         UpdateFragment
                 .newInstance()
                 .show(
-                        supportFragmentManager.beginTransaction(),
-                        UpdateFragment.getTag()
+                    supportFragmentManager.beginTransaction(),
+                    UpdateFragment.getTag()
                 )
     }
 

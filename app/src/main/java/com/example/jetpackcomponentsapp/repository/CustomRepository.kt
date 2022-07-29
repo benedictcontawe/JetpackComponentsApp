@@ -1,15 +1,12 @@
 package com.example.jetpackcomponentsapp.repository
 
 import android.app.Application
-import com.example.jetpackcomponentsapp.room.CustomDAO
-import com.example.jetpackcomponentsapp.room.CustomDatabase
-import com.example.jetpackcomponentsapp.room.CustomEntity
-import kotlinx.coroutines.flow.Flow
+import com.example.jetpackcomponentsapp.sqlite.DatabaseHelper
+import com.example.jetpackcomponentsapp.model.CustomEntity
 
 class CustomRepository(applicationContext: Application) : BaseRepository {
 
-    private var customDao : CustomDAO?
-    private var database : CustomDatabase?
+    private var databaseHelper : DatabaseHelper?
 
     companion object {
         @Volatile private var INSTANCE  : CustomRepository? = null
@@ -20,39 +17,41 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
     }
 
     init {
-        database = CustomDatabase.getInstance(applicationContext.applicationContext)
-        customDao = database?.customDao()
+        databaseHelper = DatabaseHelper(applicationContext.getApplicationContext(), "custom_database.db", null, 1)
     }
     //region CRUD Operation
     override public suspend fun insert(customEntity: CustomEntity) {
-        customDao?.insert(
-                customEntity
+        databaseHelper?.insert(
+            "custom_table",
+            customEntity
         )
     }
 
     override public suspend fun update(customEntity: CustomEntity) {
-        customDao?.update(
-                customEntity
+        databaseHelper?.update(
+            "custom_table",
+            customEntity
         )
     }
 
     override public suspend fun delete(customEntity: CustomEntity) {
-        println("${customEntity.id}")
-        customDao?.delete(
-                customEntity.id
+        databaseHelper?.delete(
+            "custom_table",
+            customEntity
         )
     }
 
     override public suspend fun deleteAll() {
-        customDao?.deleteAll()
+        databaseHelper?.deleteAll(
+            "custom_table"
+        )
     }
 
-    override public fun getAll() : Flow<List<CustomEntity>>? {
-        return customDao?.getAll()
+    override public suspend fun getAll() : List<CustomEntity> {
+        return databaseHelper?.getAll() ?: emptyList<CustomEntity>()
     }
     //endregion
     override suspend fun onCLose() {
-        database?.onCLose()
-        database?.onDestroy()
+        databaseHelper?.onClose()
     }
 }

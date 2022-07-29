@@ -1,7 +1,6 @@
 package com.example.jetpackcomponentsapp.repository
 
-import com.example.jetpackcomponentsapp.room.CustomEntity
-import kotlinx.coroutines.flow.Flow
+import com.example.jetpackcomponentsapp.model.CustomEntity
 
 interface BaseRepository {
 
@@ -13,7 +12,7 @@ interface BaseRepository {
 
     public suspend fun  deleteAll()
 
-    public fun getAll() : Flow<List<CustomEntity>>?
+    public suspend fun getAll() : List<CustomEntity>
 
     public suspend fun  onCLose()
 }

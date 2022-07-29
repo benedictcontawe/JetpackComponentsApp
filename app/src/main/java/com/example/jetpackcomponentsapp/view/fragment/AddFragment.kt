@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +46,7 @@ class AddFragment : Fragment() {
             override fun onClick(view : View) {
                 viewModel.insertItem(CustomModel(binding.editText.text.toString()))
                 hideSoftKeyboard()
+                Toast.makeText(requireContext(), "Item Added Swipe down to Refresh!", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             }
         })

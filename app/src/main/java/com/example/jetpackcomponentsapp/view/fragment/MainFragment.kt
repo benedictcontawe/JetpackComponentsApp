@@ -1,7 +1,6 @@
 package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.jetpackcomponentsapp.view.CustomListeners
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.MainViewModel
@@ -21,10 +20,10 @@ import com.example.jetpackcomponentsapp.util.Coroutines
 import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment(), CustomListeners {
+class MainFragment : Fragment(), OnRefreshListener, CustomListeners {
 
     companion object {
         fun newInstance() : MainFragment = MainFragment()
@@ -54,6 +53,7 @@ class MainFragment : Fragment(), CustomListeners {
 
         setRecyclerView()
         setFloatingActionButton()
+        binding.swipeRefreshLayout.setOnRefreshListener(this@MainFragment)
         //viewModel.setItems()
     }
 
@@ -64,27 +64,6 @@ class MainFragment : Fragment(), CustomListeners {
         //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
         binding.recyclerView.adapter = adapter
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
-        Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
-            /*
-            scope.launch ( block = {
-                viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
-                    override suspend fun emit(list : List<CustomModel>) {
-                        Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                        binding.recyclerView.removeAllViews()
-                        adapter.setItems(list)
-                    }
-                })
-            })
-            */
-            scope.launch ( block = {
-                viewModel.getItems().collectLatest( action = { list ->
-                    Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                    binding.recyclerView.removeAllViews()
-                    adapter.setItems(list)
-                })
-            })
-
-        })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)
         binding.recyclerView.setHasFixedSize(true)
@@ -99,15 +78,25 @@ class MainFragment : Fragment(), CustomListeners {
         binding.floatingActionButtonDelete.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View?) {
                 viewModel.deleteAll()
-                Toast.makeText(context,"deleteAll()",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "All Deleted Swipe down to Refresh!", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun onAdd() {
         (activity as MainActivity).callAddFragment()
-        //viewModel.setItems()
     }
+
+    override fun onRefresh() { Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
+        scope.launch ( block = {
+            binding.recyclerView.removeAllViews()
+            adapter.setItems(viewModel.getItems())
+            delay(1000)
+            if (binding.swipeRefreshLayout.isRefreshing()) {
+                binding.swipeRefreshLayout.setRefreshing(false)
+            }
+        })
+    }) }
 
     override fun onUpdate(item : CustomModel, position : Int) {
         viewModel.setUpdate(item)
@@ -116,5 +105,6 @@ class MainFragment : Fragment(), CustomListeners {
 
     override fun onDelete(item : CustomModel, position : Int) {
         viewModel.deleteItem(item)
+        Toast.makeText(requireContext(), "Item Deleted Swipe down to Refresh!", Toast.LENGTH_SHORT).show()
     }
 }

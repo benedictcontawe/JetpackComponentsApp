@@ -1,19 +1,10 @@
-package com.example.jetpackcomponentsapp.room
+package com.example.jetpackcomponentsapp.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "custom_table")
 data class CustomEntity (
-    @ColumnInfo(name = "Name")
     var name : String? = null,
 
-    @ColumnInfo(name = "Icon")
     var icon : Int? = null
 ) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "Id")
     var id : Int? = null
 
     constructor(id : Int, name : String, icon : Int) : this() {

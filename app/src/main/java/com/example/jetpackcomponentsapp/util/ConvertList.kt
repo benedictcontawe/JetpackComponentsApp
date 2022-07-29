@@ -3,14 +3,14 @@ package com.example.jetpackcomponentsapp.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.room.CustomEntity
+import com.example.jetpackcomponentsapp.model.CustomEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 
 class ConvertList {
 
     companion object {
-        private fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
+        public  fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
             val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
             customEntity.map {
                 itemList.add(
@@ -20,7 +20,7 @@ class ConvertList {
             return itemList
         }
 
-        fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
+        public fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
             return Transformations.map<
                     List<CustomEntity>, //localList Data Type
                     List<CustomModel> //toListModel List Data Type
@@ -30,19 +30,19 @@ class ConvertList {
             )
         }
 
-        suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
+        public suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
             return localList.mapLatest { entityList ->
                 toListModel(entityList)
             }.stateIn(scope = scope/*, SharingStarted.Eagerly, initialValue = false*/)
         }
 
-        suspend fun toSharedFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : SharedFlow<List<CustomModel>> {
+        public suspend fun toSharedFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : SharedFlow<List<CustomModel>> {
             return localList.mapLatest { entityList ->
                 toListModel(entityList)
             }.stateIn(scope = scope)
         }
 
-        fun toEntity(customModel: CustomModel) : CustomEntity {
+        public fun toEntity(customModel: CustomModel) : CustomEntity {
             return when(customModel.id) {
                 null -> {
                     CustomEntity(

@@ -7,7 +7,6 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 /**
  * https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
 +-----------------------------------+
@@ -43,7 +42,6 @@ import kotlinx.coroutines.launch
 | - DiffUtils                       |
 +-----------------------------------+
  */
-
 object Coroutines {
     //region UI contexts
     fun main(work : suspend (() -> Unit)) =

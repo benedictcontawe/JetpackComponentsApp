@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
@@ -40,7 +40,6 @@ class UpdateFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -54,12 +53,11 @@ class UpdateFragment : DialogFragment() {
                 }
             })
         })
-
-
         binding.button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
                 viewModel.updateItem(binding.editText.getText().toString())
                 hideSoftKeyboard()
+                Toast.makeText(requireContext(), "Item Updated Swipe down to Refresh!", Toast.LENGTH_SHORT).show()
                 dismiss()
             }
         })
@@ -75,21 +73,3 @@ class UpdateFragment : DialogFragment() {
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 }
-/*
-AlertDialog.Builder(activity)
-.setTitle("Update Name")
-.setMessage("Please update your name")
-.setView(getEditText())
-.setIcon(R.drawable.ic_update_white)
-.setPositiveButton("OK", object : DialogInterface.OnClickListener {
-    override fun onClick(dialog : DialogInterface, which : Int) {
-        dismiss()
-    }
-})
-.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
-    override fun onClick(dialog : DialogInterface?, which : Int) {
-        dismiss()
-    }
-})
-.create()
-*/

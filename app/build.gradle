@@ -52,6 +52,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //endregion
     //region Android Unit Test and U.I. Test Library
     testImplementation 'junit:junit:4.13.2'
