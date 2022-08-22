@@ -41,3 +41,5 @@
 - [Collect from several stateflows](https://stackoverflow.com/questions/67799859/collect-from-several-stateflows)
 
 - [Using vector assets in Android apps](https://medium.com/androiddevelopers/using-vector-assets-in-android-apps-4318fd662eb9)
+
+- [Combining flows: merge, zip, and combine](https://kt.academy/article/cc-flow-combine)
