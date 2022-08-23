@@ -43,3 +43,5 @@
 - [Using vector assets in Android apps](https://medium.com/androiddevelopers/using-vector-assets-in-android-apps-4318fd662eb9)
 
 - [Combining flows: merge, zip, and combine](https://kt.academy/article/cc-flow-combine)
+
+- [Android Protobuf Tutorial with example app](https://medium.com/mobile-app-development-publication/simple-android-protobuf-tutorial-with-actual-code-bfb581299f47#:~:text=The%20PROTO%20file%20is%20then,be%20used%20in%20your%20code.)
