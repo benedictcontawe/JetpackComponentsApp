@@ -194,8 +194,8 @@ class MainViewModel : ViewModel {
         customRepository.deleteAll()
     }) }
 
-    suspend fun observeItems() : StateFlow<List<CustomModel>> {
-        return ConvertList.toStateFlowListModel(customRepository.getAllFlow() ?: emptyFlow<ResultsChange<CustomObject>>(), viewModelScope)
+    suspend fun observeItems() : SharedFlow<List<CustomModel>> {
+        return ConvertList.toSharedFlowListModel(customRepository.getAllFlow() ?: emptyFlow<ResultsChange<CustomObject>>(), viewModelScope)
     }
 
     override fun onCleared() {

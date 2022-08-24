@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.util
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment

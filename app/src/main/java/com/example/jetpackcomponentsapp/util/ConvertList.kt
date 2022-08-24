@@ -1,7 +1,6 @@
 package com.example.jetpackcomponentsapp.util
 
 import android.util.Log
-import androidx.lifecycle.Lifecycle
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.realm.CustomObject
 import io.realm.kotlin.notifications.DeletedList
@@ -26,14 +25,20 @@ object ConvertList {
         return itemList
     }
 
+    suspend fun toFlowListModel(localList : Flow<ResultsChange<CustomObject>>) : Flow<List<CustomModel>> {
+        return localList.map { entityList ->
+            toListModel(entityList.list)
+        }
+    }
+
     suspend fun toSharedFlowListModel(localList : Flow<ResultsChange<CustomObject>>, scope : CoroutineScope) : SharedFlow<List<CustomModel>> {
         return localList.map { objectList : ResultsChange<CustomObject> ->
             when (objectList) {
-                is InitialResults<CustomObject> -> { Log.e(TAG,"InitialResults list ${objectList.list}") }
+                is InitialResults<CustomObject> -> { Log.d(TAG,"InitialResults list ${objectList.list}") }
                 is UpdatedResults<CustomObject> -> {
-                    Log.e(TAG,"UpdatedResults list ${objectList.list} changes ${objectList.changes} deletes ${objectList.deletions} insertions ${objectList.insertions}")
+                    Log.d(TAG,"UpdatedResults list ${objectList.list} changes ${objectList.changes} deletes ${objectList.deletions} insertions ${objectList.insertions}")
                 } is DeletedList<*> -> {
-                Log.e(TAG,"DeletedList")
+                Log.d(TAG,"DeletedList")
             }
             }
             toListModel(objectList.list)
@@ -43,10 +48,10 @@ object ConvertList {
     suspend fun toStateFlowListModel(localList : Flow<ResultsChange<CustomObject>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
         return localList.map { objectList : ResultsChange<CustomObject> ->
             when (objectList) {
-                is InitialResults<CustomObject> -> { Log.e(TAG,"InitialResults list ${objectList.list}") }
+                is InitialResults<CustomObject> -> { Log.d(TAG,"InitialResults list ${objectList.list}") }
                 is UpdatedResults<CustomObject> -> {
-                    Log.e(TAG,"UpdatedResults list ${objectList.list} changes ${objectList.changes} deletes ${objectList.deletions} insertions ${objectList.insertions}")
-                } is DeletedList<*> -> { Log.e(TAG,"DeletedList") }
+                    Log.d(TAG,"UpdatedResults list ${objectList.list} changes ${objectList.changes} deletes ${objectList.deletions} insertions ${objectList.insertions}")
+                } is DeletedList<*> -> { Log.d(TAG,"DeletedList") }
             }
             toListModel(objectList.list)
         }.stateIn(scope = scope, /*SharingStarted.Lazily, Lifecycle.State.STARTED ,initialValue = false*/)
