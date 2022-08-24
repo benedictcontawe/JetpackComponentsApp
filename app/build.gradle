@@ -4,8 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'org.jetbrains.kotlin.android'
+    id 'io.realm.kotlin'
 }
-
 android {
     compileSdk 32
 
@@ -15,8 +15,9 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -37,21 +38,22 @@ android {
         viewBinding true
     }
 }
-
 dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
+    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt'
     //region Android UI Layout Library and backward-compatible Library(Legacy)
     implementation "androidx.activity:activity-ktx:1.6.0-alpha04"
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
     //endregion
     //region Life Cycle Components
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     //endregion
     //region Android Unit Test and U.I. Test Library
     testImplementation 'junit:junit:4.13.2'
@@ -59,16 +61,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //endregion
     //region Kotlin Library
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     //endregion
-    //region Room -> use annotationProcessor for java, kapt for kotlin
-    implementation "androidx.room:room-ktx:2.4.2"
-    implementation "androidx.room:room-runtime:2.4.2" //android.arch.persistence.room:runtime
-    kapt "androidx.room:room-compiler:2.4.2" //android.arch.persistence.room:compiler
-    testImplementation "androidx.room:room-testing:2.4.2" //android.arch.persistence.room:testing
+    //region Realm
+    implementation 'io.realm.kotlin:library-base:1.0.2'
     //endregion
-    //region Work Manager
-    implementation "androidx.work:work-runtime:2.7.1" // (Java only)
-    implementation "androidx.work:work-runtime-ktx:2.7.1" // Kotlin + coroutines
-    //endregion
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt'
 }

@@ -20,7 +20,7 @@ import com.example.jetpackcomponentsapp.util.Coroutines
 import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), CustomListeners {
@@ -62,24 +62,22 @@ class MainFragment : Fragment(), CustomListeners {
         binding.recyclerView.adapter = adapter
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
         Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
-            /*
             scope.launch ( block = {
-                viewModel.getItems().collect(object : FlowCollector<List<CustomModel>> {
-                    override suspend fun emit(list : List<CustomModel>) {
-                        Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                viewModel.observeItems().collect(object : FlowCollector<List<CustomModel>> {
+                    override suspend fun emit(value : List<CustomModel>) {
+                        Log.d(MainFragment.getTag(),"ID ${value.map { it.id }}, Name ${value.map { it.name }}")
                         binding.recyclerView.removeAllViews()
-                        adapter.setItems(list)
+                        adapter.setItems(value)
                     }
                 })
             })
-            */
-            scope.launch ( block = {
+            /*scope.launch ( block = {
                 viewModel.observeItems().collectLatest( action = { list ->
                     Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                     binding.recyclerView.removeAllViews()
                     adapter.setItems(list)
                 })
-            })
+            })*/
         })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)

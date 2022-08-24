@@ -1,58 +1,51 @@
 package com.example.jetpackcomponentsapp.repository
 
-import android.app.Application
-import com.example.jetpackcomponentsapp.room.CustomDAO
-import com.example.jetpackcomponentsapp.room.CustomDatabase
-import com.example.jetpackcomponentsapp.room.CustomEntity
+import com.example.jetpackcomponentsapp.realm.CustomDatabase
+import com.example.jetpackcomponentsapp.realm.CustomObject
+import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.flow.Flow
 
-class CustomRepository(applicationContext : Application) : BaseRepository {
+class CustomRepository : BaseRepository {
 
-    private var customDao : CustomDAO?
-    private var database : CustomDatabase?
 
     companion object {
         @Volatile private var INSTANCE  : CustomRepository? = null
 
-        fun getInstance(applicationContext : Application) : CustomRepository {
-            return INSTANCE ?: CustomRepository(applicationContext)
+        fun getInstance() : CustomRepository {
+            return INSTANCE ?: CustomRepository()
         }
     }
 
     init {
-        database = CustomDatabase.getInstance(applicationContext.applicationContext, "custom_database.db")
-        customDao = database?.customDao()
+        CustomDatabase.onOpen()
     }
     //region CRUD Operation
-    override public suspend fun insert(customEntity : CustomEntity) {
-        customDao?.insert(
-            customEntity
-        )
+    override public suspend fun insert(customObject: CustomObject) {
+        CustomDatabase.writeAsync(customObject)
     }
 
-    override public suspend fun update(customEntity : CustomEntity) {
-        customDao?.update(
-            customEntity
-        )
+    override public suspend fun update(customObject: CustomObject) {
+        CustomDatabase.update(customObject)
     }
 
-    override public suspend fun delete(customEntity : CustomEntity) {
-        println("${customEntity.id}")
-        customDao?.delete(
-            customEntity.id
-        )
+    override public suspend fun delete(customObject: CustomObject) {
+        CustomDatabase.delete(customObject)
     }
 
     override public suspend fun deleteAll() {
-        customDao?.deleteAll()
+        CustomDatabase.deleteAll()
     }
 
-    override public fun getAll() : Flow<List<CustomEntity>>? {
-        return customDao?.getAll()
+    override public suspend fun getAll() : RealmResults<CustomObject>? {
+        return CustomDatabase.query()
+    }
+
+    override public suspend fun getAllFlow() : Flow<ResultsChange<CustomObject>>? {
+        return CustomDatabase.queryFlow()
     }
     //endregion
     override public suspend fun onCLose() {
-        database?.onCLose()
-        database?.onDestroy()
+        CustomDatabase.onCLose()
     }
 }
