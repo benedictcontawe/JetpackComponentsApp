@@ -10,7 +10,7 @@ import com.example.jetpackcomponentsapp.util.Coroutines
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.*
 
-class MainViewModel : ViewModel {
+public class MainViewModel : ViewModel {
 
     private val customRepository : CustomRepository
     private val liveUpdate : MutableStateFlow<CustomModel>

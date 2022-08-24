@@ -1,8 +1,11 @@
 package com.example.jetpackcomponentsapp.realm
 
 import io.realm.kotlin.Realm
-import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.query.RealmResults
+import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
+import kotlinx.coroutines.flow.Flow
 import kotlin.reflect.KClass
 
 abstract class BaseRealm {
@@ -18,78 +21,89 @@ abstract class BaseRealm {
         }
     }
 
+    protected suspend fun insert(it : RealmList<RealmObject>) {
+        it.forEach { _self ->
+            insert(_self)
+        }
+    }
+
+    protected fun insertBlocking(it : RealmObject) {
+        mRealm.writeBlocking {
+            copyToRealm(it)
+        }
+    }
+
+    protected fun insertBlocking(it : RealmList<RealmObject>) {
+        it.forEach { _self ->
+            insertBlocking(_self)
+        }
+    }
+
     protected suspend fun <T : RealmObject> replace(it : RealmObject, clazz : KClass<T>) {
-        deleteAll(clazz)
+        delete(clazz)
         insert(it)
     }
 
-    suspend fun delete(clazz : Class<out RealmObject>, columnName : String, value : String) {
-        /*mRealm.executeTransaction({ realm ->
-            val query = realm.where(clazz).equalTo(columnName, value).findAll()
-            query.deleteAllFromRealm()
-        })
-        mRealm.write {
-            this.query(clazz)
-            delete(
-                this.query<CustomObject>("id = $0 AND name = $1", clazz.id, customObject.name).find()
-            )
-        }*/
-    }
-
-    protected suspend fun delete(model : RealmObject) {
-        /*mRealm.executeTransaction({ realm ->
-            model.deleteFromRealm()
-            realm.commitTransaction()
-        })*/
-    }
-
-    protected suspend fun insertAll(it : Collection<RealmObject>, clazz : Class<out RealmObject>) {
-        /*mRealm.executeTransaction({ realm ->
-            //realm.delete(clazz)
-            realm.insert(it)
-        })*/
-    }
-    /*
-    protected suspend fun <T> getAll(clazz : Class<out RealmObject>) : List<T> {
-        val items = mRealm.where(clazz).findAll()
-        return mRealm.copyFromRealm(items) as List<T>
-    }
-    */
-    /*
-    protected suspend fun <T> getFirst(clazz : Class<out RealmObject>) : T? {
-        mRealm.query<CustomObject>("id = $0", id)?.first()?.find()
-        val user = mRealm.where(clazz).findFirst()
-
-        if(user != null) {
-            var result = mRealm.copyFromRealm(user)
-            return (result as T?)
+    protected suspend fun <T : RealmObject> replace(it : RealmList<RealmObject>, clazz : KClass<T>) {
+        delete(clazz)
+        it.forEach { _self ->
+            insert(_self)
         }
-
-        return null
     }
-    */
-    protected suspend fun <T : RealmObject> deleteAll(clazz : KClass<T>) {
+
+    protected fun <T : RealmObject> replaceBlocking(it : RealmObject, clazz : KClass<T>) {
+        deleteBlocking(clazz)
+        insertBlocking(it)
+    }
+
+    protected fun <T : RealmObject> replaceBlocking(it : RealmList<RealmObject>, clazz : KClass<T>) {
+        deleteBlocking(clazz)
+        it.forEach { _self ->
+            insertBlocking(_self)
+        }
+    }
+
+    protected suspend fun <T : RealmObject> delete(clazz : KClass<T>) {
         mRealm.write {
             delete(
                 this.query<T>(clazz)
             )
         }
     }
-    /*
-    protected suspend fun createObject(clazz: Class<out RealmObject>): RealmObject {
-        return mRealm.createObject(clazz)
+
+    protected suspend fun <T : RealmObject> delete(clazz : KClass<T>, query : String, vararg args : Any?) {
+        mRealm.write {
+            delete(
+                this.query(clazz, query, args).find()
+            )
+        }
     }
-    */
-    /*
-    protected suspend fun <T> query(clazz: Class<out RealmObject>, fieldName: String, value: String) : List<T> {
-        val items = mRealm.where(clazz).equalTo(fieldName, value).findAll()
-        return mRealm.copyFromRealm(items) as List<T>
+
+    protected fun <T : RealmObject> deleteBlocking(clazz : KClass<T>) {
+        mRealm.writeBlocking {
+            delete(
+                this.query<T>(clazz)
+            )
+        }
     }
-    */
-    /*
-    protected suspend fun <T> queryFirst(clazz: Class<out RealmObject>, fieldName: String, value: String) : T {
-        val items = mRealm.where(clazz).equalTo(fieldName, value).findFirst()
-        return mRealm.copyFromRealm(items) as T
+
+    protected fun <T : RealmObject> deleteBlocking(clazz : KClass<T>, query : String, vararg args : Any?) {
+        mRealm.writeBlocking {
+            delete(
+                this.query(clazz, query, args).find()
+            )
+        }
     }
-    */
+
+    protected fun <T : RealmObject> getAll(clazz : KClass<T>) : RealmResults<T> {
+        return mRealm.query<T>(clazz).find()
+    }
+
+    protected suspend fun <T : RealmObject> getFirst(clazz : KClass<T>, query : String, vararg args : Any?) : T? {
+        return mRealm.query<T>(clazz, query, query).first().find()
+    }
+
+    protected suspend fun <T : RealmObject> getAllFlow(clazz : KClass<T>) : Flow<ResultsChange<T>> {
+        return mRealm.query<T>(clazz).find().asFlow()
+    }
 }
