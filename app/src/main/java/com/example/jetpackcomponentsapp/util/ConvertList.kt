@@ -1,7 +1,5 @@
 package com.example.jetpackcomponentsapp.util
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
 import kotlinx.coroutines.CoroutineScope
@@ -19,14 +17,20 @@ object ConvertList {
         return itemList
     }
 
-    fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
-        return Transformations.map<List<CustomEntity>, List<CustomModel>>(localList) {
-            toListModel(it)
+    suspend fun toFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : Flow<List<CustomModel>> {
+        return localList.map { entityList ->
+            toListModel(entityList)
         }
     }
 
+    suspend fun toSharedFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : SharedFlow<List<CustomModel>> {
+        return localList.map { entityList ->
+            toListModel(entityList)
+        }.shareIn(scope = scope, SharingStarted.Lazily)
+    }
+
     suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
-        return localList.mapLatest { entityList ->
+        return localList.map { entityList ->
             toListModel(entityList)
         }.stateIn(scope = scope/*, SharingStarted.Eagerly, initialValue = false*/)
     }

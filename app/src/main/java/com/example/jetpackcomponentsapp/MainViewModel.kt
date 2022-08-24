@@ -192,8 +192,8 @@ class MainViewModel : AndroidViewModel {
         customRepository.deleteAll()
     }) }
 
-    suspend fun observeItems(): StateFlow<List<CustomModel>> {
-        return ConvertList.toStateFlowListModel(customRepository.getAll() ?: emptyFlow<List<CustomEntity>>(), viewModelScope)
+    suspend fun observeItems() : SharedFlow<List<CustomModel>> {
+        return ConvertList.toSharedFlowListModel(customRepository.getAll() ?: emptyFlow<List<CustomEntity>>(), viewModelScope)
     }
 
     override fun onCleared() {
