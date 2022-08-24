@@ -99,7 +99,7 @@ object CustomDatabase {
         }
     }
 
-    suspend fun update(newObject : CustomObject) {
+    suspend fun updateAsync(newObject : CustomObject) {
         realm?.query<CustomObject>("id = $0", newObject.id)
             ?.first()
             ?.find()

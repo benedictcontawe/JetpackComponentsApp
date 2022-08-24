@@ -26,7 +26,7 @@ class CustomRepository : BaseRepository {
     }
 
     override public suspend fun update(customObject: CustomObject) {
-        CustomDatabase.update(customObject)
+        CustomDatabase.updateAsync(customObject)
     }
 
     override public suspend fun delete(customObject: CustomObject) {

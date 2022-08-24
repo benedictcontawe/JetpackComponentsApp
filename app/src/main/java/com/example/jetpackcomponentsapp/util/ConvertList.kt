@@ -41,7 +41,7 @@ object ConvertList {
     }
 
     suspend fun toStateFlowListModel(localList : Flow<ResultsChange<CustomObject>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
-        return localList.mapLatest { objectList : ResultsChange<CustomObject> ->
+        return localList.map { objectList : ResultsChange<CustomObject> ->
             when (objectList) {
                 is InitialResults<CustomObject> -> { Log.e(TAG,"InitialResults list ${objectList.list}") }
                 is UpdatedResults<CustomObject> -> {
@@ -50,6 +50,16 @@ object ConvertList {
             }
             toListModel(objectList.list)
         }.stateIn(scope = scope, /*SharingStarted.Lazily, Lifecycle.State.STARTED ,initialValue = false*/)
+    }
+
+    suspend fun toStateFlowListModel(localList : Flow<ResultsChange<CustomObject>>, callback : (list : List<CustomModel>) -> Unit) {
+        localList.collect { objectList : ResultsChange<CustomObject> ->
+            callback(
+                toListModel(
+                    objectList.list
+                )
+            )
+        }
     }
 
     fun toObject(customModel : CustomModel) : CustomObject {
