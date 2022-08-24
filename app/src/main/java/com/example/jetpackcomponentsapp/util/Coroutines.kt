@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,21 +51,23 @@ object Coroutines {
         }
     fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
         activity.lifecycleScope.launch {
-            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.CREATED) {
                 work(this)
             }
         }
-    fun main(viewModel : ViewModel, work : suspend (() -> Unit)) =
-        viewModel.viewModelScope.launch(Dispatchers.Main) {
-            work()
-        }
-    fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+    fun main(fragment : BottomSheetDialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
         fragment.lifecycleScope.launch {
             fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
                 work(this)
             }
         }
     fun main(fragment : DialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
         fragment.lifecycleScope.launch {
             fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
                 work(this)

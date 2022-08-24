@@ -25,12 +25,6 @@ object ConvertList {
         }
     }
 
-    suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
-        return localList.mapLatest { entityList ->
-            toListModel(entityList)
-        }.stateIn(scope = scope/*, SharingStarted.Eagerly, initialValue = false*/)
-    }
-
     fun toEntity(customModel: CustomModel) : CustomEntity {
         return when(customModel.id) {
             null -> {
