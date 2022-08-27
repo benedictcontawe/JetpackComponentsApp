@@ -3,10 +3,7 @@ package com.example.jetpackcomponentsapp.util
 import android.util.Log
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.realm.CustomObject
-import io.realm.kotlin.notifications.DeletedList
-import io.realm.kotlin.notifications.InitialResults
-import io.realm.kotlin.notifications.ResultsChange
-import io.realm.kotlin.notifications.UpdatedResults
+import io.realm.kotlin.notifications.*
 import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
@@ -15,14 +12,30 @@ object ConvertList {
 
     private val TAG : String = ConvertList::class.java.getSimpleName()
 
+    private fun toListModel(customEntity : CustomObject?) : CustomModel {
+        return if (customEntity != null) CustomModel(customEntity?.id ?: 0, customEntity?.name ?: "", customEntity ?. icon)
+        else CustomModel()
+    }
+
     private fun toListModel(customEntity : RealmResults<CustomObject>) : List<CustomModel> {
         val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
         customEntity.forEach {
             itemList.add(
-                CustomModel(it.id?:0, it.name?:"", it.icon)
+                toListModel(it)
             )
         }
         return itemList
+    }
+
+    suspend fun toSharedFlowModel(local : Flow<ObjectChange<CustomObject>>, scope : CoroutineScope) : SharedFlow<CustomModel> {
+        return local.map { objectChange : ObjectChange<CustomObject> ->
+            when(objectChange) {
+                is InitialObject<CustomObject> -> { }
+                is UpdatedObject<CustomObject> -> { }
+                is DeletedObject<CustomObject> -> { }
+            }
+            toListModel(objectChange.obj)
+        }.shareIn(scope = scope, SharingStarted.Lazily)
     }
 
     suspend fun toFlowListModel(localList : Flow<ResultsChange<CustomObject>>) : Flow<List<CustomModel>> {
@@ -71,15 +84,15 @@ object ConvertList {
         return when(customModel.id) {
             null -> {
                 CustomObject(
-                    customModel.name?:"",
-                    customModel.icon?:0
+                    customModel.name ?: "",
+                    customModel.icon ?: 0
                 )
             }
             else -> {
                 CustomObject(
                     customModel.id,
-                    customModel.name?:"",
-                    customModel.icon?:0
+                    customModel.name ?: "",
+                    customModel.icon ?: 0
                 )
             }
         }

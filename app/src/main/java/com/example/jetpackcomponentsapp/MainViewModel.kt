@@ -1,5 +1,6 @@
 package com.example.jetpackcomponentsapp
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomponentsapp.model.CustomModel
@@ -7,6 +8,7 @@ import com.example.jetpackcomponentsapp.realm.CustomObject
 import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.util.Coroutines
+import io.realm.kotlin.notifications.ObjectChange
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.*
 
@@ -193,6 +195,19 @@ public class MainViewModel : ViewModel {
     fun deleteAll() { Coroutines.io(this@MainViewModel, {
         customRepository.deleteAll()
     }) }
+
+    suspend fun getFirst(item : CustomModel?) { Coroutines.io(this@MainViewModel, {
+        if (item != null) {
+            val _object : CustomObject = ConvertList.toObject(item)
+            Log.d("TEST","1 ${customRepository.getFirstOrNull(CustomObject(_object.id!!, null,null))}")
+            Log.d("TEST","2 ${customRepository.getFirstOrNull(CustomObject(null, _object.name!!,null))}")
+            Log.d("TEST","3 ${customRepository.getFirstOrNull(CustomObject(null, null,_object.icon!!))}")
+        }
+    }) }
+
+    suspend fun observeItem() : SharedFlow<CustomModel> {
+        return ConvertList.toSharedFlowModel(customRepository.getFirstFlow() ?: emptyFlow<ObjectChange<CustomObject>>(), viewModelScope)
+    }
 
     suspend fun observeItems() : SharedFlow<List<CustomModel>> {
         return ConvertList.toSharedFlowListModel(customRepository.getAllFlow() ?: emptyFlow<ResultsChange<CustomObject>>(), viewModelScope)

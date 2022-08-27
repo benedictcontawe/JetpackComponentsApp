@@ -17,7 +17,7 @@ open class CustomObject : RealmObject {
         this.icon = icon
     }
 
-    constructor(id : Int, name : String, icon : Int) {
+    constructor(id : Int?, name : String?, icon : Int?) {
         this.id = id
         this.name = name
         this.icon = icon

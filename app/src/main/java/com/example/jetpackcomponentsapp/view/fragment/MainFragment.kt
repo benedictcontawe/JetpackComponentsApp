@@ -21,6 +21,7 @@ import com.example.jetpackcomponentsapp.view.MainActivity
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), CustomListeners {
@@ -28,9 +29,7 @@ class MainFragment : Fragment(), CustomListeners {
     companion object {
         fun newInstance() : MainFragment = MainFragment()
 
-        fun getTag() : String {
-            return MainFragment::class.java.getSimpleName()
-        }
+        private val TAG = MainFragment::class.java.getSimpleName()
     }
 
     private lateinit var binding: MainBinder
@@ -65,19 +64,18 @@ class MainFragment : Fragment(), CustomListeners {
             scope.launch ( block = {
                 viewModel.observeItems().collect(object : FlowCollector<List<CustomModel>> {
                     override suspend fun emit(value : List<CustomModel>) {
-                        Log.d(MainFragment.getTag(),"ID ${value.map { it.id }}, Name ${value.map { it.name }}")
+                        Log.d(TAG,"observeItems ID ${value.map { it.id }}, Name ${value.map { it.name }}")
                         binding.recyclerView.removeAllViews()
                         adapter.setItems(value)
+                        viewModel.getFirst(value.firstOrNull())
                     }
                 })
             })
-            /*scope.launch ( block = {
-                viewModel.observeItems().collectLatest( action = { list ->
-                    Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                    binding.recyclerView.removeAllViews()
-                    adapter.setItems(list)
+            scope.launch ( block = {
+                viewModel.observeItem().collectLatest( action = { item ->
+                    Log.d(TAG,"observeItem ID ${item.id}, Name ${item.name}")
                 })
-            })*/
+            })
         })
         //binding.recyclerView.scrollToPosition(0)
         //binding.recyclerView.addItemDecoration(itemDecorationHelper)
