@@ -22,8 +22,6 @@
 
 - [How to check if a “lateinit” variable has been initialized?](https://stackoverflow.com/questions/37618738/how-to-check-if-a-lateinit-variable-has-been-initialized)
 
-- [Add a background image to shape in XML Android](https://stackoverflow.com/questions/21002224/add-a-background-image-to-shape-in-xml-android)
-
 - [Method Chaining In Java with Examples](https://www.geeksforgeeks.org/method-chaining-in-java-with-examples/)
 
 - [SharedPreferences in Android](https://heartbeat.fritz.ai/sharedpreferences-in-android-818e3b614b85)
@@ -39,8 +37,6 @@
 - [Kotlin - how to find number of repeated values in a list?](https://stackoverflow.com/questions/47200440/kotlin-how-to-find-number-of-repeated-values-in-a-list)
 
 - [Collect from several stateflows](https://stackoverflow.com/questions/67799859/collect-from-several-stateflows)
-
-- [Using vector assets in Android apps](https://medium.com/androiddevelopers/using-vector-assets-in-android-apps-4318fd662eb9)
 
 - [Combining flows: merge, zip, and combine](https://kt.academy/article/cc-flow-combine)
 
