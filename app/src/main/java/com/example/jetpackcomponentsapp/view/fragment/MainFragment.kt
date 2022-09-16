@@ -38,12 +38,12 @@ class MainFragment : Fragment(), OnRefreshListener, CustomListeners {
     private lateinit var adapter : CustomAdapter
     //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
+    override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment,container,false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
