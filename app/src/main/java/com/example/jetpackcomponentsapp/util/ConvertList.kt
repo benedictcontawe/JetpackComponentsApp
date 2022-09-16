@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 
 object ConvertList {
 
-    private fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
+    public fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
         val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
         customEntity.map {
             itemList.add(
@@ -19,19 +19,19 @@ object ConvertList {
         return itemList
     }
 
-    fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
+    public fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
         return Transformations.map<List<CustomEntity>, List<CustomModel>>(localList) {
             toListModel(it)
         }
     }
 
-    suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
+    public suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomModel>> {
         return localList.mapLatest { entityList ->
             toListModel(entityList)
         }.stateIn(scope = scope/*, SharingStarted.Eagerly, initialValue = false*/)
     }
 
-    fun toEntity(customModel: CustomModel) : CustomEntity {
+    public fun toEntity(customModel : CustomModel) : CustomEntity {
         return when(customModel.id) {
             null -> {
                 CustomEntity(

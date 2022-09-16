@@ -46,7 +46,6 @@ class MainFragment : Fragment(), OnRefreshListener, CustomListeners {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

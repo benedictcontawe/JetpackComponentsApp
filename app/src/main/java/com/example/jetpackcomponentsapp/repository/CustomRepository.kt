@@ -20,21 +20,21 @@ class CustomRepository(applicationContext: Application) : BaseRepository {
         databaseHelper = DatabaseHelper(applicationContext.getApplicationContext(), "custom_database.db", null, 1)
     }
     //region CRUD Operation
-    override public suspend fun insert(customEntity: CustomEntity) {
+    override public suspend fun insert(customEntity : CustomEntity) {
         databaseHelper?.insert(
             "custom_table",
             customEntity
         )
     }
 
-    override public suspend fun update(customEntity: CustomEntity) {
+    override public suspend fun update(customEntity : CustomEntity) {
         databaseHelper?.update(
             "custom_table",
             customEntity
         )
     }
 
-    override public suspend fun delete(customEntity: CustomEntity) {
+    override public suspend fun delete(customEntity : CustomEntity) {
         databaseHelper?.delete(
             "custom_table",
             customEntity
