@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--region Auto Size UI XML Components-->
+    <dimen name="auto_size_min_text_size">5sp</dimen>
+    <dimen name="auto_size_10_text_size">10sp</dimen>
+    <dimen name="auto_size_11_text_size">11sp</dimen>
+    <dimen name="auto_size_12_text_size">12sp</dimen>
+    <dimen name="auto_size_13_text_size">13sp</dimen>
+    <dimen name="auto_size_15_text_size">15sp</dimen>
+    <dimen name="auto_size_17_text_size">17sp</dimen>
+    <dimen name="auto_size_18_text_size">18sp</dimen>
+    <dimen name="auto_size_20_text_size">20sp</dimen>
+    <dimen name="auto_size_22_text_size">22sp</dimen>
+    <dimen name="auto_size_23_text_size">23sp</dimen>
+    <dimen name="auto_size_25_text_size">25sp</dimen>
+    <dimen name="auto_size_30_text_size">30sp</dimen>
+    <dimen name="auto_size_35_text_size">35sp</dimen>
+    <dimen name="auto_size_45_text_size">45sp</dimen>
+    <dimen name="auto_size_55_text_size">55sp</dimen>
+    <dimen name="auto_size_64_text_size">64sp</dimen>
+    <dimen name="auto_size_max_text_size">300sp</dimen>
+    <dimen name="auto_size_step_granularity">1sp</dimen>
+    <!--endregion-->
+    <!--region CardView  CardView Radius -->
+    <dimen name="card_radius_macro">10dp</dimen>
+    <dimen name="card_radius">8dp</dimen>
+    <dimen name="card_radius_minimum">5dp</dimen>
+    <dimen name="card_radius_micro">3dp</dimen>
+    <!--endregion-->
+    <!--region Elavation-->
+    <dimen name="card_corner_radius_none">0dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_elevation_minimum">2dp</dimen>
+    <dimen name="card_elevation_none">0dp</dimen>
+    <!--endregion-->
+</resources>

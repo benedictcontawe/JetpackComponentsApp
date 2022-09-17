@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data class="NasaCellBinder">
+        <variable
+            name="holder"
+            type="com.example.jetpackcomponentsapp.NasaHolderModel" />
+        <variable
+            name="position"
+            type="int" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/card_corner_radius_none"
+        app:cardElevation="@dimen/card_elevation_none"
+        app:cardMaxElevation="@dimen/card_elevation_none" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/constraint_layout" >
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:0.15"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <!--region Guide lines-->
+            <!--region Horizontal Guide lines-->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/constraint_guideline_horizontal_leading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.10"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/constraint_guideline_horizontal_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.50"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/constraint_guideline_horizontal_trailing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.90" />
+            <!--endregion-->
+            <!--region Vertical Guide lines-->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/constraint_guideline_vertical_leading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.02" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/constraint_guideline_vertical_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.80" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/constraint_guideline_vertical_trailing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.98" />
+            <!--endregion-->
+            <!--endregion-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/animation_loading"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+                app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                tools:text="Title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/auto_size_18_text_size"
+                app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_price"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_explanation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textAlignment="center"
+                tools:text="Explanation"
+                android:textColor="@color/black"
+                android:textSize="@dimen/auto_size_11_text_size"
+                app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_center"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_price"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_date"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                tools:text="Date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/auto_size_12_text_size"
+                app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_leading"
+                app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_price"
+                app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_copyright"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                tools:text="Copyright"
+                android:textColor="@color/black"
+                android:textSize="@dimen/auto_size_12_text_size"
+                app:layout_constraintTop_toBottomOf="@id/text_date"
+                app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_price"
+                app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_horizontal_trailing"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
