@@ -9,13 +9,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class Repository {
+public class Repository {
 
     companion object {
         private val TAG : String = Repository::class.java.getSimpleName()
         private var retrofit : Retrofit? = null
     }
 
+    private val nasaAPI : NasaAPI
 
     constructor() {
         if (retrofit == null) retrofit = provideRetrofit(
@@ -25,8 +26,6 @@ class Repository {
         )
         nasaAPI = createService(NasaAPI::class.java)
     }
-
-    private val nasaAPI : NasaAPI
 
     private fun provideRetrofit(url : String, gson : Gson, okHttpClient : OkHttpClient) : Retrofit {
         return Retrofit.Builder()

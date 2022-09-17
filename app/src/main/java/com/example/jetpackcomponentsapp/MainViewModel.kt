@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class MainViewModel : ViewModel {
+public class MainViewModel : ViewModel {
 
     companion object {
         private val TAG : String = MainViewModel::class.java.getSimpleName()

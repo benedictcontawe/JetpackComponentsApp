@@ -10,7 +10,7 @@ import com.example.jetpackcomponentsapp.databinding.MainBinder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private var binder : MainBinder? = null
     private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(MainViewModel::class.java) }
