@@ -27,7 +27,7 @@ public class MainViewModel : ViewModel {
         list.clear()
         Log.d(TAG, "getAPOD() size ${responseList.size}")
         responseList.forEach { response -> Log.d(TAG, "Response $response")
-            list.add(NasaHolderModel(0, response))
+            list.add(NasaHolderModel(list.size + 1, response))
         }
         liveList.postValue(list.reversed())
     } ) }
