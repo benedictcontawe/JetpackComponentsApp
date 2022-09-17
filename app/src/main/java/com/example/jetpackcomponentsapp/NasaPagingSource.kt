@@ -23,15 +23,14 @@ public class NasaPagingSource : PagingSource<Int, NasaResponseModel> {
         return try {
             val position = params.key ?: Constants.PAGING_SOURCE_PAGE_INDEX
 
-            val response = nasaAPI.getAstronomyPictureOfTheDay(request.key!!, request.count!!)
+            val response = nasaAPI.getAstronomyPictureOfTheDay(request.key!!, request.count?.plus(position)!!)
 
             val prevKey = if (position == Constants.PAGING_SOURCE_PAGE_INDEX) null
             else position - 1
 
-            val nextKey = if (response.isSuccessful() && response.body()?.isEmpty() == true) null
+            val nextKey = if (response.body()?.isEmpty() == true) null
             else position + 1
-
-            Log.d(TAG, "load ${response.body()}")
+            Log.d(TAG, "load $position $prevKey $nextKey ${response.body()}")
             LoadResult.Page(
                 data = response.body()!!,
                 prevKey = prevKey,

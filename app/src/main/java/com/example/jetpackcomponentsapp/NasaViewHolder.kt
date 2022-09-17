@@ -1,5 +1,6 @@
 package com.example.jetpackcomponentsapp
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -18,6 +19,7 @@ public class NasaViewHolder : RecyclerView.ViewHolder {
     }
 
     public fun bindDataToViewHolder(model : NasaHolderModel?, position : Int) {
+        Log.d(TAG,"bindDataToViewHolder $model")
         binder.setHolder(model)
         binder.setPosition(position)
         binder.executePendingBindings()

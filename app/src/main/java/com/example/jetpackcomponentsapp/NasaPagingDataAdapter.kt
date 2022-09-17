@@ -29,4 +29,8 @@ public class NasaPagingDataAdapter : PagingDataAdapter<NasaHolderModel, NasaView
             position
         )
     }
+
+    override fun getItemCount() : Int {
+        return super.getItemCount()
+    }
 }

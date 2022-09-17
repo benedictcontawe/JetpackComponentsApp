@@ -50,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:nestedScrollingEnabled="false"
+            android:scrollbars="vertical"
             tools:listitem="@layout/cell"
             tools:itemCount="5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

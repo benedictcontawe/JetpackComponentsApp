@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.map
 import com.example.jetpackcomponentsapp.databinding.MainBinder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -29,10 +28,6 @@ public class MainActivity : AppCompatActivity() {
         binder?.recyclerView?.setAdapter(adapter)//binder?.getViewModel()?.requestAPOD()
         Coroutines.default(this@MainActivity, { scope : CoroutineScope -> scope.launch ( block = {
             binder?.getViewModel()?.observeAPOD()?.collectLatest ( action = { pagingDatum ->
-                Log.d(TAG,"observeAPOD")
-                pagingDatum.map {
-                    Log.d(TAG,"NasaHolderModel ${it}")
-                }
                 adapter.submitData( getLifecycle(), pagingDatum ) //adapter.submitData( pagingDatum )
             } )
         } ) } )
