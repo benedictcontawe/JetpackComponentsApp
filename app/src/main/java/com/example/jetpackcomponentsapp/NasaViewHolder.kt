@@ -17,7 +17,7 @@ public class NasaViewHolder : RecyclerView.ViewHolder {
         this.binder = binder
     }
 
-    public fun bindDataToViewHolder(model : NasaHolderModel, position : Int) {
+    public fun bindDataToViewHolder(model : NasaHolderModel?, position : Int) {
         binder.setHolder(model)
         binder.setPosition(position)
         binder.executePendingBindings()

@@ -2,15 +2,16 @@ package com.example.jetpackcomponentsapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.paging.map
 import com.example.jetpackcomponentsapp.databinding.MainBinder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-public class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = MainActivity::class.java.getSimpleName()
@@ -18,33 +19,41 @@ public class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
 
     private var binder : MainBinder? = null
     private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(MainViewModel::class.java) }
-    private val adapter : NasaAdapter by lazy { NasaAdapter() }
+    private val adapter : NasaPagingDataAdapter by lazy { NasaPagingDataAdapter() }
 
     override fun onCreate(savedInstanceState : Bundle?) {
         binder = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
         binder?.setViewModel(viewModel)
         binder?.setLifecycleOwner(this@MainActivity)
         super.onCreate(savedInstanceState)
-        binder?.swipeRefreshLayout?.setOnRefreshListener(this@MainActivity)
-        binder?.getViewModel()?.observeAPOD()?.observe(binder?.getLifecycleOwner()!!, object :
-            Observer<List<NasaHolderModel>> {
-            override fun onChanged(list : List<NasaHolderModel>?) {
-                adapter.setItems( list )
-                if (binder?.swipeRefreshLayout?.isRefreshing() == true) binder?.swipeRefreshLayout?.setRefreshing(false)
+        binder?.recyclerView?.setAdapter(adapter)//binder?.getViewModel()?.requestAPOD()
+        Coroutines.default(this@MainActivity, { scope : CoroutineScope -> scope.launch ( block = {
+            binder?.getViewModel()?.observeAPOD()?.collectLatest ( action = { pagingDatum ->
+                Log.d(TAG,"observeAPOD")
+                pagingDatum.map {
+                    Log.d(TAG,"NasaHolderModel ${it}")
+                }
+                adapter.submitData( getLifecycle(), pagingDatum ) //adapter.submitData( pagingDatum )
+            } )
+        } ) } )
+        /*adapter.addLoadStateListener {
+            if (loadState.refresh is LoadState.Loading ||
+                loadState.append is LoadState.Loading)
+                binding.progressDialog.isVisible = true
+            else {
+                binding.progressDialog.isVisible = false
+                // If we have an error, show a toast
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error ->  loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                errorState?.let {
+                    Toast.makeText(this, it.error.toString(), Toast.LENGTH_LONG).show()
+                }
+
             }
-        })
+        }*/
     }
-
-    override fun onStart() {
-        super.onStart()
-        binder?.recyclerView?.setAdapter(adapter)
-        binder?.getViewModel()?.requestAPOD()
-    }
-
-    override fun onRefresh() { Coroutines.main(this@MainActivity, { scope : CoroutineScope ->
-        scope.launch ( block = {
-            binder?.recyclerView?.removeAllViews()
-            binder?.getViewModel()?.requestAPOD()
-        })
-    }) }
 }

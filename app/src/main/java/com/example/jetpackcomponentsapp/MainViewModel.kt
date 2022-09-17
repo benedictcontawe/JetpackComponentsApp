@@ -1,9 +1,11 @@
 package com.example.jetpackcomponentsapp
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.map
+import kotlinx.coroutines.flow.*
 
 public class MainViewModel : ViewModel {
 
@@ -13,12 +15,12 @@ public class MainViewModel : ViewModel {
 
     private val repository : Repository
     private val list : MutableList<NasaHolderModel>
-    private val liveList : MutableLiveData<List<NasaHolderModel>>
+    private val liveList : MutableSharedFlow<List<NasaHolderModel>>
 
     constructor() {
         repository = Repository()
         list = mutableListOf<NasaHolderModel>()
-        liveList = MutableLiveData<List<NasaHolderModel>>()
+        liveList = MutableSharedFlow()
     }
 
     public fun requestAPOD() { Coroutines.default(this@MainViewModel, {
@@ -29,10 +31,16 @@ public class MainViewModel : ViewModel {
         responseList.forEach { response -> Log.d(TAG, "Response $response")
             list.add(NasaHolderModel(list.size + 1, response))
         }
-        liveList.postValue(list.reversed())
+        liveList.emit(list.reversed())
     } ) }
 
-    public fun observeAPOD() : LiveData<List<NasaHolderModel>> {
-        return liveList
+    public suspend fun observeAPOD() : SharedFlow<PagingData<NasaHolderModel>> {
+        val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, 100)
+        return repository.getFlowAPOD(request).map { pagingDatum ->
+            pagingDatum.map { response ->
+                list.add(NasaHolderModel(0, response))
+                NasaHolderModel(list.size + 1, response)
+            }
+        }.shareIn(viewModelScope, SharingStarted.Lazily)
     }
 }
