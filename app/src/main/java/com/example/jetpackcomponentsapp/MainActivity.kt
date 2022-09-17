@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 
 public class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
+    companion object {
+        private val TAG = MainActivity::class.java.getSimpleName()
+    }
+
     private var binder : MainBinder? = null
     private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(MainViewModel::class.java) }
     private val adapter : NasaAdapter by lazy { NasaAdapter() }
