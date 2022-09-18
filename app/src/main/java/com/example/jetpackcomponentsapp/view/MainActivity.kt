@@ -1,83 +1,75 @@
 package com.example.jetpackcomponentsapp.view
 
-import android.app.Activity
-import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.R
+import com.example.jetpackcomponentsapp.MainListener
 import com.example.jetpackcomponentsapp.MainViewModel
-import com.example.jetpackcomponentsapp.view.fragment.AddFragment
-import com.example.jetpackcomponentsapp.view.fragment.MainFragment
-import com.example.jetpackcomponentsapp.view.fragment.UpdateFragment
+import com.example.jetpackcomponentsapp.R
+import com.example.jetpackcomponentsapp.databinding.MainBinder
 
-class MainActivity : AppCompatActivity() {
+public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListener {
 
-    //private lateinit var binding : MainBinder
-    private lateinit var viewModel : MainViewModel
+    companion object {
+        private val TAG = MainActivity::class.java.getSimpleName()
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private var binder : MainBinder? = null
+    private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(
+        MainViewModel::class.java) }
+
+    override fun onCreate(savedInstanceState : Bundle?) {
+        binder = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
+        binder?.setViewModel(viewModel)
+        binder?.setLifecycleOwner(this@MainActivity)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
         if (savedInstanceState == null) {
-            callMainFragment()
-            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-            //binding.setViewModel(viewModel)
-            //binding.setLifecycleOwner(this)
+            launchMain()
+        }
+        binder?.floatingActionButtonAdd?.setOnClickListener(this@MainActivity)
+        binder?.floatingActionButtonDelete?.setOnClickListener(this@MainActivity)
+    }
+
+    override fun onClick(view : View?) {
+        if (view == binder?.floatingActionButtonAdd) launchAdd()
+        else if (view == binder?.floatingActionButtonDelete) {
+            viewModel.deleteAll()
+            Toast.makeText(this@MainActivity,"deleteAll()", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun callMainFragment() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
+    private fun replaceFragment(containerViewId : Int, fragment: Fragment) {
+        getSupportFragmentManager().beginTransaction()
+            .replace(containerViewId, fragment, fragment::class.java.getSimpleName())
+            .commitNow()
     }
 
-    fun callAddFragment() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.container, AddFragment.newInstance())
-                .addToBackStack(AddFragment.getTag())
+    private fun addToBackStackFragment(containerViewId : Int, fragment : Fragment) {
+        if (getSupportFragmentManager().findFragmentByTag(fragment::class.java.getSimpleName()) == null)
+            getSupportFragmentManager().beginTransaction()
+                .add(containerViewId, fragment, fragment::class.java.getSimpleName())
+                .addToBackStack(fragment::class.java.getSimpleName())
                 .commit()
     }
 
-    fun callUpdateFragment() {
-        UpdateFragment
-                .newInstance()
-                .show(
-                        supportFragmentManager.beginTransaction(),
-                        UpdateFragment.getTag()
-                )
+    private fun showDialogFragment(fragment : DialogFragment) {
+        fragment.show(getSupportFragmentManager().beginTransaction(), fragment.javaClass.getName())
     }
 
-    fun showSoftKeyboard(activity: Activity, showKeyboard : Boolean) {
-        var view = activity.currentFocus
-        when(showKeyboard){
-            true -> {
-                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-            }
-            false ->{
-                val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                //Find the currently focused view, so we can grab the correct window token from it.
-
-                //If no view currently has focus, create a new one, just so we can grab a window token from it
-                if (view == null) {
-                    view = View(activity)
-                }
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
+    private fun launchMain() {
+        replaceFragment(R.id.frame_layout, MainFragment.newInstance(this@MainActivity))
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            super.onBackPressed()
-        }
-        else {
-            supportFragmentManager.popBackStack()
-        }
+    private fun launchAdd() {
+        addToBackStackFragment(R.id.frame_layout, AddFragment.newInstance())
+    }
+
+    override fun launchUpdate() {
+        showDialogFragment(UpdateFragment.newInstance())
     }
 }

@@ -2,7 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <data class="AddBinder">
         <variable
@@ -16,21 +16,21 @@
         android:gravity="center"
         android:background="@color/background_material_dark_black">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:background="@color/design_default_color_background"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/image_view"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -38,7 +38,7 @@
                     android:contentDescription="Image"
                     app:srcCompat="@drawable/ic_android_black"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -47,24 +47,22 @@
                     android:textAlignment="center"
                     android:gravity="center_horizontal" />
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
                 android:text="Add"
-                />
+                android:textAllCaps="false" />
 
-        </LinearLayout>
-
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </RelativeLayout>
-
 </layout>

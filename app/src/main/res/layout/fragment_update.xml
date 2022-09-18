@@ -8,28 +8,27 @@
             type="com.example.jetpackcomponentsapp.MainViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your name" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={viewModel.update.name}"
             android:hint="Update Name"
             android:inputType="text"
             android:imeOptions="actionDone" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,5 +36,5 @@
             android:inputType="text"
             android:imeOptions="actionDone" />
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
