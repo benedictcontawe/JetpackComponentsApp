@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.util
 
 import android.content.Context
 import android.graphics.Rect
@@ -7,7 +7,11 @@ import androidx.annotation.DimenRes
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 
-class BottomOffsetDecorationHelper : RecyclerView.ItemDecoration {
+public class BottomOffsetDecorationHelper : RecyclerView.ItemDecoration {
+
+    companion object {
+        private val TAG = BottomOffsetDecorationHelper::class.java.getSimpleName()
+    }
 
     private var bottomItemOffset: Int? = null
 

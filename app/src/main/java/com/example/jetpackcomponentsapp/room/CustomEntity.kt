@@ -8,22 +8,21 @@ import androidx.room.PrimaryKey
 data class CustomEntity (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "Id")
-    var id : Int,
+    val id : Int?,
 
     @ColumnInfo(name = "Name")
-    var name : String? = null,
+    val name : String?,
 
     @ColumnInfo(name = "Icon")
-    var icon : Int? = null
+    val icon : Int?
 ) {
+    companion object {
+        private val TAG = CustomEntity::class.java.getSimpleName()
+    }
+    constructor(name : String, icon : Int) : this(id = null, name = name, icon = icon) {
 
-//    constructor(id : Int, name : String, icon : Int) : this() {
-//        this.id = id
-//        this.name = name
-//        this.icon = icon
-//    }
-
+    }
     override fun toString() : String {
-        return "MessageThreadListEntity(Id=$id, Name=$name, Icon=$icon)"
+        return "$TAG(Id=$id, Name=$name, Icon=$icon)"
     }
 }

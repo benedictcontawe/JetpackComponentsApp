@@ -1,18 +1,17 @@
 package com.example.jetpackcomponentsapp.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.model.CustomHolderModel
 
-object CustomDiffUtilItemCallback : DiffUtil.ItemCallback<CustomModel>() {
+object CustomDiffUtilItemCallback : DiffUtil.ItemCallback<CustomHolderModel>(){
 
-    override fun areItemsTheSame(oldItem : CustomModel, newItem : CustomModel) : Boolean {
+    override fun areItemsTheSame(oldItem : CustomHolderModel, newItem : CustomHolderModel) : Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem : CustomModel, newItem : CustomModel) : Boolean {
-        //return oldItem.equals(newItem)
+    override fun areContentsTheSame(oldItem : CustomHolderModel, newItem : CustomHolderModel) : Boolean {
         return oldItem.id == newItem.id &&
-               oldItem.name == newItem.name &&
-               oldItem.icon == newItem.icon
+                oldItem.name == newItem.name &&
+                oldItem.icon == newItem.icon
     }
 }

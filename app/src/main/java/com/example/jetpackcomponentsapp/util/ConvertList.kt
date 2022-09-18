@@ -1,87 +1,72 @@
 package com.example.jetpackcomponentsapp.util
 
-import android.os.AsyncTask
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.paging.PagedList
-import com.example.jetpackcomponentsapp.model.CustomModel
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.example.jetpackcomponentsapp.model.CustomHolderModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.*
 
-class ConvertList {
+public object ConvertList {
 
-    companion object {
-        @Deprecated("Not Working")
-        private fun toPagedListModel(customEntity : PagedList<CustomEntity>) : PagedList<CustomModel> {
-            val itemList : MutableList<CustomModel> = mutableListOf()
-            //customEntity.snapshot().toList().filter { it != null && it.id != null }.map {
+    private val TAG : String = ConvertList::class.java.getSimpleName()
 
-            customEntity.snapshot().toList().map {
-                itemList.add(
-                        CustomModel(it?.id, it?.name?:"")
-                )
-            }
-
-            return PagedList.Builder(ListDataSource(itemList), customEntity.config)
-                    .setNotifyExecutor(UiThreadExecutor())
-                    .setFetchExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-                    .build()
-        }
-
-        fun toListModel(customEntity: List<CustomEntity>) : MutableList<CustomModel> {
-            val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
-            customEntity.map {
-                itemList.add(
-                        CustomModel(it.id?:0, it.name?:"")
-                )
-            }
-            //itemList.sortBy { it.id }
-            //itemList.sortWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.toString() })
-            //itemList.sortedWith(compareByDescending { item -> item.name })
-            //itemList.distinct()
-            return itemList
-        }
-
-        fun toModel(customEntity: CustomEntity) : CustomModel {
-            return CustomModel(customEntity.id,customEntity.name?:"")
-        }
-
-        fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<MutableList<CustomModel>> {
-            return Transformations.map<
-                    List<CustomEntity>, //localList Data Type
-                    MutableList<CustomModel> //toListModel List Data Type
-                    >(
-                    localList,
-                    Companion::toListModel
+    private fun toListModel(customEntity : List<CustomEntity>) : List<CustomHolderModel> {
+        val itemList : MutableList<CustomHolderModel> = mutableListOf<CustomHolderModel>()
+        customEntity.map {
+            itemList.add(
+                CustomHolderModel(it.id?:0, it.name?:"")
             )
         }
-        @Deprecated("Not Working")
-        fun toLiveDataPagedListModel(localList : LiveData<PagedList<CustomEntity>>) : LiveData<PagedList<CustomModel>> {
-            return Transformations.map<
-                    PagedList<CustomEntity>, //localList Data Type
-                    PagedList<CustomModel> //toPagedListModel List Data Type
-                    >(
-                    localList,
-                    Companion::toPagedListModel
-            )
-        }
+        return itemList
+    }
 
-        fun toEntity(customModel: CustomModel) : CustomEntity {
-            return when(customModel.id) {
-                null -> {
-                    CustomEntity(
-                            0,
-                            customModel.name?:"",
-                            customModel.icon?:0
-                    )
-                }
-                else -> {
-                    CustomEntity(
-                            customModel.id?:0,
-                            customModel.name?:"",
-                            customModel.icon?:0
-                    )
-                }
+    private fun toPagingDataModel(pagingDatum : PagingData<CustomEntity>) : PagingData<CustomHolderModel> {
+        return pagingDatum.map {
+            CustomHolderModel(it.id?:0, it.name?:"")
+        }
+    }
+
+    suspend fun toFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : Flow<List<CustomHolderModel>> {
+        return localList.map { entityList ->
+            toListModel(entityList)
+        }
+    }
+
+    suspend fun toSharedFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : SharedFlow<List<CustomHolderModel>> {
+        return localList.map { entityList ->
+            toListModel(entityList)
+        }.shareIn(scope = scope, SharingStarted.Lazily)
+    }
+
+    suspend fun toStateFlowListModel(localList : Flow<List<CustomEntity>>, scope : CoroutineScope) : StateFlow<List<CustomHolderModel>> {
+        return localList.map { entityList ->
+            toListModel(entityList)
+        }.stateIn(scope = scope/*, SharingStarted.Eagerly, initialValue = false*/)
+    }
+
+    public fun toEntity(customModel: CustomHolderModel) : CustomEntity {
+        return when(customModel.id) {
+            Constants.NEGATIVE_ONE -> {
+                CustomEntity(
+                    null,
+                    customModel.name ?:"",
+                    customModel.icon ?:0
+                )
+            }
+            else -> {
+                CustomEntity(
+                    customModel.id,
+                    customModel.name ?:"",
+                    customModel.icon ?:0
+                )
             }
         }
+    }
+
+    public fun toSharedFlowPagingDataModel(flow : Flow<PagingData<CustomEntity>>, scope : CoroutineScope) : SharedFlow<PagingData<CustomHolderModel>> {
+        return flow.map {
+            toPagingDataModel(it)
+        }.shareIn(scope, SharingStarted.Lazily)
     }
 }
