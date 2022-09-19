@@ -26,7 +26,11 @@ class MainFragment : Fragment, CustomListener {
     private var binder : RecyclerBinder? = null
     private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
     private val adapter : CustomPagingDataAdapter by lazy { CustomPagingDataAdapter(this@MainFragment) }
-    private val listener : MainListener
+    private val listener : MainListener?
+
+    constructor() {
+        this.listener = null
+    }
 
     constructor(listener : MainListener) {
         this.listener = listener
@@ -51,7 +55,7 @@ class MainFragment : Fragment, CustomListener {
 
     override fun onUpdate(item : CustomHolderModel?, position : Int) {
         viewModel.setUpdate(item)
-        listener.launchUpdate()
+        listener?.launchUpdate()
     }
 
     override fun onDelete(item : CustomHolderModel?, position : Int) {

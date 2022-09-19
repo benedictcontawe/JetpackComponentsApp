@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp.util
 
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.jetpackcomponentsapp.model.CustomHolderModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
@@ -67,6 +68,6 @@ public object ConvertList {
     public fun toSharedFlowPagingDataModel(flow : Flow<PagingData<CustomEntity>>, scope : CoroutineScope) : SharedFlow<PagingData<CustomHolderModel>> {
         return flow.map {
             toPagingDataModel(it)
-        }.shareIn(scope, SharingStarted.Lazily)
+        }.cachedIn(scope).shareIn(scope, SharingStarted.Lazily)
     }
 }

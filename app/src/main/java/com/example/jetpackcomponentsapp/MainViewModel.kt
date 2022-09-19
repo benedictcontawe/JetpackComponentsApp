@@ -7,10 +7,7 @@ import androidx.paging.PagingData
 import com.example.jetpackcomponentsapp.model.CustomHolderModel
 import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.util.Coroutines
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 
 public class MainViewModel : AndroidViewModel {
 
@@ -59,6 +56,6 @@ public class MainViewModel : AndroidViewModel {
     }) }
 
     public suspend fun observeItems() : SharedFlow<PagingData<CustomHolderModel>> {
-        return ConvertList.toSharedFlowPagingDataModel(repository.getFlow(), viewModelScope)
+        return ConvertList.toSharedFlowPagingDataModel(repository.getFlowPagingData(), viewModelScope)
     }
 }

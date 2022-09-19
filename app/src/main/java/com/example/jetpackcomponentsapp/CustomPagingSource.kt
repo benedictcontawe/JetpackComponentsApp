@@ -15,7 +15,7 @@ public class CustomPagingSource : PagingSource<Int, CustomEntity> {
 
     private val customDao : CustomDAO?
 
-    constructor(customDao : CustomDAO) {
+    constructor(customDao : CustomDAO?) {
         Log.d(TAG, "constructor")
         this.customDao = customDao
     }
@@ -24,7 +24,7 @@ public class CustomPagingSource : PagingSource<Int, CustomEntity> {
         return try {
             val page = params.key ?: Constants.PAGING_SOURCE_PAGE_INDEX
 
-            val entities = customDao?.getAll(params.loadSize, page * params.loadSize)
+            val entities : List<CustomEntity>? = customDao?.getAll(params.loadSize, page * params.loadSize)
 
             val prevKey = if (page == 0) null
             else page - 1
@@ -34,7 +34,7 @@ public class CustomPagingSource : PagingSource<Int, CustomEntity> {
 
             Log.d(TAG, "load $page $prevKey $nextKey ${entities}")
             LoadResult.Page(
-                data = entities!!,
+                data = entities ?: listOf<CustomEntity>(),
                 prevKey = prevKey,
                 nextKey = nextKey
             )
@@ -45,6 +45,7 @@ public class CustomPagingSource : PagingSource<Int, CustomEntity> {
     }
 
     override fun getRefreshKey(state : PagingState<Int, CustomEntity>) : Int? {
+        Log.d(TAG, "getRefreshKey $state")
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

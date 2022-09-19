@@ -80,13 +80,17 @@ public class CustomRepository {
         customDao?.deleteAll()
     }
 
-    public suspend fun getFlow() : Flow<PagingData<CustomEntity>> {
+    public suspend fun getFlowPagingData() : Flow<PagingData<CustomEntity>> {
         return Pager(
             config = getPagingConfig(),
             pagingSourceFactory = {
-                CustomPagingSource(customDao!!)
+                CustomPagingSource(customDao)
             }
         ).flow
+    }
+
+    public suspend fun getFlow() : Flow<List<CustomEntity>>? {
+        return customDao?.observeAll()
     }
     //endregion
     private suspend fun getPagingConfig() : PagingConfig {
