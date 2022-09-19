@@ -5,14 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
-import com.example.jetpackcomponentsapp.util.Coroutines
 
 public class CustomRepository : BaseRepository {
-
 
     companion object {
         private val TAG = CustomRepository::class.java.getSimpleName()
