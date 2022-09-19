@@ -13,50 +13,50 @@ import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.util.Coroutines
 
-class AddFragment : Fragment() {
+class AddFragment : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() : AddFragment = AddFragment()
+        private val TAG = AddFragment::class.java.getSimpleName()
 
-        fun getTag() : String {
-            return AddFragment::class.java.getSimpleName()
-        }
+        public fun newInstance() : AddFragment = AddFragment()
     }
 
-    private lateinit var binding : AddBinder
-    private lateinit var viewModel : MainViewModel
+    private var binder : AddBinder? = null
+    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add_fragment,container,false)
-        return binding.root
+        binder = DataBindingUtil.inflate(inflater, R.layout.fragment_add,container,false)
+        return binder?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.setViewModel(viewModel)
-        binding.setLifecycleOwner(getViewLifecycleOwner())
-        binding.editText.requestFocus()
-        showSoftKeyboard()
-
-        binding.button.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View) {
-                viewModel.insertItem(CustomModel(binding.editText.text.toString()))
-                hideSoftKeyboard()
-                requireActivity().supportFragmentManager.popBackStack()
-            }
-        })
+        binder?.setViewModel(viewModel)
+        binder?.setLifecycleOwner(this@AddFragment)
+        binder?.editText?.requestFocus()
+        showSoftKeyboard(binder?.editText)
+        binder?.button?.setOnClickListener(this@AddFragment)
     }
 
-    private fun showSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    override fun onClick(view : View?) {
+        if (view == binder?.button) {
+            viewModel.insertItem(CustomModel(binder?.editText?.text.toString()))
+            hideSoftKeyboard()
+            requireActivity().getSupportFragmentManager().popBackStack()
+        }
     }
 
-    private fun hideSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    private fun getInputMethodManager() : InputMethodManager {
+        return requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
+
+    private fun showSoftKeyboard(view : View?) { Coroutines.main(this@AddFragment, work = {
+        getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }) }
+
+    private fun hideSoftKeyboard() { Coroutines.main(this@AddFragment, work = {
+        getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
+    }) }
 }

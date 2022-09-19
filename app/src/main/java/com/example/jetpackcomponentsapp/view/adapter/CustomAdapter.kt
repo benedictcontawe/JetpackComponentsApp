@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -13,9 +12,11 @@ import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
 class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
-    /**Main */
+    companion object {
+        private val TAG = CustomAdapter::class.java.getSimpleName()
+    }
+
     private val customListeners : CustomListeners
-    private lateinit var customBinder : CustomBinder
     private val list : MutableList<CustomModel>
 
     constructor(customListeners : CustomListeners) : super() {
@@ -25,23 +26,24 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     }
 
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : CustomViewHolder {
-        customBinder = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.item_sample,
-                parent,
-                false
+        val binder : CustomBinder = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.cell_sample,
+            parent,
+            false
         )
-        return CustomViewHolder(parent.context, customListeners, customBinder)
+        return CustomViewHolder(customListeners, binder)
     }
 
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        customBinder.customModel = list.get(position)
-        holder.bindDataToViewHolder(list[position],position)
+    override fun onBindViewHolder(holder : CustomViewHolder, position : Int) {
+        holder.bindDataToViewHolder(
+            list.get(position),
+            position
+        )
     }
 
     override fun getItemId(position : Int) : Long {
-        //return super.getItemId(position)
-        return list[position].id?.toLong()?:RecyclerView.NO_ID
+        return list.get(position).id?.toLong() ?: super.getItemId(position)
     }
 
     override fun getItemCount() : Int {
@@ -51,6 +53,5 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
     fun setItems(items : List<CustomModel>) {
         list.clear()
         list.addAll(items)
-        notifyDataSetChanged()
     }
 }

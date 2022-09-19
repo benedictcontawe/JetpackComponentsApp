@@ -1,8 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.MainActivity" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+    <data class="MainBinder">
+        <variable
+            name="viewModel"
+            type="com.example.jetpackcomponentsapp.MainViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:animateLayoutChanges="true" >
+        <!--region Guide lines-->
+        <!--region Vertical Guide lines-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_leading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_vertical_trailing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
+        <!--endregion-->
+        <!--region Horizontal Guidlines-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_horizontal_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_horizontal_90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/constraint_guideline_horizontal_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.95" />
+        <!--endregion-->
+        <!--endregion-->
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="Add"
+            android:drawingCacheQuality="high"
+            android:scaleType="fitXY"
+            app:backgroundTint="@color/card_state_selected"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_add_white"
+            app:tint="@color/white"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_90"
+            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="Delete All"
+            android:drawingCacheQuality="high"
+            android:scaleType="fitXY"
+            app:backgroundTint="@color/card_state_selected"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_delete_white"
+            app:tint="@color/white"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_90"
+            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

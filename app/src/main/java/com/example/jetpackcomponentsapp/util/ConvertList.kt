@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.*
 
 object ConvertList {
 
+    private val TAG = ConvertList::class.java.getSimpleName()
+
     private fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
         val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
         customEntity.map {
@@ -35,19 +37,20 @@ object ConvertList {
         }.stateIn(scope = scope/*, SharingStarted.Eagerly, initialValue = false*/)
     }
 
-    fun toEntity(customModel: CustomModel) : CustomEntity {
+    public fun toEntity(customModel : CustomModel) : CustomEntity {
         return when(customModel.id) {
-            null -> {
+            Constants.NEGATIVE_ONE -> {
                 CustomEntity(
-                    customModel.name?:"",
-                    customModel.icon?:0
+                    null,
+                    customModel.name ?:"",
+                    customModel.icon ?:0
                 )
             }
             else -> {
                 CustomEntity(
-                    customModel.id!!,
-                    customModel.name?:"",
-                    customModel.icon?:0
+                    customModel.id,
+                    customModel.name ?:"",
+                    customModel.icon ?:0
                 )
             }
         }

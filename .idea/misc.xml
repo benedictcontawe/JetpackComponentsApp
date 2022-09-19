@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/item_sample.xml" value="0.1" />
-        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/main_fragment.xml" value="0.10643115942028986" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/drawable/custom_switch_thumb.xml" value="0.1355" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/activity_main.xml" value="0.23846153846153847" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/add_fragment.xml" value="0.11354166666666667" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/bottom_offset_layout.xml" value="0.1" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/cell_sample.xml" value="0.2421875" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/fragment_add.xml" value="0.2421875" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/item_sample.xml" value="0.2421875" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/main_fragment.xml" value="0.176" />
+        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/update_fragment.xml" value="0.11354166666666667" />
       </map>
     </option>
   </component>

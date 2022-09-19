@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -16,63 +17,64 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.util.Coroutines
 import kotlinx.coroutines.flow.FlowCollector
 
-class UpdateFragment : DialogFragment() {
+public class UpdateFragment : DialogFragment(), View.OnClickListener{
 
     companion object {
-        fun newInstance() : UpdateFragment = UpdateFragment()
+        private val TAG = UpdateFragment::class.java.getSimpleName()
 
-        fun getTag() : String = UpdateFragment::class.java.getSimpleName()
+        fun newInstance() : UpdateFragment = UpdateFragment()
     }
 
-    private lateinit var binding : UpdateBinder
-    private lateinit var viewModel : MainViewModel
+    private var binder : UpdateBinder? = null
+    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
-        binding = DataBindingUtil.inflate(inflater,R.layout.update_fragment,container,false)
-        return binding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
+        binder = DataBindingUtil.inflate(inflater, R.layout.fragment_update,container,false)
+        getDialog()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        return binder?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binder?.setViewModel(viewModel)
+        binder?.setLifecycleOwner(this@UpdateFragment)
         Coroutines.main(this@UpdateFragment, {
             viewModel.observeUpdate().collect(object : FlowCollector<CustomModel> {
-                override suspend fun emit(item : CustomModel) {
-                    binding.editText.setText(item.name)
-                    binding.editText.requestFocus()
-                    binding.editText.selectAll()
-                    showSoftKeyboard()
+                override suspend fun emit(holder : CustomModel) {
+                    binder?.editText?.setText(holder.name)
+                    binder?.editText?.requestFocus()
+                    showSoftKeyboard(binder?.editText)
+                    binder?.editText?.selectAll()
                 }
             })
         })
-
-
-        binding.button.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View) {
-                viewModel.updateItem(binding.editText.getText().toString())
-                hideSoftKeyboard()
-                dismiss()
-            }
-        })
+        binder?.button?.setOnClickListener(this@UpdateFragment)
     }
 
-    private fun showSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    override fun onClick(view : View?) {
+        if (view == binder?.button) {
+            binder?.getViewModel()?.updateItem(binder?.editText?.getText().toString())
+            hideSoftKeyboard()
+            dismiss()
+        }
     }
 
-    private fun hideSoftKeyboard() {
-        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    private fun getInputMethodManager() : InputMethodManager {
+        return requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
+
+    private fun showSoftKeyboard(view : View?) { Coroutines.main(this@UpdateFragment, work = {
+        getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }) }
+
+    private fun hideSoftKeyboard() { Coroutines.main(this@UpdateFragment, work = {
+        getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
+    }) }
 }
 /*
 AlertDialog.Builder(activity)

@@ -5,62 +5,59 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.view.CustomListeners
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
-import com.example.jetpackcomponentsapp.databinding.MainBinder
+import com.example.jetpackcomponentsapp.databinding.RecyclerBinder
 import com.example.jetpackcomponentsapp.util.Coroutines
-import com.example.jetpackcomponentsapp.view.MainActivity
+import com.example.jetpackcomponentsapp.view.MainListener
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment(), CustomListeners {
+class MainFragment : Fragment, CustomListeners {
 
     companion object {
-        fun newInstance() : MainFragment = MainFragment()
+        private val TAG = MainFragment::class.java.getSimpleName()
 
-        fun getTag() : String {
-            return MainFragment::class.java.getSimpleName()
-        }
+        fun newInstance(listener : MainListener) : MainFragment = MainFragment(listener)
     }
 
-    private lateinit var binding: MainBinder
-    private lateinit var viewModel: MainViewModel
-    private lateinit var adapter : CustomAdapter
+    private var binder : RecyclerBinder? = null
+    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
+    private val adapter : CustomAdapter by lazy { CustomAdapter(this@MainFragment) }
+    private val listener : MainListener?
     //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
 
+    constructor() {
+        listener = null
+    }
+
+    constructor(listener : MainListener) {
+        this.listener = listener
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment,container,false)
-        return binding.root
+        binder = DataBindingUtil.inflate(inflater, R.layout.fragment_main,container,false)
+        return binder?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.setViewModel(viewModel)
-        binding.setLifecycleOwner(getViewLifecycleOwner())
-        setRecyclerView()
-        setFloatingActionButton()
-        //viewModel.setItems()
-    }
-
-    private fun setRecyclerView() {
-        adapter = CustomAdapter(this@MainFragment)
-        //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-        //binding.recyclerView.removeItemDecoration(itemDecorationHelper)
-        binding.recyclerView.adapter = adapter
-        (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
+        binder?.setViewModel(viewModel)
+        binder?.setLifecycleOwner(this@MainFragment)
+        binder?.recyclerView?.setAdapter(adapter)
+        //itemDecorationHelper = BottomOffsetDecorationHelper(requireContext(), R.dimen.extra_scroll)
+        //binder?.recyclerView.removeItemDecoration(itemDecorationHelper)
+        //binder?.recyclerView.getLayoutManager()?.setAutoMeasureEnabled(false)
+        //binder?.recyclerView.scrollToPosition(0)
+        //binder?.recyclerView.addItemDecoration(itemDecorationHelper)
+        //binder?.recyclerView?.setHasFixedSize(true)
         Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
             /*
             scope.launch ( block = {
@@ -75,42 +72,21 @@ class MainFragment : Fragment(), CustomListeners {
             */
             scope.launch ( block = {
                 viewModel.observeItems().collectLatest( action = { list ->
-                    Log.d(MainFragment.getTag(),"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                    binding.recyclerView.removeAllViews()
+                    Log.d(TAG, "ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                    binder?.recyclerView?.removeAllViews()
                     adapter.setItems(list)
+                    //adapter.notifyDataSetChanged()
                 })
             })
         })
-        //binding.recyclerView.scrollToPosition(0)
-        //binding.recyclerView.addItemDecoration(itemDecorationHelper)
-        binding.recyclerView.setHasFixedSize(true)
     }
 
-    private fun setFloatingActionButton() {
-        binding.floatingActionButtonAdd.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View?) {
-                onAdd()
-            }
-        })
-        binding.floatingActionButtonDelete.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View?) {
-                viewModel.deleteAll()
-                Toast.makeText(context,"deleteAll()",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun onAdd() {
-        (activity as MainActivity).callAddFragment()
-        //viewModel.setItems()
-    }
-
-    override fun onUpdate(item : CustomModel, position : Int) {
+    override fun onUpdate(item : CustomModel?, position : Int) {
         viewModel.setUpdate(item)
-        (activity as MainActivity).callUpdateFragment()
+        listener?.launchUpdate()
     }
 
-    override fun onDelete(item : CustomModel, position : Int) {
+    override fun onDelete(item : CustomModel?, position : Int) {
         viewModel.deleteItem(item)
     }
 }

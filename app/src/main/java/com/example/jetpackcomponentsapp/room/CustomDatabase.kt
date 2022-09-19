@@ -1,11 +1,7 @@
 package com.example.jetpackcomponentsapp.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.jetpackcomponentsapp.util.Coroutines
 
 @Database(
         entities = [CustomEntity::class],
@@ -13,52 +9,9 @@ import com.example.jetpackcomponentsapp.util.Coroutines
 )
 abstract class CustomDatabase : RoomDatabase() {
 
-    abstract fun customDao() : CustomDAO
-
     companion object {
-        @Volatile private var instance : CustomDatabase? = null
-
-        public fun getInstance(context : Context, database : String) : CustomDatabase? {
-            if (instance == null) {
-                synchronized(CustomDatabase::class) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        CustomDatabase::class.java,
-                        database
-                    )
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
-                    .build()
-                }
-            }
-            return instance
-        }
-
-        private val roomCallback : RoomDatabase.Callback = object : RoomDatabase.Callback() {
-            override fun onCreate(db : SupportSQLiteDatabase) {
-                //Initialize Database if no database attached to the App
-                super.onCreate(db)
-                Coroutines.io {
-                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 0")))
-                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 1")))
-                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 2")))
-                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 3")))
-                    //instance?.customDao()?.insert(ConvertList.toEntity(CustomModel(R.drawable.ic_launcher_foreground,"name 4")))
-                }
-            }
-
-            override fun onOpen(db : SupportSQLiteDatabase) {
-                //Re-open Database if it has database attached to the App
-                super.onOpen(db)
-            }
-        }
+        private val TAG : String = CustomDatabase::class.java.getSimpleName()
     }
 
-    public fun onCLose() {
-        instance?.close()
-    }
-
-    public fun onDestroy() {
-        instance = null
-    }
+    abstract fun customDao() : CustomDAO
 }

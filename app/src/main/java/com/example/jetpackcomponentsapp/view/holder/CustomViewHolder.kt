@@ -1,33 +1,34 @@
 package com.example.jetpackcomponentsapp.view.holder
 
-import android.content.Context
 import android.view.View
 import com.example.jetpackcomponentsapp.view.CustomListeners
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 
-class CustomViewHolder : BaseViewHolder {
+class CustomViewHolder : BaseViewHolder, View.OnClickListener {
 
-    private val customBinder : CustomBinder
+    private val binder : CustomBinder
 
-    constructor(context : Context, customListeners : CustomListeners, customBinder : CustomBinder) : super(context, customListeners, customBinder.root) {
-        this.customBinder = customBinder
+    constructor(customListeners : CustomListeners, binder : CustomBinder) : super(customListeners, binder.root) {
+        this.binder = binder
     }
 
-    override fun bindDataToViewHolder(item: CustomModel, position: Int) {
-        customBinder.executePendingBindings()
-        setId(item.id?:0)
-        //customBinder.imageView.setBackgroundResource(item.icon?:0)
-        customBinder.imageView.setImageResource(item.icon?:0)
-        customBinder.buttonEdit.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View) {
-                getListener().onUpdate(item,position)
-            }
-        })
-        customBinder.buttonDelete.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View) {
-                getListener().onDelete(item,position)
-            }
-        })
+    override fun bindDataToViewHolder(model : CustomModel, position : Int) {
+        binder.setHolder(model)
+        binder.setPosition(position)
+        binder.executePendingBindings()
+        binder.textView.setText(model.name)
+        binder.imageView.setImageResource(model?.icon ?: 0) //binder.imageView.setBackgroundResource(item.icon ?: 0)
+        binder.imageView.setImageResource(model.icon?:0)
+        binder.buttonEdit.setOnClickListener(this@CustomViewHolder)
+        binder.buttonDelete.setOnClickListener(this@CustomViewHolder)
+    }
+
+    override fun onClick(view : View?) {
+        if (view == binder.buttonEdit) {
+            getListener().onUpdate(binder.getHolder(), binder.getPosition())
+        } else if(view == binder.buttonDelete) {
+            getListener().onDelete(binder.getHolder(), binder.getPosition())
+        }
     }
 }
