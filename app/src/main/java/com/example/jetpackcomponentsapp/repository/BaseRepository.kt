@@ -3,7 +3,7 @@ package com.example.jetpackcomponentsapp.repository
 import androidx.lifecycle.LiveData
 import com.example.jetpackcomponentsapp.room.CustomEntity
 
-interface BaseRepository {
+public interface BaseRepository {
 
     public suspend fun  insert(customEntity: CustomEntity)
 
@@ -13,5 +13,7 @@ interface BaseRepository {
 
     public suspend fun  deleteAll()
 
-    public fun getAll() : LiveData<List<CustomEntity>>
+    public fun getAll() : LiveData<List<CustomEntity>>?
+
+    public suspend fun  onCLose()
 }

@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
 
-object ConvertList {
+public object ConvertList {
+
+    private val TAG = ConvertList::class.java.getSimpleName()
 
     private fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
         val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
@@ -25,19 +25,20 @@ object ConvertList {
         }
     }
 
-    fun toEntity(customModel: CustomModel) : CustomEntity {
+    public fun toEntity(customModel : CustomModel) : CustomEntity {
         return when(customModel.id) {
-            null -> {
+            Constants.NEGATIVE_ONE -> {
                 CustomEntity(
-                    customModel.name?:"",
-                    customModel.icon?:0
+                    null,
+                    customModel.name ?:"",
+                    customModel.icon ?:0
                 )
             }
             else -> {
                 CustomEntity(
-                    customModel.id!!,
-                    customModel.name?:"",
-                    customModel.icon?:0
+                    customModel.id,
+                    customModel.name ?:"",
+                    customModel.icon ?:0
                 )
             }
         }

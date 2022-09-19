@@ -1,9 +1,12 @@
 package com.example.jetpackcomponentsapp.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -12,49 +15,68 @@ import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.view.MainActivity
+import com.example.jetpackcomponentsapp.util.Coroutines
 
-class UpdateFragment : BaseDialogFragment() {
+public class UpdateFragment : DialogFragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance() : UpdateFragment = UpdateFragment()
+        private val TAG = UpdateFragment::class.java.getSimpleName()
 
-        fun getTag() : String = UpdateFragment::class.java.getSimpleName()
+        fun newInstance(): UpdateFragment = UpdateFragment()
     }
 
-    private val activity by lazy { (getActivity() as MainActivity) }
-    private lateinit var binding : UpdateBinder
-    private lateinit var viewModel : MainViewModel
+    private var binder : UpdateBinder? = null
+    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment)
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater,R.layout.update_fragment,container,false)
-        return binding.root
+    override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
+        binder = DataBindingUtil.inflate(inflater, R.layout.fragment_update, container, false)
+        getDialog()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        return binder?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.setViewModel(viewModel)
-        binding.setLifecycleOwner(getViewLifecycleOwner())
-        viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
-            override fun onChanged(item : CustomModel) {
-                binding.editText.setText(item.name)
-                binding.editText.requestFocus()
-                binding.editText.selectAll()
-                showSoftKeyboard()
-            }
+        binder?.setViewModel(viewModel)
+        binder?.setLifecycleOwner(this@UpdateFragment)
+        Coroutines.main(this@UpdateFragment, {
+            viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
+                override fun onChanged(item: CustomModel) {
+                    binder?.editText?.setText(item.name)
+                    binder?.editText?.requestFocus()
+                    binder?.editText?.selectAll()
+                    showSoftKeyboard(binder?.editText)
+                }
+            })
         })
-        binding.button.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view : View) {
-                viewModel.updateItem(binding.editText.getText().toString())
-                hideSoftKeyboard()
-                dismiss()
-            }
+        binder?.button?.setOnClickListener(this@UpdateFragment)
+    }
+
+    override fun onClick(view: View?) {
+        if (view == binder?.button) {
+            binder?.getViewModel()?.updateItem(binder?.editText?.getText().toString())
+            hideSoftKeyboard()
+            dismiss()
+        }
+    }
+
+    private fun getInputMethodManager(): InputMethodManager {
+        return requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun showSoftKeyboard(view: View?) {
+        Coroutines.main(this@UpdateFragment, work = {
+            getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        })
+    }
+
+    private fun hideSoftKeyboard() {
+        Coroutines.main(this@UpdateFragment, work = {
+            getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
         })
     }
 
@@ -64,10 +86,9 @@ class UpdateFragment : BaseDialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkIfFragmentLoaded(this)
+        viewModel.checkIfFragmentLoaded(this@UpdateFragment)
     }
 }
-
 /*
 AlertDialog.Builder(activity)
 .setTitle("Update Name")

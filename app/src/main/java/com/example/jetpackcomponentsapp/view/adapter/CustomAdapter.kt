@@ -8,49 +8,50 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.CustomListeners
-import com.example.jetpackcomponentsapp.view.holder.BaseViewHolder
 import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
-class CustomAdapter : RecyclerView.Adapter<BaseViewHolder> {
+class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
-    /**Main */
+    companion object {
+        private val TAG = CustomAdapter::class.java.getSimpleName()
+    }
+
     private val customListeners : CustomListeners
-    private lateinit var customBinder : CustomBinder
-
-    private var list : MutableList<CustomModel> = mutableListOf()
+    private val list : MutableList<CustomModel>
 
     constructor(customListeners : CustomListeners) : super() {
         this.customListeners = customListeners
+        this.list = mutableListOf()
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : BaseViewHolder {
-        customBinder = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.item_sample,
-                parent,
-                false
+    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : CustomViewHolder {
+        val binder : CustomBinder = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.cell_sample,
+            parent,
+            false
         )
-        return CustomViewHolder(customListeners, customBinder)
+        return CustomViewHolder(customListeners, binder)
     }
 
-    override fun onBindViewHolder(holder : BaseViewHolder, position : Int) {
-        customBinder.customModel = list.get(position)
-        holder.bindDataToViewHolder(list[position],position)
+    override fun onBindViewHolder(holder : CustomViewHolder, position : Int) {
+        holder.bindDataToViewHolder(
+            list.get(position),
+            position
+        )
     }
 
     override fun getItemId(position : Int) : Long {
-        //return super.getItemId(position)
-        return list[position].id?.toLong()?:RecyclerView.NO_ID
+        return list.get(position).id?.toLong() ?: super.getItemId(position)
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount() : Int {
         return list.size
     }
 
     fun setItems(items : List<CustomModel>) {
         list.clear()
         list.addAll(items)
-        notifyDataSetChanged()
     }
 }

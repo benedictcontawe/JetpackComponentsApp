@@ -5,7 +5,6 @@ import androidx.room.*
 
 @Dao
 interface CustomDAO {
-
     //@Insert
     //@Insert(onConflict = OnConflictStrategy.REPLACE)
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -25,7 +24,7 @@ interface CustomDAO {
 
     //@Query("SELECT * FROM custom_table")
     @Query("SELECT * FROM custom_table ORDER BY Id ASC")
-    fun getAll() : LiveData<List<CustomEntity>>
+    fun observeAll() : LiveData<List<CustomEntity>>
 
     @Transaction
     suspend fun resetDAO() {
