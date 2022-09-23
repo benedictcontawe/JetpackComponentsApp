@@ -1,12 +1,10 @@
-package com.example.jetpackcomponentsapp.view.fragment
+package com.example.jetpackcomponentsapp.view.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -17,7 +15,7 @@ import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.util.Coroutines
 
-public class UpdateFragment : DialogFragment(), View.OnClickListener {
+public class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
 
     companion object {
         private val TAG = UpdateFragment::class.java.getSimpleName()
@@ -62,22 +60,6 @@ public class UpdateFragment : DialogFragment(), View.OnClickListener {
             hideSoftKeyboard()
             dismiss()
         }
-    }
-
-    private fun getInputMethodManager(): InputMethodManager {
-        return requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
-
-    private fun showSoftKeyboard(view: View?) {
-        Coroutines.main(this@UpdateFragment, work = {
-            getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        })
-    }
-
-    private fun hideSoftKeyboard() {
-        Coroutines.main(this@UpdateFragment, work = {
-            getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
-        })
     }
 
     override fun onHiddenChanged(hidden: Boolean) {

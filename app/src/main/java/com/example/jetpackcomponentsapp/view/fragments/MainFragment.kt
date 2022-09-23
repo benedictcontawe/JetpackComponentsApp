@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp.view.fragment
+package com.example.jetpackcomponentsapp.view.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,17 +9,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.view.listeners.CustomListener
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.RecyclerBinder
 import com.example.jetpackcomponentsapp.util.Coroutines
-import com.example.jetpackcomponentsapp.view.MainListener
-import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
+import com.example.jetpackcomponentsapp.view.listeners.MainListener
+import com.example.jetpackcomponentsapp.view.adapters.CustomAdapter
 import kotlinx.coroutines.CoroutineScope
 
-class MainFragment : Fragment, CustomListeners {
+class MainFragment : Fragment, CustomListener {
 
     companion object {
         private val TAG = MainFragment::class.java.getSimpleName()
@@ -31,7 +31,7 @@ class MainFragment : Fragment, CustomListeners {
     private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
     private val adapter : CustomAdapter by lazy { CustomAdapter(this@MainFragment) }
     private val listener : MainListener?
-    //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
+    //private val itemDecorationHelper: BottomOffsetDecorationHelper by lazy { BottomOffsetDecorationHelper(requireContext(), R.dimen.extra_scroll) }
 
     constructor() {
         listener = null
@@ -39,6 +39,11 @@ class MainFragment : Fragment, CustomListeners {
 
     constructor(listener : MainListener) {
         this.listener = listener
+    }
+
+    override fun onCreate(savedInstanceState : Bundle?) {
+        super.onCreate(savedInstanceState)
+        //requireActivity().onBackPressedDispatcher.addCallback(this, getHandleOnBackPressed())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
@@ -51,7 +56,6 @@ class MainFragment : Fragment, CustomListeners {
         binder?.setViewModel(viewModel)
         binder?.setLifecycleOwner(this@MainFragment)
         binder?.recyclerView?.setAdapter(adapter)
-        //itemDecorationHelper = BottomOffsetDecorationHelper(requireContext(), R.dimen.extra_scroll)
         //binder?.recyclerView.removeItemDecoration(itemDecorationHelper)
         //binder?.recyclerView.getLayoutManager()?.setAutoMeasureEnabled(false)
         //binder?.recyclerView.scrollToPosition(0)
@@ -81,5 +85,8 @@ class MainFragment : Fragment, CustomListeners {
 
     override fun onDelete(item : CustomModel?, position : Int) {
         viewModel.deleteItem(item)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

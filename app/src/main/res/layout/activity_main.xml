@@ -80,7 +80,7 @@
             android:id="@+id/floating_action_button_delete"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:contentDescription="Delete All"
+            android:contentDescription="@string/delete_all"
             android:drawingCacheQuality="high"
             android:scaleType="fitXY"
             app:backgroundTint="@color/card_state_selected"

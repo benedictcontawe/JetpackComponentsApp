@@ -1,7 +1,7 @@
-package com.example.jetpackcomponentsapp.view.holder
+package com.example.jetpackcomponentsapp.view.holders
 
 import android.view.View
-import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.view.listeners.CustomListener
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 
@@ -9,7 +9,7 @@ class CustomViewHolder : BaseViewHolder, View.OnClickListener {
 
     private val binder : CustomBinder
 
-    constructor(customListeners : CustomListeners, binder : CustomBinder) : super(customListeners, binder.root) {
+    constructor(customListener : CustomListener, binder : CustomBinder) : super(customListener, binder.root) {
         this.binder = binder
     }
 

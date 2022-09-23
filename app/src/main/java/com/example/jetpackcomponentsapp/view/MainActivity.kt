@@ -1,9 +1,11 @@
 package com.example.jetpackcomponentsapp.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,9 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.databinding.MainBinder
-import com.example.jetpackcomponentsapp.view.fragment.AddFragment
-import com.example.jetpackcomponentsapp.view.fragment.MainFragment
-import com.example.jetpackcomponentsapp.view.fragment.UpdateFragment
+import com.example.jetpackcomponentsapp.view.fragments.AddFragment
+import com.example.jetpackcomponentsapp.view.fragments.MainFragment
+import com.example.jetpackcomponentsapp.view.fragments.UpdateFragment
+import com.example.jetpackcomponentsapp.view.listeners.MainListener
 
 public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListener {
 
@@ -27,11 +30,11 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
     private var binder : MainBinder? = null
     private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(MainViewModel::class.java) }
 
-    val standByDialog by lazy {
+    private val standByDialog by lazy {
         val builder = this.let { AlertDialog.Builder(it) }
         val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
         val message = dialogView.findViewById<TextView>(R.id.loadingText)
-        message.text = "Processing. Please wait…"
+        message.setText( getString(R.string.Processing__please_wait_) )
         builder.setView(dialogView)
         builder.setCancelable(false)
         builder.create()
@@ -48,6 +51,7 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
         observeLoadState()
         binder?.floatingActionButtonAdd?.setOnClickListener(this@MainActivity)
         binder?.floatingActionButtonDelete?.setOnClickListener(this@MainActivity)
+        getOnBackPressedDispatcher().addCallback(this@MainActivity, getHandleOnBackPressed())
     }
 
     private fun observeLoadState() {
@@ -99,8 +103,23 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
         showDialogFragment(UpdateFragment.newInstance())
     }
 
-    override fun onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) super.onBackPressed()
-        else getSupportFragmentManager().popBackStack()
+    private fun getHandleOnBackPressed() : OnBackPressedCallback {
+        return object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { Log.d(TAG,"handleOnBackPressed()")
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    finish()
+                } else getSupportFragmentManager().popBackStackImmediate()
+            }
+        }
+    }
+
+    @Deprecated("Deprecated in Java", ReplaceWith("Use this method getHandleOnBackPressed"), DeprecationLevel.WARNING)
+    override fun onBackPressed() { Log.d(TAG,"onBackPressed()")
+        if (getOnBackPressedDispatcher().hasEnabledCallbacks())
+            super.onBackPressed()
+        else if (getSupportFragmentManager().getBackStackEntryCount() == 0)
+            super.onBackPressed()
+        else
+            getSupportFragmentManager().popBackStack()
     }
 }

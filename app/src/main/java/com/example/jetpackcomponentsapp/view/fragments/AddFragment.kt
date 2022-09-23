@@ -1,21 +1,19 @@
-package com.example.jetpackcomponentsapp.view.fragment
+package com.example.jetpackcomponentsapp.view.fragments
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.util.Coroutines
 
-class AddFragment : Fragment(), View.OnClickListener {
+class AddFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         private val TAG = AddFragment::class.java.getSimpleName()
@@ -25,6 +23,11 @@ class AddFragment : Fragment(), View.OnClickListener {
 
     private var binder : AddBinder? = null
     private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, getHandleOnBackPressed())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_add,container,false)
@@ -48,20 +51,23 @@ class AddFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun getInputMethodManager() : InputMethodManager {
-        return requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
-
-    private fun showSoftKeyboard(view : View?) { Coroutines.main(this@AddFragment, work = {
-        getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }) }
-
-    private fun hideSoftKeyboard() { Coroutines.main(this@AddFragment, work = {
-        getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
-    }) }
-
     override fun onResume() {
         super.onResume()
         viewModel.checkIfFragmentLoaded(this@AddFragment)
+    }
+
+    private fun getHandleOnBackPressed() : OnBackPressedCallback {
+        return object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { Log.d(TAG,"handleOnBackPressed() ")
+                if (binder?.editText?.getText()?.isNotBlank() == true)
+                    binder?.editText?.getText()?.clear()
+                else onBackPressed()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        getHandleOnBackPressed().remove()
+        super.onDestroy()
     }
 }
