@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.view.CustomListener
 import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
 class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
@@ -16,11 +16,11 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
         private val TAG = CustomAdapter::class.java.getSimpleName()
     }
 
-    private val customListeners : CustomListeners
+    private val customListener : CustomListener
     private val list : MutableList<CustomModel>
 
-    constructor(customListeners : CustomListeners) : super() {
-        this.customListeners = customListeners
+    constructor(customListener : CustomListener) : super() {
+        this.customListener = customListener
         this.list = mutableListOf()
         setHasStableIds(true)
     }
@@ -32,7 +32,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
             parent,
             false
         )
-        return CustomViewHolder(customListeners, binder)
+        return CustomViewHolder(customListener, binder)
     }
 
     override fun onBindViewHolder(holder : CustomViewHolder, position : Int) {

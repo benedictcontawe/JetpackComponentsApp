@@ -2,7 +2,7 @@ package com.example.jetpackcomponentsapp.view
 
 import com.example.jetpackcomponentsapp.model.CustomModel
 
-interface CustomListeners {
+interface CustomListener {
 
     public fun onUpdate(item : CustomModel?, position : Int)
 

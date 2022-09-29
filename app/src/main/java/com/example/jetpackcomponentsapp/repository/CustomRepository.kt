@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 
 public class CustomRepository : BaseRepository {
 
-
     companion object {
         private val TAG = CustomRepository::class.java.getSimpleName()
         private var database : CustomDatabase? = null

@@ -1,15 +1,19 @@
 package com.example.jetpackcomponentsapp.view.holder
 
 import android.view.View
-import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.view.CustomListener
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 
 class CustomViewHolder : BaseViewHolder, View.OnClickListener {
 
+    companion object {
+        private val TAG : String = CustomViewHolder.javaClass::class.java.getSimpleName()
+    }
+
     private val binder : CustomBinder
 
-    constructor(customListeners : CustomListeners, binder : CustomBinder) : super(customListeners, binder.root) {
+    constructor(customListener : CustomListener, binder : CustomBinder) : super(customListener, binder.root) {
         this.binder = binder
     }
 

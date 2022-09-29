@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.view.CustomListeners
+import com.example.jetpackcomponentsapp.view.CustomListener
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
@@ -20,7 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment, CustomListeners {
+class MainFragment : Fragment, CustomListener {
 
     companion object {
         private val TAG = MainFragment::class.java.getSimpleName()
