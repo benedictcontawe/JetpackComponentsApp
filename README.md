@@ -41,3 +41,6 @@
 - [Combining flows: merge, zip, and combine](https://kt.academy/article/cc-flow-combine)
 
 - [Android Protobuf Tutorial with example app](https://medium.com/mobile-app-development-publication/simple-android-protobuf-tutorial-with-actual-code-bfb581299f47#:~:text=The%20PROTO%20file%20is%20then,be%20used%20in%20your%20code.)
+
+- [DataStore Android -How to use it like a pro using Kotlin
+](https://medium.com/@vgoyal_1/datastore-android-how-to-use-it-like-a-pro-using-kotlin-2c2440683d78)
