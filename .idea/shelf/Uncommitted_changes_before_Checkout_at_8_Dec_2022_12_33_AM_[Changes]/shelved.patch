@@ -1,0 +1,42 @@
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"GRADLE\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 0b71a7abfab6711fec0930758e730f41a5eee5a3)
++++ b/.idea/gradle.xml	(date 1669981414835)
+@@ -7,6 +7,7 @@
+         <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="gradleJvm" value="Embedded JDK" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/bottom_offset_layout.xml\" value=\"0.2421875\" />\r\n        <entry key=\"..\\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/item_sample.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/main_fragment.xml\" value=\"0.2\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 0b71a7abfab6711fec0930758e730f41a5eee5a3)
++++ b/.idea/misc.xml	(date 1670428776871)
+@@ -5,11 +5,11 @@
+       <map>
+         <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/bottom_offset_layout.xml" value="0.2421875" />
+         <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/item_sample.xml" value="0.1" />
+-        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/main_fragment.xml" value="0.2" />
++        <entry key="..\:/Benedict/Android Studio Projects/JetpackComponentsApp/app/src/main/res/layout/main_fragment.xml" value="0.536" />
+       </map>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
