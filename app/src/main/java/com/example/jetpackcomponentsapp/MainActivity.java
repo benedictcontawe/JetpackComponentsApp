@@ -13,7 +13,7 @@ import android.widget.SeekBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.jetpackcomponentsapp.databinding.MainBinder;
 
@@ -30,13 +30,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main); //setContentView(R.layout.activity_main);
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class); //ViewModelProviders.of(this).get(MainViewModel.class);
 
         binding.setViewModel(viewModel);
-        //binding.setLifecycleOwner();
+        binding.setLifecycleOwner(this);
 
         setSpinnerAdapter();
         setLiveDataObservers();
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 binding.progressBarResult.setProgress(integer);
             }
         });
-
     }
 
     private void setEventListeners(){
@@ -257,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         viewModel.getData().observe(this, null);
         binding.buttonSendData.setOnClickListener(null);
         binding.switchSendData.setOnCheckedChangeListener(null);
@@ -267,7 +264,5 @@ public class MainActivity extends AppCompatActivity {
         binding.spinnerSendData.setOnItemSelectedListener(null);
         binding.spinnerCustomSendData.setOnItemSelectedListener(null);
         binding.ratingBarSendData.setOnRatingBarChangeListener(null);
-
     }
-
 }
