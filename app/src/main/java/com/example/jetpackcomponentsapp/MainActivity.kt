@@ -7,12 +7,25 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.jetpackcomponentsapp.databinding.MainBinder
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener {
+
+    companion object {
+        private var TAG : String = MainActivity::class.java.getSimpleName()
+
+        fun newIntent(context : Context) : Intent {
+            val intent : Intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            return intent
+        }
+    }
+
+    private var binder : MainBinder? = null
 
     private val viewModel : MainViewModel by lazy(LazyThreadSafetyMode.NONE, initializer = {
         ViewModelProvider(this@MainActivity).get(MainViewModel::class.java)
@@ -22,45 +35,37 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
         ContactAdapter(this@MainActivity)
     })
 
-    companion object {
-        private var TAG : String = MainActivity::class.java.simpleName
-
-        fun newIntent(context : Context) : Intent {
-            val intent : Intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            return intent
-        }
-    }
-
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        floating_action_button_add.setOnClickListener(this@MainActivity)
-        floating_action_button_sort.setOnClickListener(this@MainActivity)
+        binder = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
+        binder?.setViewModel(viewModel)
+        binder?.setLifecycleOwner(this@MainActivity)
+        binder?.floatingActionButtonAdd?.setOnClickListener(this@MainActivity)
+        binder?.floatingActionButtonSort?.setOnClickListener(this@MainActivity)
         setRecyclerView()
         checkManifestPermission()
         viewModel.observeLiveStandBy().observe(this, object : Observer<Boolean> {
             override fun onChanged(isLoading : Boolean) {
                 if (isLoading) {
-                    progress_bar.setVisibility(View.VISIBLE)
+                    binder?.progressBar?.setVisibility(View.VISIBLE)
                 } else {
-                    progress_bar.setVisibility(View.GONE)
+                    binder?.progressBar?.setVisibility(View.GONE)
                 }
             }
         })
         viewModel.observeLiveContact().observe(this, object : Observer<List<ContactViewHolderModel>>{
             override fun onChanged(list : List<ContactViewHolderModel>) {
-                //recycler_view.invalidate()
-                recycler_view.removeAllViews()
+                //binder?.recyclerView?.invalidate()
+                binder?.recyclerView?.removeAllViews()
                 contactAdapter.setItems(list)
             }
         })
     }
 
     private fun setRecyclerView() {
-        //recycler_view.setLayoutManager(CustomLinearLayoutManager(this@MainActivity,RecyclerView.VERTICAL,false))
-        recycler_view.setAdapter(contactAdapter)
-        recycler_view.setHasFixedSize(true)
+        //binder?.recyclerView?.setLayoutManager(CustomLinearLayoutManager(this@MainActivity,RecyclerView.VERTICAL,false))
+        binder?.recyclerView?.setAdapter(contactAdapter)
+        binder?.recyclerView?.setHasFixedSize(true)
     }
 
     private fun checkManifestPermission() {
@@ -78,7 +83,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
         super.onResume()
         Log.d(TAG,"onResume()")
         Log.d("MainViewModel", "Available Processors ${Runtime.getRuntime().availableProcessors()}")
-        recycler_view.addOnScrollListener(setScrollListener())
+        binder?.recyclerView?.addOnScrollListener(setScrollListener())
         ManifestPermission.checkSelfPermission(this@MainActivity, ManifestPermission.contactPermission,
                 isGranted = {
                     viewModel.syncAdded()
@@ -94,18 +99,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
 
     override fun onPause() {
         super.onPause()
-        recycler_view.removeOnScrollListener(setScrollListener())
+        binder?.recyclerView?.removeOnScrollListener(setScrollListener())
     }
 
     override fun onClick(view : View) {
         when(view) {
-            floating_action_button_add -> {
-                if (progress_bar.getVisibility() == View.GONE) {
+            binder?.floatingActionButtonAdd -> {
+                if (binder?.progressBar?.getVisibility() == View.GONE) {
                     startActivity(viewModel.addContact())
                 }
             }
-            floating_action_button_sort -> {
-                if (progress_bar.getVisibility() == View.GONE) {
+            binder?.floatingActionButtonSort -> {
+                if (binder?.progressBar?.getVisibility() == View.GONE) {
                     viewModel.sortContacts()
                 }
             }
@@ -145,11 +150,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
                 when {
                     recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE && newState == RecyclerView.SCROLL_STATE_IDLE -> {
                         Log.d(TAG,"Recycler View Scroll State IDLE")
-                        floating_action_button_add.show() //floating_action_button_add.setVisibility(View.VISIBLE)
+                        binder?.floatingActionButtonAdd?.show() //binder?.floatingActionButtonAdd?.setVisibility(View.VISIBLE)
                     }
                     recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && newState == RecyclerView.SCROLL_STATE_DRAGGING -> {
                         Log.d(TAG,"Recycler View Scroll State DRAGGING")
-                        floating_action_button_add.hide() //floating_action_button_add.setVisibility(View.GONE)
+                        binder?.floatingActionButtonAdd?.hide() //binder?.floatingActionButtonAdd?.setVisibility(View.GONE)
                     }
                     recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_SETTLING && newState == RecyclerView.SCROLL_STATE_SETTLING -> {
                         Log.d(TAG,"Recycler View Scroll State SETTLING")
@@ -160,13 +165,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ContactListener 
     }
 
     override fun onClickItemEdit(item : ContactViewHolderModel, position : Int) {
-        if (progress_bar.getVisibility() == View.GONE) {
+        if (binder?.progressBar?.getVisibility() == View.GONE) {
             startActivity(viewModel.updateContact(item))
         }
     }
 
     override fun onClickItemDelete(item : ContactViewHolderModel, position : Int) {
-        if (progress_bar.getVisibility() == View.GONE) {
+        if (binder?.progressBar?.getVisibility() == View.GONE) {
             viewModel.deleteContact(item, position)
         }
     }

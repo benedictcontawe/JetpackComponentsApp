@@ -2,21 +2,20 @@ package com.example.jetpackcomponentsapp
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jetpackcomponentsapp.databinding.ContactCellBinder
+import com.example.jetpackcomponentsapp.databinding.ContactHeaderBinder
 
 class ContactAdapter : RecyclerView.Adapter<BaseContactViewHolder> {
 
     companion object {
-        private val TAG = ContactAdapter::class.java.simpleName
-        public const val HeaderView = 0 //contact_cell_header
-        public const val DefaultView = 1 //contact_cell_default
+        private val TAG = ContactAdapter::class.java.getSimpleName()
     }
 
     private val list : MutableList<ContactViewHolderModel> = mutableListOf()
-
-    private lateinit var contactListener : ContactListener
+    private val contactListener : ContactListener
 
     constructor(contactListener : ContactListener) : super() {
         Log.d(TAG,"constructor")
@@ -27,19 +26,18 @@ class ContactAdapter : RecyclerView.Adapter<BaseContactViewHolder> {
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : BaseContactViewHolder {
         Log.d(TAG, "onCreateViewHolder($parent,$viewType)")
         val layoutInflater : LayoutInflater = LayoutInflater.from(parent.getContext())
-        val view : View
         return when(viewType) {
-            HeaderView -> {
-                view = layoutInflater.inflate(R.layout.contact_cell_header, parent, false)
-                HeaderViewHolder(parent.context, contactListener, view)
+            ContactModel.HeaderView -> {
+                val binder : ContactHeaderBinder = DataBindingUtil.inflate(layoutInflater, R.layout.cell_contact_header, parent, false)
+                HeaderViewHolder(contactListener, binder)
             }
-            DefaultView -> {
-                view = layoutInflater.inflate(R.layout.contact_cell_default, parent, false)
-                ContactViewHolder(parent.context, contactListener, view)
+            ContactModel.CellView -> {
+                val binder : ContactCellBinder = DataBindingUtil.inflate(layoutInflater, R.layout.cell_contact_default, parent, false)
+                ContactViewHolder(contactListener, binder)
             }
             else -> {
-                view = layoutInflater.inflate(R.layout.contact_cell_default, parent, false)
-                ContactViewHolder(parent.context, contactListener, view)
+                val binder : ContactCellBinder = DataBindingUtil.inflate(layoutInflater, R.layout.cell_contact_default, parent, false)
+                ContactViewHolder(contactListener, binder)
             }
         }
     }
@@ -63,8 +61,8 @@ class ContactAdapter : RecyclerView.Adapter<BaseContactViewHolder> {
     }
 
     public fun getContactCount() : Int {
-        Log.d(TAG, "getContactCount() : ${list.filter { it.viewType == DefaultView }.size}")
-        return list.filter { it.viewType == DefaultView }.size
+        Log.d(TAG, "getContactCount() : ${list.filter { it.viewType == ContactModel.CellView }.size}")
+        return list.filter { it.viewType == ContactModel.CellView }.size
     }
 
     override fun getItemViewType(position : Int) : Int {

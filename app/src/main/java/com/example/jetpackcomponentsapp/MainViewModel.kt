@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.ContentUris
 import android.content.Intent
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.provider.ContactsContract
 import android.util.Log
@@ -73,7 +72,7 @@ class MainViewModel : AndroidViewModel {
         loop@ for (index in 0 until item.size) {
             val condition : Boolean =
                     BooleanUtils.hasSpecialCharacter(item[index].name.substring(0,1)) &&
-                            item.filter { BooleanUtils.hasSpecialCharacter(it.name.substring(0,1)) && it.viewType.equals(ContactAdapter.HeaderView) }.none()
+                            item.filter { BooleanUtils.hasSpecialCharacter(it.name.substring(0,1)) && it.viewType.equals(ContactModel.HeaderView) }.none()
             Log.d(TAG,"& check")
             when {
                 condition -> { Log.d(TAG,"& index $index item ${item[index].name}")
@@ -94,7 +93,7 @@ class MainViewModel : AndroidViewModel {
         loop@ for (index in 0 until item.size) {
             val condition : Boolean =
                     item[index].name.substring(0,1).isDigitsOnly() &&
-                            item.filter { it.name.substring(0,1).isDigitsOnly() && it.viewType.equals(ContactAdapter.HeaderView) }.none()
+                            item.filter { it.name.substring(0,1).isDigitsOnly() && it.viewType.equals(ContactModel.HeaderView) }.none()
             Log.d(TAG,"# check")
             when {
                 condition -> {
@@ -118,7 +117,7 @@ class MainViewModel : AndroidViewModel {
             loop@ for (index in currentIndex until item.size) {
                 val condition : Boolean = currentIndex < index &&
                         item[index].name.startsWith(alphabetHeader,ignoreCase = true) &&
-                        item.filter { it.name.contentEquals(alphabetHeader) && it.viewType.equals(ContactAdapter.HeaderView) }.none()
+                        item.filter { it.name.contentEquals(alphabetHeader) && it.viewType.equals(ContactModel.HeaderView) }.none()
                 Log.d(TAG,"$alphabetHeader check")
                 when {
                     condition -> {
@@ -147,7 +146,7 @@ class MainViewModel : AndroidViewModel {
 
     public fun deleteContact(item : ContactViewHolderModel, position : Int) {
         if(!isProcessing(DeleteContact)) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute {
+            Coroutines.default(this@MainViewModel, {
                 postLiveStandBy(DeleteContact, false)
                 when {
                     contactsProvider.deleteContact(getApplication(), item.id.toString()) > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
@@ -180,7 +179,7 @@ class MainViewModel : AndroidViewModel {
                         syncDeleted()
                     }
                 }
-            }
+            })
         }
     }
 
@@ -547,5 +546,9 @@ class MainViewModel : AndroidViewModel {
         return Transformations.map(liveContactList) { contactList ->
             convertContacts(contactList)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

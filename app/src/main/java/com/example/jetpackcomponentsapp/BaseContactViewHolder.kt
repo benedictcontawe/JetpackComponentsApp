@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 
@@ -10,14 +9,14 @@ abstract class BaseContactViewHolder : BaseViewHolder {
         private val TAG = BaseContactViewHolder::class.java.simpleName
     }
 
-    private val contactListener : ContactListener
+    private val listener : ContactListener
 
-    constructor(context : Context, contactListener : ContactListener, itemView : View) : super(context, itemView) {
+    constructor(listener : ContactListener, itemView : View) : super(itemView) {
         Log.d(TAG, "constructor")
-        this.contactListener = contactListener
+        this.listener = listener
     }
 
-    public fun getContactListener() : ContactListener = contactListener
+    public fun getContactListener() : ContactListener = listener
 
-    abstract fun bindDataToViewHolder(item : ContactViewHolderModel, position : Int)
+    abstract fun bindDataToViewHolder(model : ContactViewHolderModel, position : Int)
 }

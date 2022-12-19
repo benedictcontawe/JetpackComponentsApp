@@ -22,6 +22,7 @@ class ContactsProvider {
         private final const val ContactsPhoto = ContactsContract.Contacts.PHOTO_URI
         private final const val DisplayName = ContactsContract.Contacts.DISPLAY_NAME
         private final val ContactsContentUri = ContactsContract.Contacts.CONTENT_URI
+        private final val ContactsPhotoContent = ContactsContract.Contacts.Photo.CONTENT_DIRECTORY
         private final const val SortName = ContactsContract.Contacts.SORT_KEY_PRIMARY
         private final const val Sorting = ContactsContract.Contacts.SORT_KEY_ALTERNATIVE
         private final const val HasPhoneNumber = ContactsContract.Contacts.HAS_PHONE_NUMBER
@@ -71,6 +72,10 @@ class ContactsProvider {
             Log.e(TAG, "getPhoto() Exception : ${ex.message}")
             null
         }
+    }
+
+    private fun getThumbnail() {
+
     }
 
     private fun getPhones(context : Context, contentResolver : ContentResolver, cursor : Cursor, id : String) : MutableMap<String,String> {
@@ -184,8 +189,8 @@ class ContactsProvider {
         try {
             contentResolver = context.getContentResolver()
             cursor = contentResolver.query(ContactsContentUri, null, null, null, SortName)
-            contactsSize = cursor.getCount()
-            Log.e(TAG, "${cursor.getCount()} ${contactsSize}")
+            contactsSize = cursor?.getCount() ?: 0
+            Log.d(TAG, "${cursor?.getCount()} ${contactsSize}")
         } catch (ex : Exception) { ex.printStackTrace()
             Log.e(TAG, "getContactCount() Exception : ${ex.message}")
         } catch (ex : IllegalArgumentException) { ex.printStackTrace()
@@ -236,9 +241,9 @@ class ContactsProvider {
             contentResolver = context.getContentResolver()
             val uri : Uri = Uri.withAppendedPath(ContentFilterURI, Uri.encode(phoneNumber.toString()))
             cursor = contentResolver.query(uri, arrayOf(PhoneLookUpID), null, null, null)
-            if (cursor.getCount() > 0) {
+            if (cursor?.getCount()!! > 0) {
                 cursor.moveToFirst()
-                contact = getContact(context, cursor.getString(cursor.getColumnIndex(PhoneLookUpID)))
+                contact = getContact(context, cursor.getString(cursor!!.getColumnIndex(PhoneLookUpID)))
                 Log.d(TAG, "ID ${contact?.id} Name ${contact?.name} Photo ${contact?.photo} numbers ${contact?.numbers} emails ${contact?.emails}")
             }
         } catch (ex : Exception) { ex.printStackTrace()
@@ -297,7 +302,7 @@ class ContactsProvider {
         try { Log.d(TAG, "try getContactName($number)")
             val uri : Uri = Uri.withAppendedPath(ContentFilterURI, Uri.encode(number))
             cursor = context.getContentResolver().query(uri, arrayOf(PhoneLookUpDisplayName), null, null, null)
-            if (cursor.getCount() > 0) {
+            if (cursor?.getCount()!! > 0) {
                 cursor.moveToFirst()
                 name = cursor.getString(0)
             }

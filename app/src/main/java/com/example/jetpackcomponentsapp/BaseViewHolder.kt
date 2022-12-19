@@ -13,16 +13,13 @@ abstract class BaseViewHolder : RecyclerView.ViewHolder {
         private val TAG = BaseViewHolder::class.java.simpleName
     }
 
-    private lateinit var context : Context
-
-    constructor(context : Context, itemView : View) : super(itemView) {
+    constructor(itemView : View) : super(itemView) {
         Log.d(TAG, "constructor")
-        this.context = context
     }
 
-    public fun getContext() : Context = context
+    protected fun getContext() : Context = itemView.getContext()
 
-    public fun setPhoto(imageView : ImageView, image : String) {
+    protected  fun setPhoto(imageView : ImageView, image : String) {
         Log.d(TAG, "setPhoto $image")
         if (image.isNotBlank()) {
             imageView.setImageURI(image.toUri())

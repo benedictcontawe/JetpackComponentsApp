@@ -16,7 +16,7 @@ class ContactViewHolderModel {
         photo = ""
         //numbers = mutableMapOf<String, String>("" to "")
         this.isSelf = false
-        viewType = ContactAdapter.HeaderView
+        viewType = ContactModel.HeaderView
     }
 
     constructor(contact : ContactModel, isSelf : Boolean = false) {
@@ -25,6 +25,6 @@ class ContactViewHolderModel {
         this.photo = contact.photo
         //numbers = contact.numbers
         this.isSelf = isSelf
-        viewType = ContactAdapter.DefaultView
+        viewType = ContactModel.CellView
     }
 }

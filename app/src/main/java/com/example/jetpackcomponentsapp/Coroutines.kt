@@ -1,9 +1,13 @@
 package com.example.jetpackcomponentsapp
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 /**
  * https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
 +-----------------------------------+
@@ -16,6 +20,7 @@ import kotlinx.coroutines.*
 | - Calling suspend functions       |
 | - Call UI functions               |
 | - Updating LiveData               |
+| - Updating Flow                   |
 +-----------------------------------+
 +-----------------------------------+
 |          Dispatchers.IO           |
@@ -38,19 +43,42 @@ import kotlinx.coroutines.*
 | - DiffUtils                       |
 +-----------------------------------+
  */
-
 object Coroutines {
     //region UI contexts
     fun main(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Main.immediate).launch {
-                work()
+        CoroutineScope(Dispatchers.Main.immediate).launch {
+            work()
+        }
+    fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        activity.lifecycleScope.launch {
+            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.CREATED) {
+                work(this)
             }
+        }
+    fun main(fragment : BottomSheetDialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : DialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
     //endregion
     //region I/O operations
     fun io(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.IO).launch {
-                work()
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            work()
+        }
 
     fun io(viewModel : ViewModel, work : suspend (() -> Unit)) {
         viewModel.viewModelScope.launch(Dispatchers.IO) {
@@ -59,27 +87,20 @@ object Coroutines {
     }
     //endregion
     //region Uses heavy CPU computation
-    fun defaultGlobal(work : suspend (() -> Unit)) {
-        GlobalScope.async(Dispatchers.Default) {
+    fun default(work : suspend (() -> Unit)) =
+        CoroutineScope(Dispatchers.Default).launch {
             work()
         }
-    }
 
-    fun default(viewModel : ViewModel, work : suspend (() -> Unit)) {
+    fun default(viewModel : ViewModel, work : suspend (() -> Unit)) =
         viewModel.viewModelScope.launch(Dispatchers.Default) {
             work()
         }
-    }
-
-    fun default(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Default).launch {
-                work()
-            }
     //endregion
     //region No need to run on specific context
     fun unconfined(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Unconfined).launch {
-                work()
-            }
+        CoroutineScope(Dispatchers.Unconfined).launch {
+            work()
+        }
     //endregion
 }

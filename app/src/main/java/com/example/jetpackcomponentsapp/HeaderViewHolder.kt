@@ -1,27 +1,26 @@
 package com.example.jetpackcomponentsapp
 
-import android.content.Context
 import android.util.Log
-import android.view.View
-import android.widget.TextView
+import com.example.jetpackcomponentsapp.databinding.ContactHeaderBinder
 
 class HeaderViewHolder : BaseContactViewHolder {
 
     companion object {
-        private val TAG = HeaderViewHolder::class.java.simpleName
-    }
-    //region contact_cell_header
-    var contactHeader : TextView
-    //endregion
-    constructor (context : Context, contactListener : ContactListener, itemView : View) : super(context, contactListener, itemView) {
-        Log.d(TAG, "constructor")
-        //region contact_cell_header
-        contactHeader = itemView.findViewById(R.id.headerPlaceHolder)
-        //endregion
+        private val TAG = HeaderViewHolder::class.java.getSimpleName()
     }
 
-    override fun bindDataToViewHolder(item : ContactViewHolderModel, position : Int) {
-        Log.d(TAG,"bindDataToViewHolder($item,$position)")
-        contactHeader.setText(item.name)
+    private val binder : ContactHeaderBinder
+
+    constructor (listener : ContactListener, binder : ContactHeaderBinder) : super(listener, binder.getRoot()) {
+        Log.d(TAG, "constructor")
+        this.binder = binder
+    }
+
+    override fun bindDataToViewHolder(model : ContactViewHolderModel, position : Int) {
+        Log.d(TAG,"bindDataToViewHolder($model,$position)")
+        binder.setHolder(model)
+        binder.setPosition(position)
+        binder.executePendingBindings()
+        binder.headerPlaceHolder.setText(model.name)
     }
 }
