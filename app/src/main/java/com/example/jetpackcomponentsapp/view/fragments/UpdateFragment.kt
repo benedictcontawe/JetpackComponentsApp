@@ -1,10 +1,8 @@
 package com.example.jetpackcomponentsapp.view.fragments
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -32,9 +30,18 @@ public class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
+        //return if (getShowsDialog() == true) super.onCreateView(inflater, container, savedInstanceState);
+        //else {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_update, container, false)
         getDialog()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         return binder?.root
+        //}
+    }
+
+    override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
+        val dialog : Dialog = super.onCreateDialog(savedInstanceState);
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog
     }
 
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
