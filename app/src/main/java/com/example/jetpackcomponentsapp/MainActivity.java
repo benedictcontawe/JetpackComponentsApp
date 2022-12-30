@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private MainBinder binding;
     private MainViewModel viewModel;
 
-    private String[] names ={"A","B","C","D","E","F","G"};
-    private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    private final String[] names ={"A","B","C","D","E","F","G"};
+    private final int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
 

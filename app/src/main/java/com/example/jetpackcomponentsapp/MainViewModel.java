@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<String> data = new MutableLiveData<>();
-    private MutableLiveData<Integer> progressData = new MutableLiveData<>();
+    private final MutableLiveData<String> data = new MutableLiveData<String>();
+    private final MutableLiveData<Integer> progressData = new MutableLiveData<Integer>();
 
     public LiveData<String> getData() {
         return data;
