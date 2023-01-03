@@ -46,3 +46,5 @@
 
 - [DataStore Android -How to use it like a pro using Kotlin
 ](https://medium.com/@vgoyal_1/datastore-android-how-to-use-it-like-a-pro-using-kotlin-2c2440683d78)
+
+- [How to update gradle in android studio?](https://stackoverflow.com/questions/17727645/how-to-update-gradle-in-android-studio#:~:text=AGP%20(Android%20Gradle%20Plugin)%20Upgrade%20Assistant)
