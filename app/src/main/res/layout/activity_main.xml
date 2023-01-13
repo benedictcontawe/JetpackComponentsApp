@@ -3,93 +3,88 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
+
     <data class="MainBinder">
         <variable
             name="viewModel"
-            type="com.example.jetpackcomponentsapp.MainViewModel" />
+            type="com.example.language.MainViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:animateLayoutChanges="true" >
-        <!--region Guide lines-->
-        <!--region Vertical Guide lines-->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_vertical_leading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05"/>
+        android:animateLayoutChanges="true"
+        tools:context=".MainActivity">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_vertical_trailing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95"/>
-        <!--endregion-->
-        <!--region Horizontal Guidlines-->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_horizontal_top"
+            android:id="@+id/guideline_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_percent="0.10" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_horizontal_90"
+            android:id="@+id/guideline_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.90" />
+            app:layout_constraintGuide_percent="0.15" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/constraint_guideline_horizontal_bottom"
+            android:id="@+id/guideline_95"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.95" />
-        <!--endregion-->
-        <!--endregion-->
-        <FrameLayout
-            android:id="@+id/frame_layout"
-            android:layout_width="0dp"
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chck_switch"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:text="@string/scroll_view_switch"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/guideline_10"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button_add"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:contentDescription="Add"
-            android:drawingCacheQuality="high"
-            android:scaleType="fitXY"
-            app:backgroundTint="@color/card_state_selected"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_add_white"
-            app:tint="@color/white"
-            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_90"
-            app:layout_constraintStart_toStartOf="@id/constraint_guideline_vertical_leading"
-            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom" />
+            app:layout_constraintTop_toTopOf="@id/guideline_10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button_delete"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_lorem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lorem" />
+
+        </ScrollView>
+
+        <View
+            android:id="@+id/view_shadow_top"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:contentDescription="@string/delete_all"
-            android:drawingCacheQuality="high"
-            android:scaleType="fitXY"
-            app:backgroundTint="@color/card_state_selected"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_delete_white"
-            app:tint="@color/white"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="@id/constraint_guideline_horizontal_90"
-            app:layout_constraintEnd_toEndOf="@id/constraint_guideline_vertical_trailing"
-            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom" />
+            android:background="@drawable/shadow_bottom"
+            app:layout_constraintTop_toTopOf="@id/guideline_10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_15"
+            />
+
+        <View
+            android:id="@+id/view_shadow_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shadow_top"
+            app:layout_constraintTop_toTopOf="@id/guideline_95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/scroll_view"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
