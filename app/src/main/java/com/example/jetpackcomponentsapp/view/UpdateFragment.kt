@@ -58,6 +58,7 @@ class UpdateFragment : DialogFragment(), View.OnClickListener{
 
     override fun onClick(view : View?) {
         if (view == binder?.button) {
+            binder?.getViewModel()?.setOnLoadingState()
             binder?.getViewModel()?.updateItem(binder?.editText?.getText().toString())
             hideSoftKeyboard()
             dismiss()
@@ -75,4 +76,9 @@ class UpdateFragment : DialogFragment(), View.OnClickListener{
     private fun hideSoftKeyboard() { Coroutines.main(this@UpdateFragment, work = {
         getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
     }) }
+
+    override fun onDestroy() {
+        binder?.getViewModel()?.setDidLoadState()
+        super.onDestroy()
+    }
 }

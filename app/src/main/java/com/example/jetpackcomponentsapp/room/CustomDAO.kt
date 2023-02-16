@@ -28,7 +28,10 @@ public interface CustomDAO {
 
     @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC LIMIT :limit OFFSET :offset")
     public suspend fun getAll(limit : Int, offset : Int) : List<CustomEntity>
-
+    /*
+    @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC LIMIT :limit OFFSET :offset")
+    public suspend fun getAllDataSource(limit : Int, offset : Int) : DataSource.Factory<Int, CustomEntity>
+    */
     @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC")
     //public fun observeAll() : PagingSource<Int, CustomEntity>
     public fun observeAll() : Flow<List<CustomEntity>>

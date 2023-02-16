@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import com.example.jetpackcomponentsapp.model.CustomHolderModel
 import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.util.Coroutines
+import com.example.jetpackcomponentsapp.util.LoadStateEnum
 import kotlinx.coroutines.flow.*
 
 public class MainViewModel : AndroidViewModel {
@@ -17,10 +18,12 @@ public class MainViewModel : AndroidViewModel {
 
     private val repository : CustomRepository
     private val liveUpdate : MutableStateFlow<CustomHolderModel>
+    private val liveLoadState : MutableSharedFlow<LoadStateEnum>
 
     constructor(application : Application) : super(application) {
         repository = CustomRepository(application.getApplicationContext())
         liveUpdate = MutableStateFlow(CustomHolderModel())
+        liveLoadState = MutableSharedFlow(/*LoadStateEnum.NOT_LOADING*/)
     }
 
     fun setUpdate(item : CustomHolderModel?) { Coroutines.io(this@MainViewModel) {
@@ -54,6 +57,18 @@ public class MainViewModel : AndroidViewModel {
     fun deleteAll() { Coroutines.io (this@MainViewModel, {
         repository.deleteAll()
     }) }
+
+    public fun setOnLoadingState() { Coroutines.io (this@MainViewModel, {
+        liveLoadState.emit(LoadStateEnum.LOADING)
+    }) }
+
+    public fun setDidLoadState() { Coroutines.io (this@MainViewModel, {
+        liveLoadState.emit(LoadStateEnum.NOT_LOADING)
+    }) }
+
+    public fun observeLoadState() : SharedFlow<LoadStateEnum> {
+        return liveLoadState.asSharedFlow()
+    }
 
     public suspend fun observeItems() : SharedFlow<PagingData<CustomHolderModel>> {
         return ConvertList.toSharedFlowPagingDataModel(repository.getFlowPagingData(), viewModelScope)

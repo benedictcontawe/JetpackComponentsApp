@@ -70,4 +70,10 @@ public object ConvertList {
             toPagingDataModel(it)
         }.cachedIn(scope).shareIn(scope, SharingStarted.Lazily)
     }
+
+    public suspend fun toStateFlowPagingDataModel(flow : Flow<PagingData<CustomEntity>>, scope : CoroutineScope) : StateFlow<PagingData<CustomHolderModel>> {
+        return flow.map {
+            toPagingDataModel(it)
+        }.cachedIn(scope).stateIn(scope)
+    }
 }

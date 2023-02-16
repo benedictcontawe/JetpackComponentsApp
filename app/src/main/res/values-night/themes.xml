@@ -10,11 +10,11 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
     <style name="DialogFragment" parent="android:Theme.Dialog">
-        <item name="android:windowBackground">@color/design_default_color_background</item>
+        <item name="android:windowBackground">@color/design_default_color_on_background</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowMinWidthMajor">70%</item>

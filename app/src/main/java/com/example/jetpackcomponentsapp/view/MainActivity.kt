@@ -37,8 +37,10 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
     override fun onClick(view : View?) {
         if (view == binder?.floatingActionButtonAdd) launchAdd()
         else if (view == binder?.floatingActionButtonDelete) {
+            viewModel.setOnLoadingState()
             viewModel.deleteAll()
             Toast.makeText(this@MainActivity,"deleteAll()", Toast.LENGTH_SHORT).show()
+            viewModel.setDidLoadState()
         }
     }
 

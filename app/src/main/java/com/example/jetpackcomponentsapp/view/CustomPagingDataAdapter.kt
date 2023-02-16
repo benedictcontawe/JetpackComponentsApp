@@ -10,7 +10,7 @@ import com.example.jetpackcomponentsapp.databinding.CellBinder
 import com.example.jetpackcomponentsapp.model.CustomHolderModel
 import com.example.jetpackcomponentsapp.util.CustomDiffUtilItemCallback
 
-public class CustomPagingDataAdapter : PagingDataAdapter<CustomHolderModel, CustomViewHolder> {
+public class CustomPagingDataAdapter : PagingDataAdapter/*LoadStateAdapter*/<CustomHolderModel, CustomViewHolder> {
 
     companion object {
         private val TAG = CustomPagingDataAdapter::class.java.getSimpleName()
@@ -38,5 +38,13 @@ public class CustomPagingDataAdapter : PagingDataAdapter<CustomHolderModel, Cust
 
     override fun getItemCount() : Int {
         return super.getItemCount()
+    }
+
+    public fun onRefresh() {
+        this.refresh()
+    }
+
+    public fun onRetry() {
+        this.retry()
     }
 }

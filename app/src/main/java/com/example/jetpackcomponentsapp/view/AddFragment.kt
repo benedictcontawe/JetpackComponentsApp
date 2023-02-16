@@ -42,6 +42,7 @@ class AddFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view : View?) {
         if (view == binder?.button) {
+            viewModel.setOnLoadingState()
             viewModel.insertItem(CustomHolderModel(binder?.editText?.text.toString()))
             hideSoftKeyboard()
             requireActivity().getSupportFragmentManager().popBackStack()
@@ -59,4 +60,9 @@ class AddFragment : Fragment(), View.OnClickListener {
     private fun hideSoftKeyboard() { Coroutines.main(this@AddFragment, work = {
         getInputMethodManager().hideSoftInputFromWindow(requireView().windowToken, 0)
     }) }
+
+    override fun onDestroy() {
+        viewModel.setDidLoadState()
+        super.onDestroy()
+    }
 }
