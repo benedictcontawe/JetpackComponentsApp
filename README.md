@@ -48,3 +48,7 @@
 ](https://medium.com/@vgoyal_1/datastore-android-how-to-use-it-like-a-pro-using-kotlin-2c2440683d78)
 
 - [How to update gradle in android studio?](https://stackoverflow.com/questions/17727645/how-to-update-gradle-in-android-studio#:~:text=AGP%20(Android%20Gradle%20Plugin)%20Upgrade%20Assistant)
+
+- [Paging 3 — Easier Way to Pagination](https://proandroiddev.com/paging-3-easier-way-to-pagination-part-1-584cad1f4f61)
+
+- [Paging 3 — Loading States, Separators, refresh(), retry()](https://proandroiddev.com/paging-3-loading-states-separators-refresh-retry-5b4c8fca936c)
