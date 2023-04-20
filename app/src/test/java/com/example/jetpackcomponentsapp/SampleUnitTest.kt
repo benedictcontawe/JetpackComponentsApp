@@ -9,10 +9,12 @@ import org.junit.Test
 class SampleUnitTest {
 
     private var number : String? = null
+    private lateinit var numbers : List<String>
 
     @Before
     fun before() {
         System.out.println("Initial Testing")
+        numbers = listOf<String>()
     }
 
     @Test
@@ -83,6 +85,18 @@ class SampleUnitTest {
         number = "12.3"
         System.out.println("decimal_numbers_test() $number")
         Assert.assertEquals(isWholeNumber(), false)
+    }
+
+    @Test
+    fun isInitialized_test() {
+        System.out.println("isInitialized_test() ${this::numbers.isInitialized}")
+        Assert.assertEquals(this::numbers.isInitialized, true)
+    }
+
+    @Test
+    fun isNotInitialized_test() {
+        System.out.println("isNotInitialized_test() ${this::numbers.isInitialized.not()}")
+        Assert.assertEquals(this::numbers.isInitialized.not(), true)
     }
 
     private fun isWholeNumber() : Boolean {

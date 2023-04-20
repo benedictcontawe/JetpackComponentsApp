@@ -1,0 +1,57 @@
+Index: app/src/test/java/com/example/jetpackcomponentsapp/ExampleUnitTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.jetpackcomponentsapp;\r\n\r\nimport org.junit.Test;\r\n\r\nimport static org.junit.Assert.*;\r\n\r\n/**\r\n * Example local unit test, which will execute on the development machine (host).\r\n *\r\n * @see <a href=\"http://d.android.com/tools/testing\">Testing documentation</a>\r\n */\r\npublic class ExampleUnitTest {\r\n    @Test\r\n    public void addition_isCorrect() {\r\n        assertEquals(4, 2 + 2);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/test/java/com/example/jetpackcomponentsapp/ExampleUnitTest.java b/app/src/test/java/com/example/jetpackcomponentsapp/ExampleUnitTest.java
+--- a/app/src/test/java/com/example/jetpackcomponentsapp/ExampleUnitTest.java	(revision e5292ac2ec24992ccdcc070f7cd668f59e063a13)
++++ b/app/src/test/java/com/example/jetpackcomponentsapp/ExampleUnitTest.java	(date 1681982864057)
+@@ -10,6 +10,8 @@
+  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+  */
+ public class ExampleUnitTest {
++
++    private lateinit var xxx : Boolean
+     @Test
+     public void addition_isCorrect() {
+         assertEquals(4, 2 + 2);
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"11\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision e5292ac2ec24992ccdcc070f7cd668f59e063a13)
++++ b/.idea/compiler.xml	(date 1681488079186)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="11" />
++    <bytecodeTargetLevel target="1.8" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"Android Studio default JDK\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision e5292ac2ec24992ccdcc070f7cd668f59e063a13)
++++ b/.idea/misc.xml	(date 1681978862448)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="corretto-1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
