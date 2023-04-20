@@ -52,3 +52,5 @@
 - [Paging 3 — Easier Way to Pagination](https://proandroiddev.com/paging-3-easier-way-to-pagination-part-1-584cad1f4f61)
 
 - [Paging 3 — Loading States, Separators, refresh(), retry()](https://proandroiddev.com/paging-3-loading-states-separators-refresh-retry-5b4c8fca936c)
+
+- [Kotlin basics: visibility modifiers. public, internal , protected and private.](https://medium.com/@HugoMatilla/kotlin-basics-visibility-modifiers-public-internal-protected-and-private-c3bf972aee11#:~:text=internal%20is%20an%20alternative%20to,are%20visible%20inside%20a%20module.&text=internal%20provides%20real%20encapsulation%20for,private%20encapsulation%20could%20be%20broken.)
