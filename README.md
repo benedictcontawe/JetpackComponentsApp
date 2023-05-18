@@ -1,5 +1,5 @@
-# JetpackComponentsApp
-
+# JetpackComponentsApp 
+<!-- - []() -->
 - [Device mirroring](https://developer.android.com/studio/preview/features#device-mirroring-giraffe)
 
 - [Android Studio missing essential plugin org.jetbrains.android](https://stackoverflow.com/questions/61682609/android-studio-missing-essential-plugin-org-jetbrains-android)
@@ -56,3 +56,5 @@
 - [Paging 3 — Loading States, Separators, refresh(), retry()](https://proandroiddev.com/paging-3-loading-states-separators-refresh-retry-5b4c8fca936c)
 
 - [Kotlin basics: visibility modifiers. public, internal , protected and private.](https://medium.com/@HugoMatilla/kotlin-basics-visibility-modifiers-public-internal-protected-and-private-c3bf972aee11#:~:text=internal%20is%20an%20alternative%20to,are%20visible%20inside%20a%20module.&text=internal%20provides%20real%20encapsulation%20for,private%20encapsulation%20could%20be%20broken.)
+
+- [4 reasons Jetpack Compose is better than XML](https://medium.com/@cybercoder.naj/4-reasons-jetpack-compose-is-better-than-xml-ac0efd12db28)
