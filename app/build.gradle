@@ -53,7 +53,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //endregion
     //region Google Library
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.google.code.gson:gson:2.9.0'
     //endregion
     //region Squareup Library
@@ -64,8 +64,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     //endregion
     //region Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'com.github.bumptech.glide:annotations:4.15.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
     //endregion
     //region Android Unit Test and U.I. Test Library
     testImplementation 'junit:junit:4.13.2'
