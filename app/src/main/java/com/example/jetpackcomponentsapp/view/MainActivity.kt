@@ -45,6 +45,8 @@ public class MainActivity : AppCompatActivity(), View.OnTouchListener {
         //viewBinding.viewPagerTwo.setAdapter(CustomViewPagerAdapter(dataBinding.getViewModel()?.getItems()))
         //endregion
         dataBinding.viewPagerTwo.setAdapter(CustomViewPagerAdapter(dataBinding.getViewModel()?.getItems()))
+        dataBinding.viewPagerTwo.setPageTransformer(FadePageTransformer())
+        //dataBinding.viewPagerTwo.adapter.registerAdapterDataObserver()
         //binding.viewPagerTwo.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
     }
 
