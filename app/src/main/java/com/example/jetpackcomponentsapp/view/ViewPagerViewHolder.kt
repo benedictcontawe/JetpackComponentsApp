@@ -8,10 +8,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.model.CustomModel
 
-class CustomViewPagerViewHolder : BaseViewPagerHolder {
+class ViewPagerViewHolder : BaseViewPagerHolder {
 
     companion object {
-        private val TAG = CustomViewPagerViewHolder::class.java.getSimpleName()
+        private val TAG = ViewPagerViewHolder::class.java.getSimpleName()
     }
     //region cell_custom
     private val image : AppCompatImageView

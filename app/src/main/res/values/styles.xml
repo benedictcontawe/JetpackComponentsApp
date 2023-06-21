@@ -16,5 +16,13 @@
         <item name="android:windowMinWidthMinor">70%</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    <!-- region Fragment-->
+    <style name="BottomSheet.Modal" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
+    <style name="BottomSheetDialogFragment" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet.Modal</item>
+    </style>
+    <!-- endregion -->
 </resources>

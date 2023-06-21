@@ -1,14 +1,15 @@
 package com.example.jetpackcomponentsapp.util
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 /**
  * https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
-
 +-----------------------------------+
 |         Dispatchers.Main          |
 +-----------------------------------+
@@ -19,8 +20,8 @@ import kotlinx.coroutines.launch
 | - Calling suspend functions       |
 | - Call UI functions               |
 | - Updating LiveData               |
+| - Updating Flow                   |
 +-----------------------------------+
-
 +-----------------------------------+
 |          Dispatchers.IO           |
 +-----------------------------------+
@@ -31,7 +32,6 @@ import kotlinx.coroutines.launch
 | - Reading/writing files           |
 | - Networking**                    |
 +-----------------------------------+
-
 +-----------------------------------+
 |        Dispatchers.Default        |
 +-----------------------------------+
@@ -42,34 +42,65 @@ import kotlinx.coroutines.launch
 | - Parsing JSON                    |
 | - DiffUtils                       |
 +-----------------------------------+
-
  */
-
 object Coroutines {
-    //UI contexts
+    //region UI contexts
     fun main(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Main.immediate).launch {
-                work()
+        CoroutineScope(Dispatchers.Main.immediate).launch {
+            work()
+        }
+    fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        activity.lifecycleScope.launch {
+            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.CREATED) {
+                work(this)
             }
-    // I/O operations
+        }
+    fun main(fragment : BottomSheetDialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : DialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        fragment.lifecycleScope.launch {
+            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+                work(this)
+            }
+        }
+    //endregion
+    //region I/O operations
     fun io(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.IO).launch {
-                work()
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            work()
+        }
 
     fun io(viewModel : ViewModel, work : suspend (() -> Unit)) {
         viewModel.viewModelScope.launch(Dispatchers.IO) {
             work()
         }
     }
-    // Uses heavy CPU computation
+    //endregion
+    //region Uses heavy CPU computation
     fun default(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Default).launch {
-                work()
-            }
-    // No need to run on specific context
+        CoroutineScope(Dispatchers.Default).launch {
+            work()
+        }
+
+    fun default(viewModel : ViewModel, work : suspend (() -> Unit)) =
+        viewModel.viewModelScope.launch(Dispatchers.Default) {
+            work()
+        }
+    //endregion
+    //region No need to run on specific context
     fun unconfined(work : suspend (() -> Unit)) =
-            CoroutineScope(Dispatchers.Unconfined).launch {
-                work()
-            }
+        CoroutineScope(Dispatchers.Unconfined).launch {
+            work()
+        }
+    //endregion
 }

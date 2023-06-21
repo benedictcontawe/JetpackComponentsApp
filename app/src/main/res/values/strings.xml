@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">View Pager 2</string>
+    <string name="fragment_state">Fragment State</string>
+    <string name="view_pager">View Pager</string>
 </resources>
