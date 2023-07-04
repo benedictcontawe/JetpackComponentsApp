@@ -84,7 +84,7 @@ public class CustomRepository : BaseRepository {
     }
     //endregion
     override public suspend fun onCLose() {
-        if (database?.isOpen() == true)
+        if (database?.isOpen == true)
             database?.close()
     }
 }
