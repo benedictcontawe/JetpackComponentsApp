@@ -23,6 +23,18 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         job = Job()
     }
 
+    override fun onSaveInstanceState(outState : Bundle) {
+        super.onSaveInstanceState(outState)
+        //outState.putString("STRING", "String")
+        //outState.putInt("Int", 0)
+    }
+
+    override fun onViewStateRestored(savedInstanceState : Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        //savedInstanceState?.getString("Int", "")
+        //savedInstanceState?.getInt("Int", 0)
+    }
+
     private fun getInputMethodManager(): InputMethodManager {
         return requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
