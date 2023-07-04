@@ -52,7 +52,7 @@ class MainFragment : Fragment, CustomListener {
         Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
             scope.launch ( block = {
                 binder?.getViewModel()?.observeItems()?.collectLatest ( action = { pagingDatum ->
-                    adapter.submitData( getLifecycle(), pagingDatum )
+                    adapter.submitData( lifecycle, pagingDatum )
                 } )
             } )
             scope.launch( block = {
