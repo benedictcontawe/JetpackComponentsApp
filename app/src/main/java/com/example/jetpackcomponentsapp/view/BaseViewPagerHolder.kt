@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import com.example.jetpackcomponentsapp.model.CustomModel
@@ -11,7 +10,7 @@ abstract class BaseViewPagerHolder : BaseViewHolder {
         private val TAG = BaseViewPagerHolder::class.java.getSimpleName()
     }
 
-    constructor(context : Context, itemView : View) : super(context, itemView) {
+    constructor(itemView : View) : super(itemView) {
         Log.d(TAG, "constructor")
     }
 

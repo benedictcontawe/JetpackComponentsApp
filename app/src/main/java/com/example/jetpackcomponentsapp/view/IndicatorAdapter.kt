@@ -43,7 +43,7 @@ class IndicatorAdapter : RecyclerView.Adapter<IndicatorViewHolder> {
         else if (viewType == IndicatorAdapter.UnSelectedMediumIndicator) layoutInflater.inflate(R.layout.cell_circle_medium, parent, false)
         else if (viewType == IndicatorAdapter.UnSelectedSmallIndicator) layoutInflater.inflate(R.layout.cell_circle_small, parent, false)
         else layoutInflater.inflate(R.layout.cell_circle_large, parent, false)
-        return IndicatorViewHolder(parent.context, view)
+        return IndicatorViewHolder(view)
     }
 
     override fun onBindViewHolder(holder : IndicatorViewHolder, position : Int) {

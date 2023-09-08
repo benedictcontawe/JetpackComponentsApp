@@ -9,6 +9,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.jetpackcomponentsapp.view.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

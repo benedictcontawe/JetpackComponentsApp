@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.FragmentStateBinder
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 
 class FragmentStateFragment : BaseFragment {
@@ -23,7 +25,7 @@ class FragmentStateFragment : BaseFragment {
     private var adapter : FragmentStateAdapter? = null
 
     constructor() {
-
+        Log.d(TAG, "constructor()")
     }
 
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
@@ -39,7 +41,8 @@ class FragmentStateFragment : BaseFragment {
     }
 
     private fun setViewPager() {
-        adapter = FragmentStateAdapter(requireActivity().getSupportFragmentManager(), getLifecycle())
+        Log.d(TAG, "setViewPager")
+        adapter = FragmentStateAdapter(getChildFragmentManager(), lifecycle)
         adapter?.setFragments(binder?.getViewModel()?.getFragmentStateModels())
         binder?.viewPagerTwo?.setAdapter(adapter)
         binder?.viewPagerTwo?.setPageTransformer(FadePageTransformer())
@@ -47,5 +50,10 @@ class FragmentStateFragment : BaseFragment {
 
     override suspend fun onSetObservers(scope : CoroutineScope) {
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
     }
 }

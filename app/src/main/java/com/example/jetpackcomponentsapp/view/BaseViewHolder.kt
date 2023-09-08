@@ -11,10 +11,12 @@ abstract class BaseViewHolder : RecyclerView.ViewHolder {
         private val TAG = BaseViewPagerHolder::class.java.getSimpleName()
     }
 
-    protected val context : Context
 
-    constructor(context : Context, itemView : View) : super(itemView) {
+    constructor(itemView : View) : super(itemView) {
         Log.d(TAG, "constructor")
-        this.context = context
+    }
+
+    protected fun getContext() : Context {
+        return itemView.getContext()
     }
 }

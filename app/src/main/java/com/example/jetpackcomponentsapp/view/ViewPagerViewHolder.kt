@@ -17,7 +17,7 @@ class ViewPagerViewHolder : BaseViewPagerHolder {
     private val image : AppCompatImageView
     private val text : AppCompatTextView
     //endregion
-    constructor(context : Context, itemView : View) : super(context, itemView) { Log.d(TAG, "constructor")
+    constructor(itemView : View) : super(itemView) { Log.d(TAG, "constructor")
         image = itemView.findViewById(R.id.image)
         text = itemView.findViewById(R.id.text)
     }

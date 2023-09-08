@@ -51,25 +51,25 @@ object Coroutines {
         }
     fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
         activity.lifecycleScope.launch {
-            activity.getLifecycle().repeatOnLifecycle(Lifecycle.State.CREATED) {
+            activity.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 work(this)
             }
         }
     fun main(fragment : BottomSheetDialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
         fragment.lifecycleScope.launch {
-            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+            fragment.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 work(this)
             }
         }
     fun main(fragment : DialogFragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
         fragment.lifecycleScope.launch {
-            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+            fragment.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 work(this)
             }
         }
     fun main(fragment : Fragment, work : suspend ((scope : CoroutineScope) -> Unit)) =
         fragment.lifecycleScope.launch {
-            fragment.getLifecycle().repeatOnLifecycle(Lifecycle.State.STARTED) {
+            fragment.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 work(this)
             }
         }

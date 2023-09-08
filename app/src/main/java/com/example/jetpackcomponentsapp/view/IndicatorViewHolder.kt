@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -14,7 +13,7 @@ class IndicatorViewHolder : BaseViewHolder {
     //region cell_circle
     private val image : AppCompatImageView
     //endregion
-    constructor(context : Context, itemView : View) : super(context, itemView) { Log.d(TAG, "constructor")
+    constructor(itemView : View) : super(itemView) { Log.d(TAG, "constructor")
         image = itemView.findViewById(R.id.image)
     }
 

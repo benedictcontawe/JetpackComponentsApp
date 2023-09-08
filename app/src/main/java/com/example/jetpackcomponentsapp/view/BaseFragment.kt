@@ -105,6 +105,10 @@ abstract public class BaseFragment : Fragment(), View.OnTouchListener {
         return isActionUp.not()
     }
 
+    protected fun isReactInitialized() : Boolean {
+        return ::rect.isInitialized
+    }
+
     protected fun setRect(left : Int, top : Int, right : Int, bottom : Int) : Boolean {
         rect = Rect(left, top, right, bottom)
         return true

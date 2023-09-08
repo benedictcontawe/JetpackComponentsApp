@@ -28,7 +28,7 @@ class ViewPagerAdapter : RecyclerView.Adapter<BaseViewPagerHolder> {
         Log.d(TAG, "onCreateViewHolder($parent,$viewType)")
         val layoutInflater : LayoutInflater = LayoutInflater.from(parent.getContext())
         val view : View = layoutInflater.inflate(R.layout.cell_custom, parent, false)
-        return ViewPagerViewHolder(parent.context, view)
+        return ViewPagerViewHolder(view)
     }
 
     override fun onBindViewHolder(holder : BaseViewPagerHolder, position : Int) {
