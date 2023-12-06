@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel {
 
-    private var data : MutableLiveData<String> = MutableLiveData()
-    private var progressData : MutableLiveData<Float> = MutableLiveData()
+    private val data : MutableLiveData<String> = MutableLiveData()
+    private val progressData : MutableLiveData<Float> = MutableLiveData()
+    private val isSwitchChecked : MutableLiveData<Boolean> = MutableLiveData()
 
     constructor() {
 
@@ -27,6 +28,20 @@ class MainViewModel : ViewModel {
 
     public fun setProgressData(progressData : Float) {
         this.progressData.setValue(progressData)
+    }
+
+    public fun getSwitchChecked() : LiveData<Boolean> {
+        return this.isSwitchChecked
+    }
+
+    public fun setSwitchChecked(isChecked : Boolean) {
+        if (isChecked) {
+            isSwitchChecked.setValue(true)
+            setData("Switch is On")
+        } else {
+            isSwitchChecked.setValue(false)
+            setData("Switch is Off")
+        }
     }
 
     override fun onCleared() {
