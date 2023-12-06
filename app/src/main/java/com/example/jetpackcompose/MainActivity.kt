@@ -3,17 +3,18 @@ package com.example.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -21,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
                 val data by viewModel.getData().observeAsState("Result")
                 val progress by viewModel.getProgressData().observeAsState(0.0f)
                 val isSwitchChecked by viewModel.getSwitchChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
+                val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
                 Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -46,32 +47,29 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceAround
                     ) {
-                        Row (modifier = Modifier.fillMaxWidth(),) {
-                            Box (
-                                modifier = Modifier.weight(1f),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = data, textAlign = TextAlign.Center, fontSize = 23.sp)
-                            }
-                            Box (modifier = Modifier
-                                .weight(1f)
-                                .background(Color.Red)
-                            ) {
-                                LinearProgressIndicator (
-                                    progress = progress,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(13.dp)
-                                )
-                            }
-                        }
+                        Text(text = data, textAlign = TextAlign.Center, fontSize = 13.sp)
+                        LinearProgressIndicator (
+                            progress = progress,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(13.dp)
+                        )
+                        Divider (
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(10.dp),
+                            //color = Color.Red
+                        )
                         //Spacer(modifier = Modifier.height(0.dp))
-                        Button(onClick = { viewModel.setData("Button Was Clicked")
-                        }) { Text(text = "Send Data") }
+                        Button (
+                            onClick = { viewModel.setData("Button Was Clicked") }
+                        ) {
+                            Text(text = "Send Data")
+                        }
                         //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
                         Switch (
                             checked = isSwitchChecked,
-                            onCheckedChange = { isChecked -> viewModel.setSwitchChecked(isChecked) },
+                            onCheckedChange = { isChecked : Boolean -> viewModel.setSwitchChecked(isChecked) },
                             /*
                             colors = SwitchDefaults.colors (
                                 checkedThumbColor = MaterialTheme.colorScheme.primary,
@@ -79,22 +77,51 @@ class MainActivity : ComponentActivity() {
                             )
                             */
                         )
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Toggle Button")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Radio Group, Radio Button")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Check Box")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Spinner")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Custom Spinner")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Rating Bar")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Seek Bar")
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Text(text = "Discrete Seek Bar")
+                        Text(text = "Toggle Button Under Construction")
+                        Column (
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(0.dp)
+                        ) {
+                            viewModel.radioButtonList.forEach { option ->
+                                Row (
+                                    horizontalArrangement = Arrangement.Center,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    RadioButton (
+                                        selected = viewModel.isRadioButtonChecked(option),
+                                        onClick = {
+                                            viewModel.setSelectedRadioButton(option)
+                                        },
+                                        enabled = true,
+                                        //colors = RadioButtonDefaults.colors (selectedColor = Color.Magenta)
+                                    )
+                                    Text(text = option, textAlign = TextAlign.Center, fontSize = 13.sp)
+                                }
+                            }
+                        }
+                        Row (
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Checkbox (
+                                checked = isCheckBoxChecked,
+                                onCheckedChange = { isChecked : Boolean -> viewModel.setCheckBoxChecked(isChecked)}
+                            )
+                            Text(text = viewModel.getCheckBoxText(isCheckBoxChecked), textAlign = TextAlign.Center, fontSize = 13.sp)
+                        }
+                        Text(text = "Spinner Under Construction")
+                        /*
+                        DropdownMenu(
+                            expanded = ,
+                            onDismissRequest = { /*TODO*/ }
+                        ) {
+                            
+                        }
+                        */
+                        Text(text = "Custom Spinner Under Construction")
+                        Text(text = "Rating Bar Under Construction")
+                        Text(text = "Seek Bar Under Construction")
+                        Text(text = "Discrete Seek Bar Under Construction")
                     }
                 }
             }
