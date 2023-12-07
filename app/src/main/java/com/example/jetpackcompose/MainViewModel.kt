@@ -9,10 +9,12 @@ class MainViewModel : ViewModel {
     private val data : MutableLiveData<String> = MutableLiveData<String>()
     private val progressData : MutableLiveData<Float> = MutableLiveData<Float>()
     private val liveSwitchChecked : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    public val radioButtonList : List<String> = listOf("On", "Off")
+    public val onOffList : List<String> = listOf("On", "Off")
     private val liveSelectedRadioButton : MutableLiveData<String> = MutableLiveData<String>()
     private val liveDataCheckBoxChecked : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    public val spinnerList : List<String> = listOf("A", "B", "C", "D", "E", "F", "G")
+    private val liveSpinnerExpanded : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    public val spinnerList : List<String> = listOf("A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+    private var spinnerSelectedIndex : Int = 0
 
     constructor() {
 
@@ -49,15 +51,11 @@ class MainViewModel : ViewModel {
     }
     //endregion
     //region Radio Button Methods
-    public fun getSelectedRadioButton() : LiveData<String> {
-        return liveSelectedRadioButton
-    }
-
     public fun setSelectedRadioButton(radioText : String) {
-        if (radioText.contentEquals(radioButtonList.first())) {
+        if (radioText.contentEquals(onOffList.first())) {
             liveSelectedRadioButton.setValue(radioText)
             setData("Radio Button is On of your selected Radio Group")
-        } else if (radioText.contentEquals(radioButtonList.last())) {
+        } else if (radioText.contentEquals(onOffList.last())) {
             liveSelectedRadioButton.setValue(radioText)
             setData("Radio Button is Off of your selected Radio Group")
         }
@@ -82,7 +80,26 @@ class MainViewModel : ViewModel {
     }
 
     public fun getCheckBoxText(isChecked : Boolean) : String {
-        return if (isChecked) "On" else "Off"
+        return if (isChecked) onOffList.first() else onOffList.last()
+    }
+    //endregion
+    //region Spinner Methods
+    public fun setSpinnerExpanded(isExpanded : Boolean) {
+        liveSpinnerExpanded.setValue(isExpanded)
+        liveSpinnerExpanded.value?.not()
+    }
+
+    public fun getSpinnerExpanded() : LiveData<Boolean> {
+        return liveSpinnerExpanded
+    }
+
+    public fun getSelectedSpinner(index : Int = spinnerSelectedIndex) : String {
+        return spinnerList.get(index)
+    }
+
+    public fun setSpinnerSelectedIndex(value : String) {
+        spinnerSelectedIndex = spinnerList.indexOf(value)
+        setData("Spinner value selected is  ${spinnerList.get(spinnerSelectedIndex)}")
     }
     //endregion
     override fun onCleared() {

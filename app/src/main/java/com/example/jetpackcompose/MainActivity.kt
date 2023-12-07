@@ -3,15 +3,22 @@ package com.example.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -38,7 +45,8 @@ class MainActivity : ComponentActivity() {
                 val data by viewModel.getData().observeAsState("Result")
                 val progress by viewModel.getProgressData().observeAsState(0.0f)
                 val isSwitchChecked by viewModel.getSwitchChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
-                val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
+                val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
+                val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
                 Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -82,7 +90,7 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(0.dp)
                         ) {
-                            viewModel.radioButtonList.forEach { option ->
+                            viewModel.onOffList.forEach { option ->
                                 Row (
                                     horizontalArrangement = Arrangement.Center,
                                     modifier = Modifier.fillMaxWidth(),
@@ -109,16 +117,50 @@ class MainActivity : ComponentActivity() {
                             )
                             Text(text = viewModel.getCheckBoxText(isCheckBoxChecked), textAlign = TextAlign.Center, fontSize = 13.sp)
                         }
-                        Text(text = "Spinner Under Construction")
-                        /*
-                        DropdownMenu(
-                            expanded = ,
-                            onDismissRequest = { /*TODO*/ }
-                        ) {
-                            
+                        Column() {
+                            Box (
+                                modifier = Modifier.height(56.dp) //.background(Color.Gray)
+                                    .clickable { viewModel.setSpinnerExpanded(isSpinnerExpanded.not()) }
+                            ) {
+                                Row (
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(viewModel.getSelectedSpinner())
+                                    Icon (
+                                        imageVector = Icons.Default.ArrowDropDown,
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                            DropdownMenu (
+                                expanded = isSpinnerExpanded,
+                                onDismissRequest = { viewModel.setSpinnerExpanded(false) },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                viewModel.spinnerList.forEach { spinner ->
+                                    DropdownMenuItem( onClick = {
+                                        viewModel.setSpinnerExpanded(false)
+                                        viewModel.setSpinnerSelectedIndex(spinner)
+                                    }, text = { Text(spinner) } )
+                                }
+                            }
                         }
-                        */
                         Text(text = "Custom Spinner Under Construction")
+                        /*
+                        TextField (
+                          readOnly = true,
+                          value = "",
+                          onValueChange = { },
+                          label = { "Categories" },
+                          trailingIcon = {
+                              ExposedDropdownMenuDefaults.TrailingIcon(
+                                  expanded = false
+                              )
+                          },
+                          //colors = ExposedDropdownMenuDefaults.textFieldColors()
+                        )
+                        */
                         Text(text = "Rating Bar Under Construction")
                         Text(text = "Seek Bar Under Construction")
                         Text(text = "Discrete Seek Bar Under Construction")
