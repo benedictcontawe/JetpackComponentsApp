@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
@@ -25,11 +26,13 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,6 +50,7 @@ class MainActivity : ComponentActivity() {
                 val isSwitchChecked by viewModel.getSwitchChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
                 val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
                 val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
+                val isCustomSpinnerExpanded by viewModel.getCustomSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
                 Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -86,81 +90,40 @@ class MainActivity : ComponentActivity() {
                             */
                         )
                         Text(text = "Toggle Button Under Construction")
-                        Column (
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(0.dp)
-                        ) {
-                            viewModel.onOffList.forEach { option ->
-                                Row (
-                                    horizontalArrangement = Arrangement.Center,
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) {
-                                    RadioButton (
-                                        selected = viewModel.isRadioButtonChecked(option),
-                                        onClick = {
-                                            viewModel.setSelectedRadioButton(option)
-                                        },
-                                        enabled = true,
-                                        //colors = RadioButtonDefaults.colors (selectedColor = Color.Magenta)
-                                    )
-                                    Text(text = option, textAlign = TextAlign.Center, fontSize = 13.sp)
-                                }
-                            }
-                        }
-                        Row (
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Checkbox (
-                                checked = isCheckBoxChecked,
-                                onCheckedChange = { isChecked : Boolean -> viewModel.setCheckBoxChecked(isChecked)}
-                            )
-                            Text(text = viewModel.getCheckBoxText(isCheckBoxChecked), textAlign = TextAlign.Center, fontSize = 13.sp)
-                        }
-                        Column() {
-                            Box (
-                                modifier = Modifier.height(56.dp) //.background(Color.Gray)
-                                    .clickable { viewModel.setSpinnerExpanded(isSpinnerExpanded.not()) }
-                            ) {
-                                Row (
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(viewModel.getSelectedSpinner())
-                                    Icon (
-                                        imageVector = Icons.Default.ArrowDropDown,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                            DropdownMenu (
-                                expanded = isSpinnerExpanded,
-                                onDismissRequest = { viewModel.setSpinnerExpanded(false) },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                viewModel.spinnerList.forEach { spinner ->
-                                    DropdownMenuItem( onClick = {
-                                        viewModel.setSpinnerExpanded(false)
-                                        viewModel.setSpinnerSelectedIndex(spinner)
-                                    }, text = { Text(spinner) } )
-                                }
-                            }
-                        }
-                        Text(text = "Custom Spinner Under Construction")
-                        /*
-                        TextField (
-                          readOnly = true,
-                          value = "",
-                          onValueChange = { },
-                          label = { "Categories" },
-                          trailingIcon = {
-                              ExposedDropdownMenuDefaults.TrailingIcon(
-                                  expanded = false
-                              )
-                          },
-                          //colors = ExposedDropdownMenuDefaults.textFieldColors()
+                        RadioGroupComposable (
+                            list = viewModel.onOffList,
+                            onSelect = { option -> viewModel.isRadioButtonChecked(option) },
+                            onClick = { option -> viewModel.setSelectedRadioButton(option) }
                         )
-                        */
+                        CheckboxComposable (
+                            isChecked = isCheckBoxChecked,
+                            onCheckedChange = { isChecked : Boolean ->
+                                viewModel.setCheckBoxChecked(isChecked)
+                            },
+                            text = viewModel.getCheckBoxText(isCheckBoxChecked)
+                        )
+                        SpinnerComposable (
+                            onClick = { viewModel.setSpinnerExpanded(isSpinnerExpanded.not()) },
+                            text = viewModel.getSelectedSpinner(),
+                            isExpanded = isSpinnerExpanded,
+                            onDismiss = { viewModel.setSpinnerExpanded(false) },
+                            list = viewModel.spinnerList,
+                            onItemSelected = { spinner ->
+                                viewModel.setSpinnerExpanded(false)
+                                viewModel.setSpinnerSelectedIndex(spinner)
+                            }
+                        )
+                        CustomSpinnerComposable (
+                            onClick = { viewModel.setCustomSpinnerExpanded(isCustomSpinnerExpanded.not()) },
+                            text = viewModel.getSelectedCustomSpinner(),
+                            isExpanded = isCustomSpinnerExpanded,
+                            onDismiss = { viewModel.setCustomSpinnerExpanded(false) },
+                            list = viewModel.spinnerList,
+                            onItemSelected = { spinner ->
+                                viewModel.setCustomSpinnerExpanded(false)
+                                viewModel.setCustomSpinnerSelectedIndex(spinner)
+                            }
+                        )
                         Text(text = "Rating Bar Under Construction")
                         Text(text = "Seek Bar Under Construction")
                         Text(text = "Discrete Seek Bar Under Construction")
@@ -169,61 +132,139 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-/*
-@Composable
-fun SpacerWithAspectRatio(aspectRatio: Float) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(aspectRatio)
-            .background(Color.Gray)
-    ) {
-        // You can add content inside the Box if needed
+
+    @Composable
+    private fun RadioGroupComposable(list : List<String>, onSelect : (String) -> Boolean, onClick : (String) -> Unit) {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(0.dp)
+        ) {
+            list.forEach { option ->
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RadioButton (
+                        selected = onSelect(option),
+                        onClick = {
+                            onClick(option)
+                        },
+                        enabled = true,
+                        //colors = RadioButtonDefaults.colors (selectedColor = Color.Magenta)
+                    )
+                    Text(text = option, textAlign = TextAlign.Center, fontSize = 13.sp)
+                }
+            }
+        }
     }
-}
 
-@Composable
-fun HorizontalProgressBar() {
-    var progress by remember { mutableStateOf(0.5f) }
+    @Composable
+    private fun CheckboxComposable(isChecked : Boolean, onCheckedChange : (Boolean) -> Unit, text : String) {
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Checkbox (
+                checked = isChecked,
+                onCheckedChange = { isChecked : Boolean -> onCheckedChange(isChecked) }
+            )
+            Text (
+                text = text,
+                fontSize = 13.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        LinearProgressIndicator(
-            progress = progress,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(16.dp)
-        )
+    @Composable
+    private fun SpinnerComposable(onClick : () -> Unit, text : String, isExpanded : Boolean, onDismiss : () -> Unit, list : List<String>, onItemSelected : (String) -> Unit) {
+        Column() {
+            Box (
+                modifier = Modifier
+                    .height(56.dp)/*.background(Color.Gray)*/
+                    .clickable { onClick() }
+            ) {
+                Row (
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text)
+                    Icon (
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = null
+                    )
+                }
+            }
+            DropdownMenu (
+                expanded = isExpanded,
+                onDismissRequest = { onDismiss() },
+                //modifier = Modifier.fillMaxWidth()
+            ) {
+                list.forEach { spinner ->
+                    DropdownMenuItem (
+                        onClick = { onItemSelected(spinner) },
+                        text = { Text(spinner) }
+                    )
+                }
+            }
+        }
+    }
 
-        Spacer(modifier = Modifier.height(16.dp))
+    @Composable
+    private fun CustomSpinnerComposable(onClick : () -> Unit, text : String, isExpanded : Boolean, onDismiss : () -> Unit, list : List<String>, onItemSelected : (String) -> Unit) {
+        Column() {
+            Box (
+                modifier = Modifier
+                    .height(56.dp)
+                    .clickable { onClick() }
+            ) {
+                Row (
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon (
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                    Text(text)
+                    Icon (
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = null
+                    )
+                }
+            }
+            DropdownMenu (
+                expanded = isExpanded,
+                onDismissRequest = { onDismiss() },
+                //modifier = Modifier.fillMaxWidth()
+            ) {
+                list.forEach { spinner ->
+                    DropdownMenuItem (
+                        onClick = { onItemSelected(spinner) },
+                        text = {
+                            Row {
+                                Icon (
+                                    imageVector = Icons.Default.Info,
+                                    contentDescription = null
+                                )
+                                Text(spinner)
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    }
 
-        // Button to simulate progress change
-        Button(onClick = {
-            // Simulate progress change
-            progress = if (progress < 1.0f) progress + 0.1f else 0.0f
-        }) {
-            Text(text = "Increase Progress")
+    @Preview(showBackground = true)
+    @Composable
+    private fun GreetingPreview() {
+        JetpackcomposeTheme {
+            Text(
+                text = "Hello Android!",
+            )
         }
     }
 }
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JetpackcomposeTheme {
-        Greeting("Android")
-    }
-}
-*/

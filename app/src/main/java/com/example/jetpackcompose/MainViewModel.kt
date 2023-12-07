@@ -15,6 +15,8 @@ class MainViewModel : ViewModel {
     private val liveSpinnerExpanded : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     public val spinnerList : List<String> = listOf("A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
     private var spinnerSelectedIndex : Int = 0
+    private val liveCustomSpinnerExpanded : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    private var customSpinnerSelectedIndex : Int = 0
 
     constructor() {
 
@@ -101,6 +103,34 @@ class MainViewModel : ViewModel {
         spinnerSelectedIndex = spinnerList.indexOf(value)
         setData("Spinner value selected is  ${spinnerList.get(spinnerSelectedIndex)}")
     }
+    //endregion
+    //region Custom Spinner Methods
+    public fun setCustomSpinnerExpanded(isExpanded : Boolean) {
+        liveCustomSpinnerExpanded.setValue(isExpanded)
+        liveCustomSpinnerExpanded.value?.not()
+    }
+
+    public fun getCustomSpinnerExpanded() : LiveData<Boolean> {
+        return liveCustomSpinnerExpanded
+    }
+
+    public fun getSelectedCustomSpinner(index : Int = customSpinnerSelectedIndex) : String {
+        return spinnerList.get(index)
+    }
+
+    public fun setCustomSpinnerSelectedIndex(value : String) {
+        customSpinnerSelectedIndex = spinnerList.indexOf(value)
+        setData("Spinner value selected is  ${spinnerList.get(customSpinnerSelectedIndex)}")
+    }
+    //endregion
+    //region Rating Bar Methods
+
+    //endregion
+    //region Seek Bar Methods
+
+    //endregion
+    //region Discrete Seek Bar Methods
+
     //endregion
     override fun onCleared() {
         super.onCleared()
