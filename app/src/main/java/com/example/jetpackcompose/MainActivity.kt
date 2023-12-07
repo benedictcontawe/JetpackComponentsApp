@@ -83,16 +83,16 @@ class MainActivity : ComponentActivity() {
                             //color = Color.Red
                         )
                         //Spacer(modifier = Modifier.height(0.dp))
+                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
                         Button (
                             onClick = { viewModel.setData("Button Was Clicked") }
                         ) {
                             Text(text = "Send Data")
                         }
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
                         SwitchComposable(
                             isCheck = isSwitchChecked,
                             onCheckedChange = { isChecked : Boolean ->
-                                viewModel.setSwitchChecked(isSwitchChecked)
+                                viewModel.setSwitchChecked(isChecked)
                             }
                         )
                         ToggleButtonComposable()
@@ -130,7 +130,7 @@ class MainActivity : ComponentActivity() {
                                 viewModel.setCustomSpinnerSelectedIndex(spinner)
                             }
                         )
-                        RatingBarComposable()
+                        RatingBarComposable( rated = 0.0f, onRatingChanged = { } )
                         SeekBarComposable (
                             progressed = sliderProgress,
                             onProgressChanged = { progress : Float ->
@@ -288,7 +288,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun RatingBarComposable() {
+    private fun RatingBarComposable(rated : Float, onRatingChanged : () -> Unit) {
+        //TODO: On going under construction
         var rating by remember { mutableStateOf(0) }
         val outlinedStar = painterResource(id = R.drawable.outlined_star)
         val filledStar = painterResource(id = R.drawable.filled_star)
@@ -321,7 +322,7 @@ class MainActivity : ComponentActivity() {
             value = progressed,
             onValueChange = { progress : Float -> onProgressChanged(progress) },
             steps = 10,
-            valueRange = 1F..10f,
+            valueRange = 0F..1f,
         )
     }
 

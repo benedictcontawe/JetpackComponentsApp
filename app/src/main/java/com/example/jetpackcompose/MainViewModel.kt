@@ -17,6 +17,7 @@ class MainViewModel : ViewModel {
     private var spinnerSelectedIndex : Int = 0
     private val liveCustomSpinnerExpanded : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     private var customSpinnerSelectedIndex : Int = 0
+    private val liveRating : MutableLiveData<Float> = MutableLiveData<Float>()
     private val liveSliderProgress : MutableLiveData<Float> = MutableLiveData<Float>()
 
     constructor() {
@@ -125,11 +126,19 @@ class MainViewModel : ViewModel {
     }
     //endregion
     //region Rating Bar Methods
+    public fun setRatingBar(rating : Float) {
+        liveRating.setValue(rating)
+        setData("Rating Bar value is $rating")
+    }
 
+    public fun getRatingBar() : LiveData<Float> {
+        return liveRating
+    }
     //endregion
     //region Seek Bar Methods
     public fun setSliderProgress(progress : Float) {
         liveSliderProgress.setValue(progress)
+        progressData.setValue(progress)
         setData("Seek Bar Value selected is $progress")
     }
 
