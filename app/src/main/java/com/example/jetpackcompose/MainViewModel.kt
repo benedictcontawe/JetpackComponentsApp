@@ -17,6 +17,7 @@ class MainViewModel : ViewModel {
     private var spinnerSelectedIndex : Int = 0
     private val liveCustomSpinnerExpanded : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     private var customSpinnerSelectedIndex : Int = 0
+    private val liveSliderProgress : MutableLiveData<Float> = MutableLiveData<Float>()
 
     constructor() {
 
@@ -127,7 +128,14 @@ class MainViewModel : ViewModel {
 
     //endregion
     //region Seek Bar Methods
+    public fun setSliderProgress(progress : Float) {
+        liveSliderProgress.setValue(progress)
+        setData("Seek Bar Value selected is $progress")
+    }
 
+    public fun getSliderProgress() : LiveData<Float> {
+        return liveSliderProgress
+    }
     //endregion
     //region Discrete Seek Bar Methods
 

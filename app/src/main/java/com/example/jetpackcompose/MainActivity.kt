@@ -21,10 +21,13 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RangeSlider
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -57,6 +60,7 @@ class MainActivity : ComponentActivity() {
                 val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
                 val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
                 val isCustomSpinnerExpanded by viewModel.getCustomSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
+                val sliderProgress by viewModel.getSliderProgress().observeAsState(0.0f) //var sliderProgress by remember { mutableStateOf(false) }
                 Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -127,8 +131,13 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                         RatingBarComposable()
-                        Text(text = "Seek Bar Under Construction")
-                        Text(text = "Discrete Seek Bar Under Construction")
+                        SeekBarComposable (
+                            progressed = sliderProgress,
+                            onProgressChanged = { progress : Float ->
+                                viewModel.setSliderProgress(progress)
+                            }
+                        )
+                        RangeSliderComposable()
                     }
                 }
             }
@@ -304,6 +313,33 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    @Composable
+    private fun SeekBarComposable(progressed : Float, onProgressChanged : (Float) -> Unit) {
+        Slider (
+            value = progressed,
+            onValueChange = { progress : Float -> onProgressChanged(progress) },
+            steps = 10,
+            valueRange = 1F..10f,
+        )
+    }
+
+    @Composable
+    private fun DiscreteSeekBarComposable() {
+        Text(text = "Discrete Seek Bar Under Construction")
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun RangeSliderComposable() {
+        var range by remember { mutableStateOf(-20f..20f) }
+        RangeSlider (
+            value = range,
+            onValueChange = { range = it },
+            steps = 10,
+            valueRange = 1F..10f,
+        )
     }
 
     @Preview(showBackground = true)
