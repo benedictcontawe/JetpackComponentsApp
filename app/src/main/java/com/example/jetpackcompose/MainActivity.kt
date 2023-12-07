@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Info
@@ -29,8 +31,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -79,21 +85,17 @@ class MainActivity : ComponentActivity() {
                             Text(text = "Send Data")
                         }
                         //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Switch (
-                            checked = isSwitchChecked,
-                            onCheckedChange = { isChecked : Boolean -> viewModel.setSwitchChecked(isChecked) },
-                            /*
-                            colors = SwitchDefaults.colors (
-                                checkedThumbColor = MaterialTheme.colorScheme.primary,
-                                uncheckedThumbColor = Color.Gray
-                            )
-                            */
+                        SwitchComposable(
+                            isCheck = isSwitchChecked,
+                            onCheckedChange = { isChecked : Boolean ->
+                                viewModel.setSwitchChecked(isSwitchChecked)
+                            }
                         )
-                        Text(text = "Toggle Button Under Construction")
+                        ToggleButtonComposable()
                         RadioGroupComposable (
                             list = viewModel.onOffList,
-                            onSelect = { option -> viewModel.isRadioButtonChecked(option) },
-                            onClick = { option -> viewModel.setSelectedRadioButton(option) }
+                            onSelect = { option : String -> viewModel.isRadioButtonChecked(option) },
+                            onClick = { option : String -> viewModel.setSelectedRadioButton(option) }
                         )
                         CheckboxComposable (
                             isChecked = isCheckBoxChecked,
@@ -108,7 +110,7 @@ class MainActivity : ComponentActivity() {
                             isExpanded = isSpinnerExpanded,
                             onDismiss = { viewModel.setSpinnerExpanded(false) },
                             list = viewModel.spinnerList,
-                            onItemSelected = { spinner ->
+                            onItemSelected = { spinner : String ->
                                 viewModel.setSpinnerExpanded(false)
                                 viewModel.setSpinnerSelectedIndex(spinner)
                             }
@@ -119,12 +121,12 @@ class MainActivity : ComponentActivity() {
                             isExpanded = isCustomSpinnerExpanded,
                             onDismiss = { viewModel.setCustomSpinnerExpanded(false) },
                             list = viewModel.spinnerList,
-                            onItemSelected = { spinner ->
+                            onItemSelected = { spinner : String ->
                                 viewModel.setCustomSpinnerExpanded(false)
                                 viewModel.setCustomSpinnerSelectedIndex(spinner)
                             }
                         )
-                        Text(text = "Rating Bar Under Construction")
+                        RatingBarComposable()
                         Text(text = "Seek Bar Under Construction")
                         Text(text = "Discrete Seek Bar Under Construction")
                     }
@@ -133,6 +135,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Composable
+    private fun SwitchComposable(isCheck : Boolean, onCheckedChange : (Boolean) -> Unit) {
+        Switch (
+            checked = isCheck,
+            onCheckedChange = { isChecked : Boolean -> onCheckedChange(isChecked) },
+            /*
+            colors = SwitchDefaults.colors (
+                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                uncheckedThumbColor = Color.Gray
+            )
+            */
+        )
+    }
+
+    @Composable
+    private fun ToggleButtonComposable() {
+        Text(text = "Toggle Button Under Construction")
+    }
     @Composable
     private fun RadioGroupComposable(list : List<String>, onSelect : (String) -> Boolean, onClick : (String) -> Unit) {
         Column (
@@ -202,7 +222,7 @@ class MainActivity : ComponentActivity() {
                 onDismissRequest = { onDismiss() },
                 //modifier = Modifier.fillMaxWidth()
             ) {
-                list.forEach { spinner ->
+                list.forEach { spinner : String ->
                     DropdownMenuItem (
                         onClick = { onItemSelected(spinner) },
                         text = { Text(spinner) }
@@ -240,7 +260,7 @@ class MainActivity : ComponentActivity() {
                 onDismissRequest = { onDismiss() },
                 //modifier = Modifier.fillMaxWidth()
             ) {
-                list.forEach { spinner ->
+                list.forEach { spinner : String ->
                     DropdownMenuItem (
                         onClick = { onItemSelected(spinner) },
                         text = {
@@ -254,6 +274,34 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun RatingBarComposable() {
+        var rating by remember { mutableStateOf(0) }
+        val outlinedStar = painterResource(id = R.drawable.outlined_star)
+        val filledStar = painterResource(id = R.drawable.filled_star)
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            repeat(5) { index ->
+                Icon (
+                    //imageVector = if (index < rating) Icons.Filled.Star else Icons.Outlined.Star,
+                    painter = if (index < rating) filledStar else outlinedStar,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clickable {
+                            rating = index + 1
+                        }
+                        .padding(4.dp)
+                )
             }
         }
     }
