@@ -64,4 +64,6 @@
 - [4 reasons Jetpack Compose is better than XML](https://medium.com/@cybercoder.naj/4-reasons-jetpack-compose-is-better-than-xml-ac0efd12db28)
 
 - [Jetpack Compose: An easy way to RecyclerView (Part I)](https://www.waseefakhtar.com/android/recyclerview-in-jetpack-compose/)
+
+- [Jetpack Compose: Styles and Themes (Part II)](https://www.waseefakhtar.com/android/jetpack-compose-styles-and-themes/)
 <!-- - []() -->
