@@ -1,5 +1,7 @@
 package com.example.jetpackcompose
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -49,18 +51,23 @@ import com.example.jetpackcompose.ui.theme.JetpackcomposeTheme
 
 class MainActivity : ComponentActivity() {
 
+    companion object {
+        private val TAG : String = MainActivity::class.java.getSimpleName()
+        public fun newIntent(context : Context) : Intent = Intent(context.applicationContext, MainActivity::class.java)
+    }
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel : MainViewModel = viewModel { MainViewModel() }
+            val data by viewModel.getData().observeAsState("Result")
+            val progress by viewModel.getProgressData().observeAsState(0.0f)
+            val isSwitchChecked by viewModel.getSwitchChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
+            val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
+            val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
+            val isCustomSpinnerExpanded by viewModel.getCustomSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
+            val sliderProgress by viewModel.getSliderProgress().observeAsState(0.0f) //var sliderProgress by remember { mutableStateOf(false) }
             JetpackcomposeTheme {
-                val viewModel : MainViewModel = viewModel { MainViewModel() }
-                val data by viewModel.getData().observeAsState("Result")
-                val progress by viewModel.getProgressData().observeAsState(0.0f)
-                val isSwitchChecked by viewModel.getSwitchChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
-                val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
-                val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
-                val isCustomSpinnerExpanded by viewModel.getCustomSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
-                val sliderProgress by viewModel.getSliderProgress().observeAsState(0.0f) //var sliderProgress by remember { mutableStateOf(false) }
                 Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
