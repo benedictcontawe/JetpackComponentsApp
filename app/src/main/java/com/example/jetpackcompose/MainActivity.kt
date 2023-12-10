@@ -66,6 +66,7 @@ class MainActivity : ComponentActivity() {
             val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
             val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
             val isCustomSpinnerExpanded by viewModel.getCustomSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
+            val rate by viewModel.getRatingBar().observeAsState(0) //var rating by remember { mutableStateOf(0) }
             val sliderProgress by viewModel.getSliderProgress().observeAsState(0.0f) //var sliderProgress by remember { mutableStateOf(false) }
             JetpackcomposeTheme {
                 Surface (
@@ -106,7 +107,7 @@ class MainActivity : ComponentActivity() {
                         RadioGroupComposable (
                             list = viewModel.onOffList,
                             onSelect = { option : String -> viewModel.isRadioButtonChecked(option) },
-                            onClick = { option : String -> viewModel.setSelectedRadioButton(option) }
+                            onClick = { option : String -> viewModel.setSelectedRadioButton(option) },
                         )
                         CheckboxComposable (
                             isChecked = isCheckBoxChecked,
@@ -137,7 +138,10 @@ class MainActivity : ComponentActivity() {
                                 viewModel.setCustomSpinnerSelectedIndex(spinner)
                             }
                         )
-                        RatingBarComposable( rated = 0.0f, onRatingChanged = { } )
+                        RatingBarComposable (
+                            rated = rate,
+                            onRatingChanged = { rating -> viewModel.setRatingBar(rating) }
+                        )
                         SeekBarComposable (
                             progressed = sliderProgress,
                             onProgressChanged = { progress : Float ->
@@ -167,6 +171,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun ToggleButtonComposable() {
+        //TODO: On going under construction
         Text(text = "Toggle Button Under Construction")
     }
     @Composable
@@ -183,9 +188,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     RadioButton (
                         selected = onSelect(option),
-                        onClick = {
-                            onClick(option)
-                        },
+                        onClick = { onClick(option) },
                         enabled = true,
                         //colors = RadioButtonDefaults.colors (selectedColor = Color.Magenta)
                     )
@@ -252,9 +255,7 @@ class MainActivity : ComponentActivity() {
     private fun CustomSpinnerComposable(onClick : () -> Unit, text : String, isExpanded : Boolean, onDismiss : () -> Unit, list : List<String>, onItemSelected : (String) -> Unit) {
         Column() {
             Box (
-                modifier = Modifier
-                    .height(56.dp)
-                    .clickable { onClick() }
+                modifier = Modifier.height(56.dp).clickable { onClick() }
             ) {
                 Row (
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -295,9 +296,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun RatingBarComposable(rated : Float, onRatingChanged : () -> Unit) {
-        //TODO: On going under construction
-        var rating by remember { mutableStateOf(0) }
+    private fun RatingBarComposable(rated : Int, onRatingChanged : (Int) -> Unit) {
         val outlinedStar = painterResource(id = R.drawable.outlined_star)
         val filledStar = painterResource(id = R.drawable.filled_star)
         Row (
@@ -310,13 +309,11 @@ class MainActivity : ComponentActivity() {
             repeat(5) { index ->
                 Icon (
                     //imageVector = if (index < rating) Icons.Filled.Star else Icons.Outlined.Star,
-                    painter = if (index < rating) filledStar else outlinedStar,
+                    painter = if (index < rated) filledStar else outlinedStar,
                     contentDescription = null,
                     modifier = Modifier
                         .size(36.dp)
-                        .clickable {
-                            rating = index + 1
-                        }
+                        .clickable { onRatingChanged(index + 1) }
                         .padding(4.dp)
                 )
             }
@@ -335,6 +332,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun DiscreteSeekBarComposable() {
+        //TODO: On going under construction
         Text(text = "Discrete Seek Bar Under Construction")
     }
 
