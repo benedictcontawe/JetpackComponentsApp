@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.Jetpackcompose" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+    <!--<item name="windowSplashScreenBackground">@color/black</item>-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/inset_splash</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.Jetpackcompose</item>
+        <!-- Status bar and Nav bar configs -->
+    <!--<item name="android:statusBarColor" >@color/black</item>-->
+    <!--<item name="android:navigationBarColor">@color/black</item>-->
+    </style>
 </resources>
