@@ -70,4 +70,6 @@
 - [Jetpack Compose: Navigating to a Detail View (Part III)](https://www.waseefakhtar.com/android/jetpack-compose-navigating-to-a-detail-view/)
 
 - [Jetpack Compose: Implementing the Detail View (Part IV)](https://www.waseefakhtar.com/android/jetpack-compose-implementing-the-detail-view/)
+
+- [Navigation in Jetpack compose. Full guide Beginner to Advanced.](https://medium.com/@KaushalVasava/navigation-in-jetpack-compose-full-guide-beginner-to-advanced-950c1133740)
 <!-- - []() -->
