@@ -27,9 +27,10 @@ public class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
         super.onCreate(savedInstanceState)
         binder?.swipeRefreshLayout?.setOnRefreshListener(this@MainActivity)
         binder?.getViewModel()?.observeAPOD()?.observe(binder?.getLifecycleOwner()!!, object : Observer<List<NasaHolderModel>> {
-            override fun onChanged(list : List<NasaHolderModel>?) {
-                adapter.setItems( list )
-                if (binder?.swipeRefreshLayout?.isRefreshing() == true) binder?.swipeRefreshLayout?.setRefreshing(false)
+            override fun onChanged(value : List<NasaHolderModel>) {
+                adapter.setItems( value )
+                if (binder?.swipeRefreshLayout?.isRefreshing() == true)
+                    binder?.swipeRefreshLayout?.setRefreshing(false)
             }
         })
     }
