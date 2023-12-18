@@ -20,10 +20,15 @@ public class MainViewModel : ViewModel {
     private val isLoading : MutableStateFlow<Boolean>
 
     constructor() {
+        Log.d(TAG, "constructor")
         repository = Repository()
         list = mutableListOf<NasaHolderModel>()
         liveList = MutableLiveData<List<NasaHolderModel>>()
         isLoading = MutableStateFlow<Boolean>(false)
+    }
+
+    init {
+        Log.d(TAG, "initialize")
     }
 
     public fun observeLoading() : StateFlow<Boolean> {
@@ -35,7 +40,7 @@ public class MainViewModel : ViewModel {
         val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, list.size + 5)
         val responseList : List<NasaResponseModel> = repository.getAPOD(request)
         list.clear()
-        Log.d(TAG, "getAPOD() size ${responseList.size}")
+        Log.d(TAG, "requestAPOD() size ${responseList.size}")
         responseList.forEach { response -> Log.d(TAG, "Response $response")
             list.add(NasaHolderModel(list.size + 1, response))
         }

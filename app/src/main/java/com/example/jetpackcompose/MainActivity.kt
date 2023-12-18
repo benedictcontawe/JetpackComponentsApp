@@ -14,6 +14,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -33,9 +38,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.example.jetpackcompose.ui.theme.JetpackcomposeTheme
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 class MainActivity : ComponentActivity() {
 
@@ -45,33 +47,32 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModels<MainViewModel>()
 
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            val isLoading : Boolean by viewModel.observeLoading().collectAsState(initial = false)
-            val swipeRefreshState : SwipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
+            val isRefreshing : Boolean by viewModel.observeLoading().collectAsState(initial = false)
+            val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = viewModel::requestAPOD)
+            //val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = { viewModel.requestAPOD() })
             val list : List<NasaHolderModel> by viewModel.observeAPOD().observeAsState(listOf<NasaHolderModel>())
             JetpackcomposeTheme {
                 Surface (
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .pullRefresh(pullRefreshState),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SwipeRefresh (
-                        state = swipeRefreshState,
-                        //onRefresh = viewModel::requestAPOD,
-                        onRefresh = { viewModel.requestAPOD() },
+                    LazyColumn (
+                        //modifier = Modifier.pullRefresh(pullRefreshState).verticalScroll(rememberScrollState()),
+                        userScrollEnabled = true
                     ) {
-                        LazyColumn (
-                            //modifier = Modifier.pullRefresh(pullRefreshState).verticalScroll(rememberScrollState()),
-                            userScrollEnabled = true
-                        ) {
-                            items (
-                                items = list,
-                                itemContent = { model -> NasaCellComposable(model) }
-                            )
-                        }
+                        items (
+                            items = list,
+                            itemContent = { model -> NasaCellComposable(model) }
+                        )
                     }
+                    PullRefreshIndicator(refreshing = isRefreshing, state = pullRefreshState, scale = true)
                 }
             }
         }
@@ -96,9 +97,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun NasaCellComposable(model : NasaHolderModel) {
         Card (
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f / 0.25f),
+            modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.25f),
             elevation = CardDefaults.cardElevation (
                 defaultElevation = 3.dp,
                 pressedElevation = 0.dp,
