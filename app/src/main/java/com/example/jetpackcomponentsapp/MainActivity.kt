@@ -28,7 +28,7 @@ public class MainActivity : AppCompatActivity() {
         binder?.recyclerView?.setAdapter(adapter)//binder?.getViewModel()?.requestAPOD()
         Coroutines.default(this@MainActivity, { scope : CoroutineScope -> scope.launch ( block = {
             binder?.getViewModel()?.observeAPOD()?.collectLatest ( action = { pagingDatum ->
-                adapter.submitData( getLifecycle(), pagingDatum ) //adapter.submitData( pagingDatum )
+                adapter.submitData( lifecycle = lifecycle, pagingDatum ) //adapter.submitData( pagingDatum )
             } )
         } ) } )
         /*adapter.addLoadStateListener {
