@@ -22,6 +22,7 @@ import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         binding.getViewModel().setData("Test");
     }
 
-    private void findViewId(){
+    private void findViewId() {
         textResult = findViewById(R.id.textResult);
         buttonSendData = findViewById(R.id.buttonSendData);
         switchSendData = findViewById(R.id.switchSendData);
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         });
     }
 
-    private void setEventListeners(){
+    private void setEventListeners() {
         buttonSendData.setOnClickListener(this);
         switchSendData.setOnCheckedChangeListener(this);
         toggleButtonSendData.setOnCheckedChangeListener(this);
@@ -133,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == buttonSendData.getId()){
+    public void onClick(View view) {
+        if (view.getId() == buttonSendData.getId()){
             binding.getViewModel().setData("Button Was Clicked");
         }
     }
@@ -151,8 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        final int x = switchSendData.getId();
-
+        //final int x = switchSendData.getId();
         if (buttonView.getId() == switchSendData.getId()){
             if (isChecked == true) {
                 binding.getViewModel().setData("Switch is On");
@@ -247,10 +247,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
         if (view.getId() == seekBarSendData.getId()) {
-            seekBarSendData.setThumb(getResources().getDrawable(isFocus ? R.drawable.ic_seeker_thumb_selected : R.drawable.ic_seeker_thumb_unselected));
+            seekBarSendData.setThumb(ContextCompat.getDrawable(view.getContext(), isFocus ? R.drawable.ic_seeker_thumb_selected : R.drawable.ic_seeker_thumb_unselected));
         }
         else if (view.getId() == seekBarDiscreteSendData.getId()){
-            seekBarDiscreteSendData.setThumb(getResources().getDrawable(isFocus ? R.drawable.ic_lever_selected : R.drawable.ic_lever_unselected));
+            seekBarDiscreteSendData.setThumb(ContextCompat.getDrawable(view.getContext(), isFocus ? R.drawable.ic_lever_selected : R.drawable.ic_lever_unselected));
         }
     }
     //endregion
@@ -258,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         viewModel.getData().observe(this, null);
         buttonSendData.setOnClickListener(null);
         switchSendData.setOnCheckedChangeListener(null);
