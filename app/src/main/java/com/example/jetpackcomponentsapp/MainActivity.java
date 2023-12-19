@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -209,11 +210,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean isFocus) {
                 if (isFocus){
                     //Toast.makeText(getBaseContext(),"On Enter Focus",Toast.LENGTH_SHORT).show();
-                    binding.seekBarSendData.setThumb(getResources().getDrawable(R.drawable.ic_seeker_thumb_selected));
+                    binding.seekBarSendData.setThumb(ContextCompat.getDrawable(view.getContext(), R.drawable.ic_seeker_thumb_selected));
                 }
                 else {
                     //Toast.makeText(getBaseContext(),"On Leave Focus",Toast.LENGTH_SHORT).show();
-                    binding.seekBarSendData.setThumb(getResources().getDrawable(R.drawable.ic_seeker_thumb_unselected));
+                    binding.seekBarSendData.setThumb(ContextCompat.getDrawable(view.getContext(), R.drawable.ic_seeker_thumb_unselected));
                 }
             }
         });
@@ -242,11 +243,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean isFocus) {
                 if (isFocus){
                     //Toast.makeText(getBaseContext(),"On Enter Focus",Toast.LENGTH_SHORT).show();
-                    binding.seekBarDiscreteSendData.setThumb(getResources().getDrawable(R.drawable.ic_lever_selected));
+                    binding.seekBarDiscreteSendData.setThumb(ContextCompat.getDrawable(view.getContext(), R.drawable.ic_lever_selected));
                 }
                 else {
                     //Toast.makeText(getBaseContext(),"On Leave Focus",Toast.LENGTH_SHORT).show();
-                    binding.seekBarDiscreteSendData.setThumb(getResources().getDrawable(R.drawable.ic_lever_unselected));
+                    binding.seekBarDiscreteSendData.setThumb(ContextCompat.getDrawable(view.getContext(), R.drawable.ic_lever_unselected));
                 }
             }
         });
