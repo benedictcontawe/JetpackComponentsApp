@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -57,23 +58,23 @@ class MainActivity : AppCompatActivity(){
         spinnerCustomSendData.adapter = customSpinnerAdapter
     }
 
-    private fun setLiveDataObservers(){
+    private fun setLiveDataObservers() {
         viewModel.getData().observe(this, object : Observer<String> {
-            override fun onChanged(string: String) {
+            override fun onChanged(string : String) {
                 binding.textResult.text = string
             }
 
         })
 
         viewModel.getProgressData().observe(this, object : Observer<Int> {
-            override fun onChanged(int: Int) {
+            override fun onChanged(int : Int) {
                 binding.progressBarResult.progress = int
             }
 
         })
     }
 
-    private fun setEventListeners(){
+    private fun setEventListeners() {
         buttonSendData.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 binding.viewModel?.setData("Button Was Clicked")
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity(){
         })
 
         switchSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+            override fun onCheckedChanged(buttonView : CompoundButton?, isChecked : Boolean) {
                 if (isChecked == true) {
                     binding.viewModel?.setData("Switch is On")
                 } else if (isChecked == false) {
@@ -103,7 +104,7 @@ class MainActivity : AppCompatActivity(){
         })
 
         radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
+            override fun onCheckedChanged(group : RadioGroup, checkedId : Int) {
                 when (findViewById<View>(checkedId).id) {
                     R.id.radioOn -> {
                         binding.viewModel?.setData("Radio Button is On of your selected Radio Group")
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity(){
         })
 
         checkboxSendData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+            override fun onCheckedChanged(buttonView : CompoundButton?, isChecked : Boolean) {
                 if (isChecked == true) {
                     binding.viewModel?.setData("Check Box is On")
                     checkboxSendData.text = "On"
@@ -130,26 +131,26 @@ class MainActivity : AppCompatActivity(){
         })
 
         spinnerSendData.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+            override fun onTouch(view : View, motionEvent : MotionEvent) : Boolean {
                 isSpinnerTouch = true
                 return false
             }
         })
 
         spinnerSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view : View?, position : Int, id : Long) {
                 if (isSpinnerTouch) {
                     binding.viewModel?.setData("Spinner value selected is " + names[position])
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+            override fun onNothingSelected(parent : AdapterView<*>?) {
                 binding.viewModel?.setData("Spinner Nothing selected")
             }
         }
 
         spinnerCustomSendData.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+            override fun onTouch(view : View, motionEvent : MotionEvent) : Boolean {
                 isCustomSpinnerTouch = true
                 return false
             }
@@ -157,7 +158,7 @@ class MainActivity : AppCompatActivity(){
         })
 
         spinnerCustomSendData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent : AdapterView<*>?, view : View?, position : Int, id : Long) {
                 if (isCustomSpinnerTouch) {
                     binding.viewModel?.setData("Customize Spinner value selected is " + names[position])
                 }
@@ -168,8 +169,8 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
-        ratingBarSendData.onRatingBarChangeListener = object :  RatingBar.OnRatingBarChangeListener {
-            override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+        ratingBarSendData.onRatingBarChangeListener = object : RatingBar.OnRatingBarChangeListener {
+            override fun onRatingChanged(ratingBar : RatingBar?, rating : Float, fromUser : Boolean) {
                 binding.viewModel?.setData("Rating Bar value is ${rating}")
             }
         }
@@ -184,7 +185,7 @@ class MainActivity : AppCompatActivity(){
                 binding.viewModel?.setData("Seek Bar Value selected is " + progress)
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            override fun onStopTrackingTouch(seekBar : SeekBar?) {
 
             }
         })
@@ -199,14 +200,14 @@ class MainActivity : AppCompatActivity(){
                 binding.viewModel?.setData("Customize Seek Bar Value selected is " + progress)
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            override fun onStopTrackingTouch(seekBar : SeekBar?) {
 
             }
         })
 
         seekBarSendData.onFocusChangeListener = object : View.OnFocusChangeListener{
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                seekBarSendData.thumb = resources.getDrawable(
+            override fun onFocusChange(view : View, hasFocus : Boolean) {
+                seekBarSendData.thumb = ContextCompat.getDrawable( view.getContext(),
                         when(hasFocus){
                             true -> {
                                 R.drawable.ic_seeker_thumb_selected
@@ -217,29 +218,26 @@ class MainActivity : AppCompatActivity(){
                         }
                 )
             }
-
         }
 
-        seekBarDiscreteSendData.onFocusChangeListener = object : View.OnFocusChangeListener{
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                seekBarDiscreteSendData.thumb = resources.getDrawable(
-                        when(hasFocus){
-                            true -> {
-                                R.drawable.ic_lever_selected
-                            }
-                            false -> {
-                                R.drawable.ic_lever_unselected
-                            }
+        seekBarDiscreteSendData.onFocusChangeListener = object : View.OnFocusChangeListener {
+            override fun onFocusChange(view : View, hasFocus : Boolean) {
+                seekBarDiscreteSendData.thumb = ContextCompat.getDrawable( view.getContext(),
+                    when(hasFocus) {
+                        true -> {
+                            R.drawable.ic_lever_selected
                         }
+                        false -> {
+                            R.drawable.ic_lever_unselected
+                        }
+                    }
                 )
             }
-
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         viewModel.getData().observe(this, null!!)
         buttonSendData.setOnClickListener(null)
         switchSendData.setOnCheckedChangeListener(null)
