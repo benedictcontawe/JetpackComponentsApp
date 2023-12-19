@@ -3,7 +3,7 @@ package com.example.jetpackcompose
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class NasaRequestModel(
+data class NasaRequestModel (
     @SerializedName("api_key")
     @Expose
     var key : String? = null,
