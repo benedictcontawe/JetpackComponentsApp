@@ -2,24 +2,22 @@ package com.example.jetpackcomponentsapp.model
 
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.room.CustomEntity
-import com.example.jetpackcomponentsapp.util.Constants
 
-public data class CustomHolderModel (
-    val id : Int,
-    val name : String,
-    val icon : Int,
+data class CustomHolderModel (
+    val id : Int?,
+    val name : String?,
+    val icon : Int?,
 ) {
-
     companion object {
         private val TAG = CustomHolderModel::class.java.getSimpleName()
     }
-    constructor() : this(id = Constants.NEGATIVE_ONE, name = Constants.BLANK, icon = R.drawable.ic_android_black) {
+    constructor() : this(id = null, name = null, icon = R.drawable.ic_android_black) {
 
     }
-    constructor(entity : CustomEntity) : this(id = entity.id ?: Constants.NEGATIVE_ONE, name = entity.name ?: Constants.BLANK, icon = entity.icon ?: Constants.ZERO) {
+    constructor(entity : CustomEntity) : this(id = entity.id, name = entity.name, icon = entity.icon) {
 
     }
-    constructor(name : String) : this(id = Constants.NEGATIVE_ONE, name = name, icon = R.drawable.ic_launcher_foreground) {
+    constructor(name : String) : this(id = null, name = name, icon = R.drawable.ic_launcher_foreground) {
 
     }
     constructor(id : Int, name : String) : this(id = id, name = name, icon = R.drawable.ic_launcher_foreground) {

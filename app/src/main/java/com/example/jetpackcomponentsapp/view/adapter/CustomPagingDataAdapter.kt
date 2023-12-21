@@ -1,14 +1,15 @@
-package com.example.jetpackcomponentsapp.view
+package com.example.jetpackcomponentsapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
-import com.example.jetpackcomponentsapp.CustomListener
+import com.example.jetpackcomponentsapp.view.listeners.CustomListeners
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CellBinder
 import com.example.jetpackcomponentsapp.model.CustomHolderModel
 import com.example.jetpackcomponentsapp.util.CustomDiffUtilItemCallback
+import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
 public class CustomPagingDataAdapter : PagingDataAdapter/*LoadStateAdapter*/<CustomHolderModel, CustomViewHolder> {
 
@@ -16,21 +17,21 @@ public class CustomPagingDataAdapter : PagingDataAdapter/*LoadStateAdapter*/<Cus
         private val TAG = CustomPagingDataAdapter::class.java.getSimpleName()
     }
 
-    private val listener : CustomListener
+    private val listener : CustomListeners
 
-    constructor(listener : CustomListener) : super(CustomDiffUtilItemCallback) {
+    constructor(listener : CustomListeners) : super(CustomDiffUtilItemCallback) {
         this.listener = listener
     }
 
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : CustomViewHolder {
         val layoutInflater : LayoutInflater = LayoutInflater.from(parent.getContext())
         val binder : CellBinder = DataBindingUtil.inflate(layoutInflater,
-            R.layout.cell, parent, false)
+            R.layout.cell_sample, parent, false)
         return CustomViewHolder(binder, listener)
     }
 
     override fun onBindViewHolder(holder : CustomViewHolder, position : Int) {
-        holder.bindDataToViewHolder(
+        holder.bindDataToViewHolder (
             getItem(position),
             position
         )

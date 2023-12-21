@@ -1,14 +1,10 @@
 package com.example.jetpackcomponentsapp.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-public interface CustomDAO {
+interface CustomDAO {
     //@Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     //@Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -35,4 +31,9 @@ public interface CustomDAO {
     @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC")
     //public fun observeAll() : PagingSource<Int, CustomEntity>
     public fun observeAll() : Flow<List<CustomEntity>>
+
+    @Transaction
+    suspend fun resetDAO() {
+        deleteAll()
+    }
 }

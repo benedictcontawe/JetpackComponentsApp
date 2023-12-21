@@ -7,15 +7,11 @@ import androidx.annotation.DimenRes
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 
-public class BottomOffsetDecorationHelper : RecyclerView.ItemDecoration {
+class BottomOffsetDecorationHelper : RecyclerView.ItemDecoration {
 
-    companion object {
-        private val TAG = BottomOffsetDecorationHelper::class.java.getSimpleName()
-    }
+    private var bottomItemOffset : Int? = null
 
-    private var bottomItemOffset: Int? = null
-
-    constructor(@NonNull context: Context, @DimenRes itemOffsetId: Int) {
+    constructor(@NonNull context : Context, @DimenRes itemOffsetId : Int) {
         bottomItemOffset = itemOffsetId
     }
 

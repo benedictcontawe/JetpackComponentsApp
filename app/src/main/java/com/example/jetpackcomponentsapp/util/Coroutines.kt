@@ -91,12 +91,7 @@ object Coroutines {
         CoroutineScope(Dispatchers.Default).launch {
             work()
         }
-    fun default(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
-        activity.lifecycleScope.launch(Dispatchers.Default) {
-            activity.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                work(this)
-            }
-        }
+
     fun default(viewModel : ViewModel, work : suspend (() -> Unit)) =
         viewModel.viewModelScope.launch(Dispatchers.Default) {
             work()

@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:nestedScrollingEnabled="false"
         android:scrollbars="vertical"
-        tools:listitem="@layout/cell"
+        tools:listitem="@layout/cell_sample"
         tools:itemCount="5"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"

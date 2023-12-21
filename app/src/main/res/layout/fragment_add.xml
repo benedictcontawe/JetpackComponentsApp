@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <data class="AddBinder">
         <variable
@@ -16,53 +15,51 @@
         android:gravity="center"
         android:background="@color/background_material_dark_black">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:background="@color/design_default_color_background"
-            android:orientation="vertical" >
+        <LinearLayout
+            style="@style/LinearLayoutAddStyle" >
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/image_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.3"
-                    android:contentDescription="Image"
-                    app:srcCompat="@drawable/ic_android_black"/>
+                    android:contentDescription="@string/image"
+                    app:srcCompat="@drawable/ic_launcher_foreground"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:text="Add Name"
+                    android:text="@string/add_name"
                     android:textAlignment="center"
                     android:gravity="center_horizontal" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions" />
+                />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:text="@string/add"
+                />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+
     </RelativeLayout>
+
 </layout>

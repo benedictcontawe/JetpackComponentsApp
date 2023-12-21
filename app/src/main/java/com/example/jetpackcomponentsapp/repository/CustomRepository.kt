@@ -1,16 +1,19 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.repository
 
 import android.content.Context
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.jetpackcomponentsapp.CustomPagingSource
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
 import kotlinx.coroutines.flow.Flow
 
-public class CustomRepository {
+public class CustomRepository : BaseRepository {
 
     companion object {
         private val TAG : String = CustomRepository::class.java.getSimpleName()
@@ -34,9 +37,9 @@ public class CustomRepository {
             CustomDatabase::class.java,
             name
         )
-        .fallbackToDestructiveMigration()
-        .addCallback(roomCallback)
-        .build()
+            .fallbackToDestructiveMigration()
+            .addCallback(roomCallback)
+            .build()
     }
 
     private fun provideRoomDatabaseCallback() : RoomDatabase.Callback {
@@ -57,30 +60,30 @@ public class CustomRepository {
     }
 
     //region CRUD Operation
-    public suspend fun insert(customEntity: CustomEntity) {
+    public override suspend fun insert(customEntity : CustomEntity) {
         customDao?.insert(
-                customEntity
-            )
+            customEntity
+        )
     }
 
-    public suspend fun update(customEntity: CustomEntity) {
+    public override suspend fun update(customEntity : CustomEntity) {
         customDao?.update(
-                customEntity
-            )
+            customEntity
+        )
     }
 
-    public suspend fun delete(customEntity: CustomEntity) {
+    public override suspend fun delete(customEntity : CustomEntity) {
         println("${customEntity.id}")
         customDao?.delete(
-                customEntity.id
-            )
+            customEntity.id
+        )
     }
 
-    public suspend fun deleteAll() {
+    public override suspend fun deleteAll() {
         customDao?.deleteAll()
     }
 
-    public suspend fun getFlowPagingData() : Flow<PagingData<CustomEntity>> {
+    public override suspend fun getFlowPagingData() : Flow<PagingData<CustomEntity>> {
         return Pager(
             config = getPagingConfig(),
             pagingSourceFactory = {
@@ -101,5 +104,10 @@ public class CustomRepository {
             //maxSize = PagedList.Config.MAX_SIZE_UNBOUNDED,
             enablePlaceholders = false //default: true
         )
+    }
+
+    override public suspend fun onCLose() {
+        if (database?.isOpen == true)
+            database?.close()
     }
 }

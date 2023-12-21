@@ -1,18 +1,48 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.JetpackComponentsApp" parent="Theme.Material3.DayNight">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <style name="Base.Theme.JetpackComponentsApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+
+    <style name="Theme.JetpackComponentsApp" parent="Base.Theme.JetpackComponentsApp" />
+
+    <style name="ConstraintLayoutMainStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:animateLayoutChanges">true</item>
+    </style>
+
+    <style name="LinearLayoutAddStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@color/design_default_color_background</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="CardViewCellStyle" parent="Widget.Material3.CardView.Filled">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="cardBackgroundColor">@color/card_state_normal</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="cardElevation">@dimen/card_elevation_minimum</item>
+        <item name="cardMaxElevation">@dimen/card_elevation</item>
+    </style>
+
+    <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:drawingCacheQuality">high</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="backgroundTint">@color/card_state_selected</item>
+        <item name="fabSize">mini</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="tint">@color/white</item>
+    </style>
+
     <style name="DialogFragment" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@color/design_default_color_background</item>
         <item name="android:windowAnimationStyle">@null</item>
