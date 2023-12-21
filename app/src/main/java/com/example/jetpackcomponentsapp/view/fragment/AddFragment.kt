@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
@@ -23,7 +23,7 @@ class AddFragment : Fragment() {
     }
 
     private lateinit var binding : AddBinder
-    private val viewModel : MainViewModel by viewModels<MainViewModel>()
+    private val viewModel : MainViewModel by activityViewModels<MainViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add,container,false)
