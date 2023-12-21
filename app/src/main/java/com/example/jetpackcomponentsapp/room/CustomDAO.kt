@@ -24,5 +24,10 @@ interface CustomDAO {
 
     //@Query("SELECT * FROM custom_table")
     @Query("SELECT * FROM custom_table ORDER BY Id ASC")
-    fun getAll() : Flow<List<CustomEntity>>
+    fun observeAll() : Flow<List<CustomEntity>>
+
+    @Transaction
+    suspend fun resetDAO() {
+        deleteAll()
+    }
 }

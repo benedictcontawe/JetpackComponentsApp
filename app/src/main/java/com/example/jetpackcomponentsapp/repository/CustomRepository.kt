@@ -1,17 +1,18 @@
 package com.example.jetpackcomponentsapp.repository
 
+import android.app.Application
 import android.content.Context
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
-import com.example.jetpackcomponentsapp.util.Coroutines
 import kotlinx.coroutines.flow.Flow
 
-public class CustomRepository : BaseRepository {
+class CustomRepository : BaseRepository {
 
     companion object {
         private val TAG = CustomRepository::class.java.getSimpleName()
@@ -43,11 +44,13 @@ public class CustomRepository : BaseRepository {
         return object : RoomDatabase.Callback() {
             override fun onCreate(db : SupportSQLiteDatabase) { //Initialize Database if no database attached to the App
                 super.onCreate(db)
+                /*
                 Coroutines.io {
                     for (index in 0 until 500) {
                         insert(CustomEntity("name $index", R.drawable.ic_launcher_foreground))
                     }
                 }
+                */
             }
 
             override fun onOpen(db : SupportSQLiteDatabase) { //Re-open Database if it has database attached to the App
@@ -80,7 +83,7 @@ public class CustomRepository : BaseRepository {
     }
 
     override public fun getAll() : Flow<List<CustomEntity>>? {
-        return customDao?.getAll()
+        return customDao?.observeAll()
     }
     //endregion
     override public suspend fun onCLose() {
