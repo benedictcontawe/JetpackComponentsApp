@@ -32,7 +32,7 @@ class MainViewModel : AndroidViewModel {
     }
 
     public fun checkIfFragmentLoaded(fragment : Fragment) { Coroutines.default(this@MainViewModel, {
-        Log.d("MainViewModel","checkIfFragmentLoaded")
+        Log.d(TAG,"checkIfFragmentLoaded")
         while (!fragment.isVisible()) delay(100)
         viewWillAppear()
     }) }

@@ -45,13 +45,6 @@ class AddFragment : BaseFragment(), View.OnClickListener {
         binder?.editText?.requestFocus()
         showSoftKeyboard(binder?.editText)
         binder?.button?.setOnClickListener(this@AddFragment)
-        Coroutines.main(this@AddFragment, {
-            viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel?> {
-                override fun onChanged(value : CustomModel?) {
-                    Log.d(TAG, "observeUpdate $value")
-                }
-            })
-        })
     }
 
     override fun onClick(view : View?) {

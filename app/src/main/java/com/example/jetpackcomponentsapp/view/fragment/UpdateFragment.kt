@@ -60,7 +60,6 @@ class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
         Coroutines.main(this@UpdateFragment, {
             viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel?> {
                 override fun onChanged(value : CustomModel?) {
-                    Log.d(TAG, "observeUpdate $value")
                     binder?.editText?.setText(value?.name)
                     binder?.editText?.requestFocus()
                     binder?.editText?.selectAll()

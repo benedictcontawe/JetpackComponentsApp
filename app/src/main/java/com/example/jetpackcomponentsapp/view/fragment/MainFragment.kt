@@ -65,7 +65,7 @@ class MainFragment : BaseFragment, CustomListeners {
         Coroutines.main(this@MainFragment, { scope : CoroutineScope ->
             viewModel.observeItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
                 override fun onChanged(list : List<CustomModel>) {
-                    Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
+                    Log.d(TAG,"ID ${list.map { it.id }}, Name ${list.map { it.name }}")
                     //binder?.recyclerView?.removeAllViews()
                     adapter.setItems(list)
                     adapter.notifyDataSetChanged()
