@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-//import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.view.CustomListeners
@@ -24,38 +23,34 @@ import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
 class MainFragment : Fragment(), CustomListeners {
 
     companion object {
-        fun newInstance() : MainFragment = MainFragment()
+        private val TAG : String = MainFragment::class.java.getSimpleName()
 
-        fun getTag() : String {
-            return MainFragment::class.java.getSimpleName()
-        }
+        fun newInstance() : MainFragment = MainFragment()
     }
 
     private lateinit var binding: MainBinder
-    private lateinit var viewModel: MainViewModel
+    private val viewModel : MainViewModel by viewModels<MainViewModel>()
     private lateinit var adapter : CustomAdapter
     //private lateinit var itemDecorationHelper: BottomOffsetDecorationHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment,container,false)
-        return binding.root
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main,container,false)
+        return binding.getRoot()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState : Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        //viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(viewLifecycleOwner)
 
         setRecyclerView()
         setFloatingActionButton()
-        viewModel.setItems()
+        //viewModel.setDummyItems()
     }
 
     private fun setRecyclerView() {
-        adapter = CustomAdapter(requireContext(), this@MainFragment)
+        adapter = CustomAdapter(this@MainFragment)
         //itemDecorationHelper = BottomOffsetDecorationHelper(context!!,R.dimen.extra_scroll)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
@@ -64,7 +59,6 @@ class MainFragment : Fragment(), CustomListeners {
         binding.recyclerView.adapter = adapter
 
         (binding.recyclerView.layoutManager as LinearLayoutManager).setAutoMeasureEnabled(false)
-
         viewModel.getItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
             override fun onChanged(list : List<CustomModel>) {
                 Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
@@ -92,16 +86,14 @@ class MainFragment : Fragment(), CustomListeners {
     }
 
     private fun onAdd() {
-        (activity as MainActivity).callAddFragment()
-        //viewModel.setItems()
+        (requireActivity() as MainActivity).callAddFragment()
     }
 
-    override fun onUpdate(item : CustomModel, position : Int) {
-        viewModel.setUpdate(item)
-        (activity as MainActivity).callUpdateFragment()
+    override fun onUpdate(model : CustomModel, position : Int) {
+        (requireActivity() as MainActivity).callUpdateFragment(model)
     }
 
-    override fun onDelete(item : CustomModel, position : Int) {
-        viewModel.deleteItem(item)
+    override fun onDelete(model : CustomModel, position : Int) {
+        viewModel.deleteItem(model)
     }
 }

@@ -18,12 +18,12 @@ interface CustomDAO {
     //fun delete(customEntity: CustomEntity)
 
     @Query("DELETE FROM custom_table WHERE Id = :id")
-    fun delete(id : Int?)
+    public fun delete(id : Int?)
 
     @Query("DELETE FROM custom_table")
-    fun deleteAll()
+    public fun deleteAll()
 
     //@Query("SELECT * FROM custom_table")
     @Query("SELECT * FROM custom_table ORDER BY Id ASC")
-    fun getAll() : LiveData<List<CustomEntity>>
+    public fun getAll() : LiveData<List<CustomEntity>>
 }

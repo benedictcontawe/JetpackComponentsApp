@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,30 +10,28 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.CustomListeners
 import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
-class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
+public class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
     /**Main */
-    private lateinit var context : Context
-    private lateinit var customListeners : CustomListeners
+    private val customListeners : CustomListeners
 
     private lateinit var customBinder : CustomBinder
 
     private var list : MutableList<CustomModel> = mutableListOf()
 
-    constructor(context : Context, customListeners : CustomListeners) : super() {
-        this.context = context
+    constructor(customListeners : CustomListeners) : super() {
         this.customListeners = customListeners
         setHasStableIds(true)
     }
 
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : CustomViewHolder {
         customBinder = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.item_sample,
-                parent,
-                false
+            LayoutInflater.from(parent.context),
+            R.layout.cell_sample,
+            parent,
+            false
         )
-        return CustomViewHolder(context, customListeners, customBinder)
+        return CustomViewHolder(customListeners, customBinder)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
@@ -51,7 +48,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
         return list.size
     }
 
-    fun setItems(items : List<CustomModel>) {
+    public fun setItems(items : List<CustomModel>) {
         list.clear()
         list.addAll(items)
         notifyDataSetChanged()

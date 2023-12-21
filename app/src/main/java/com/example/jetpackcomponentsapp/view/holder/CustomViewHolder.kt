@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view.holder
 
-import android.content.Context
 import android.view.View
 import com.example.jetpackcomponentsapp.view.CustomListeners
 import com.example.jetpackcomponentsapp.model.CustomModel
@@ -10,23 +9,23 @@ class CustomViewHolder : BaseViewHolder {
 
     private var customBinder : CustomBinder
 
-    constructor(context: Context, customListeners: CustomListeners, customBinder : CustomBinder) : super(context, customListeners, customBinder.root) {
+    constructor(customListeners : CustomListeners, customBinder : CustomBinder) : super(customListeners, customBinder.root) {
         this.customBinder = customBinder
     }
 
-    override fun bindDataToViewHolder(item: CustomModel, position: Int) {
+    override fun bindDataToViewHolder(model : CustomModel, position : Int) {
+        customBinder.setCustomModel(model)
         customBinder.executePendingBindings()
-        setId(item.id?:0)
-        //customBinder.imageView.setBackgroundResource(item.icon?:0)
-        customBinder.imageView.setImageResource(item.icon?:0)
+        //customBinder.imageView.setBackgroundResource(item.icon ?: 0)
+        customBinder.imageView.setImageResource(model.icon)
         customBinder.buttonEdit.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                getListener().onUpdate(item,position)
+                getListener().onUpdate(model ,position)
             }
         })
         customBinder.buttonDelete.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view : View) {
-                getListener().onDelete(item,position)
+                getListener().onDelete(model, position)
             }
         })
     }

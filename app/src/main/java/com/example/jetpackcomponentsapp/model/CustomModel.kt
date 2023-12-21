@@ -2,14 +2,18 @@ package com.example.jetpackcomponentsapp.model
 
 import com.example.jetpackcomponentsapp.R
 
-class CustomModel {
+public class CustomModel {
 
-    var id: Int? = null
-    var name: String? = null
+    companion object {
+        private val TAG = CustomModel::class.java.getSimpleName()
+    }
 
-    var icon: Int? = null
+    val id : Int?
+    var name : String? = null
+    val icon : Int
 
     constructor(name : String) {
+        this.id = null
         this.name = name
         this.icon = R.drawable.ic_android_black
     }
@@ -20,9 +24,13 @@ class CustomModel {
         this.icon = R.drawable.ic_android_black
     }
 
-    constructor(id : Int, name : String, icon : Int) {
+    constructor(id : Int?, name : String, icon : Int?) {
         this.id = id
         this.name = name
-        this.icon = icon
+        this.icon = icon ?: R.drawable.ic_android_black
+    }
+
+    override fun toString(): String {
+        return "$TAG($id, $name, $icon)" ?: super.toString()
     }
 }

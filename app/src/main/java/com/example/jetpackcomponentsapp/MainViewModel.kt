@@ -1,6 +1,8 @@
 package com.example.jetpackcomponentsapp
 
 import android.app.Application
+import android.os.AsyncTask
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,18 +12,20 @@ import com.example.jetpackcomponentsapp.repository.CustomRepository
 
 class MainViewModel : AndroidViewModel {
 
-    private val customRepository : CustomRepository
-    private val liveList : MutableLiveData<MutableList<CustomModel>>
-    private val liveUpdate : MutableLiveData<CustomModel>
+    companion object {
+        private val TAG : String = MainViewModel::class.java.getSimpleName()
+    }
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository.getInstance(application)
-        liveList = MutableLiveData<MutableList<CustomModel>>()
         liveUpdate = MutableLiveData<CustomModel>()
     }
 
+    private val customRepository : CustomRepository
+    private val liveUpdate : MutableLiveData<CustomModel>
+
     @Deprecated("For Static Data")
-    fun setItems() {
+    fun setDummyItems() { AsyncTask.execute {
         customRepository.deleteAll()
         for (index in 0 until 500) {
             customRepository.insert(ConvertList.toEntity(CustomModel(index,"name $index")))
@@ -159,43 +163,46 @@ class MainViewModel : AndroidViewModel {
         customRepository.insert(ConvertList.toEntity(CustomModel(118,"name 118")))
         customRepository.insert(ConvertList.toEntity(CustomModel(119,"name 119")))
         */
-    }
+    } }
 
-    fun setUpdate(item : CustomModel) {
-        liveUpdate.setValue(item)
+    fun setUpdate(id : Int?, name : String?, icon : Int?) {
+        Log.d(TAG, "setUpdate $id $name $icon")
+        if (name?.isNotBlank() == true) {
+            liveUpdate.setValue( CustomModel( id, name, icon) )
+        }
     }
 
     fun getUpdate() : LiveData<CustomModel> {
         return liveUpdate
     }
 
-    fun insertItem(item : CustomModel) {
-        customRepository.insert(
-                ConvertList.toEntity(item)
+    fun insertItem(model : CustomModel) { AsyncTask.execute {
+        customRepository.insert (
+                ConvertList.toEntity(model)
         )
-    }
+    } }
 
-    fun updateItem() {
-        liveUpdate.value?.let {
-            customRepository.update(
-                ConvertList.toEntity(it)
-            )
-        }
-    }
+    fun updateItem(updated : String) { AsyncTask.execute {
+        Log.d(TAG, "updateItem $updated")
+        val old : CustomModel? = liveUpdate.getValue()
+        customRepository.update (
+            ConvertList.toEntity(CustomModel(old?.id, updated, old?.icon))
+        )
+    } }
 
-    fun deleteItem(item : CustomModel) {
+    fun deleteItem(model : CustomModel) { AsyncTask.execute {
         customRepository.delete(
-                ConvertList.toEntity(item)
+                ConvertList.toEntity(model)
         )
-    }
+    } }
 
-    fun deleteAll() {
+    fun deleteAll() { AsyncTask.execute {
         customRepository.deleteAll()
-    }
+    } }
 
-    fun getItems() : LiveData<List<CustomModel>> { //return  liveList
-        return ConvertList.toLiveDataListModel(
-                customRepository.getAll()
+    fun getItems() : LiveData<List<CustomModel>> {
+        return ConvertList.toLiveDataListModel (
+            customRepository.getAll()
         )
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
@@ -17,27 +17,24 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 class AddFragment : Fragment() {
 
     companion object {
-        fun newInstance() : AddFragment = AddFragment()
+        public val TAG : String = AddFragment::class.java.getSimpleName()
 
-        fun getTag() : String {
-            return AddFragment::class.java.getSimpleName()
-        }
+        fun newInstance() : AddFragment = AddFragment()
     }
 
     private lateinit var binding : AddBinder
-    private lateinit var viewModel : MainViewModel
+    private val viewModel : MainViewModel by viewModels<MainViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add_fragment,container,false)
-        return binding.root
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add,container,false)
+        return binding.getRoot()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.setViewModel(viewModel)
+        binding.setLifecycleOwner(viewLifecycleOwner)
 
         binding.editText.requestFocus()
         showSoftKeyboard()

@@ -4,8 +4,8 @@ import com.example.jetpackcomponentsapp.model.CustomModel
 
 interface CustomListeners {
 
-    fun onUpdate(item : CustomModel, position: Int)
+    fun onUpdate(model : CustomModel, position: Int)
 
-    fun onDelete(item : CustomModel, position: Int)
+    fun onDelete(model : CustomModel, position: Int)
 
 }

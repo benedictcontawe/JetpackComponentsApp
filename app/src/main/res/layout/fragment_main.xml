@@ -11,10 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_material_dark_gray"
-        android:animateLayoutChanges="true" >
+        style="@style/ConstraintLayoutMainStyle" >
 
         <!--region Guide lines-->
         <!--region Vertical Guide lines-->
@@ -67,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_sample"
+                    tools:listitem="@layout/cell_sample"
                     tools:itemCount="5" />
 
                 <include
@@ -79,27 +76,19 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawingCacheQuality="high"
-            android:scaleType="fitXY"
-            app:backgroundTint="#0055A5"
+            android:contentDescription="@string/add"
             app:srcCompat="@drawable/ic_add_white"
-            app:fabSize="mini"
             app:layout_constraintStart_toStartOf="@id/constraint_guideline_marginStart"
-            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"/>
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"
+            style="@style/FloatingActionButtonStyle" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawingCacheQuality="high"
-            android:scaleType="fitXY"
-            app:backgroundTint="#0055A5"
+            android:contentDescription="@string/delete_all"
             app:srcCompat="@drawable/ic_delete_white"
-            app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_marginEnd"
-            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"/>
+            app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"
+            style="@style/FloatingActionButtonStyle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

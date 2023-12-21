@@ -5,18 +5,23 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
+import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.view.fragment.AddFragment
 import com.example.jetpackcomponentsapp.view.fragment.MainFragment
 import com.example.jetpackcomponentsapp.view.fragment.UpdateFragment
 
-class MainActivity : AppCompatActivity() {
+public class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private val TAG : String = MainActivity::class.java.getSimpleName()
+    }
 
     //private lateinit var binding : MainBinder
-    private lateinit var viewModel : MainViewModel
+    private val viewModel : MainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,36 +29,34 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             callMainFragment()
-            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
             //binding.setViewModel(viewModel)
             //binding.setLifecycleOwner(this)
         }
     }
 
     private fun callMainFragment() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.container, MainFragment.newInstance())
+            .commitNow()
     }
 
-    fun callAddFragment() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.container, AddFragment.newInstance())
-                .addToBackStack(
-                        AddFragment.getTag())
-                .commit()
+    public fun callAddFragment() {
+        getSupportFragmentManager().beginTransaction()
+            .add(R.id.container, AddFragment.newInstance())
+            .addToBackStack( AddFragment.TAG )
+            .commit()
     }
 
-    fun callUpdateFragment() {
+    public fun callUpdateFragment(model : CustomModel) {
         UpdateFragment
-                .newInstance()
-                .show(
-                        supportFragmentManager.beginTransaction(),
-                        UpdateFragment.getTag()
-                )
+            .newInstance(model)
+            .show(
+                getSupportFragmentManager().beginTransaction(),
+                UpdateFragment.TAG
+            )
     }
 
-    fun showSoftKeyboard(activity: Activity, showKeyboard : Boolean) {
+    public fun showSoftKeyboard(activity : Activity, showKeyboard : Boolean) {
         var view = activity.currentFocus
         when(showKeyboard) {
             true -> {
