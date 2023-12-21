@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:layout_gravity="center_vertical"
-        android:text="Processing. Please wait…"
-        android:textColor="#000" />
+        android:text="@string/Processing__please_wait_" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

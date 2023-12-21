@@ -1,15 +1,13 @@
 package com.example.jetpackcomponentsapp.util
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
 
-public object ConvertList {
+object ConvertList {
 
-    private val TAG = ConvertList::class.java.getSimpleName()
-
-    private fun toListModel(customEntity : List<CustomEntity>) : List<CustomModel> {
+    private fun toListModel(customEntity : List<CustomEntity>) : MutableList<CustomModel> {
         val itemList : MutableList<CustomModel> = mutableListOf<CustomModel>()
         customEntity.map {
             itemList.add(
@@ -20,25 +18,22 @@ public object ConvertList {
     }
 
     fun toLiveDataListModel(localList : LiveData<List<CustomEntity>>) : LiveData<List<CustomModel>> {
-        return Transformations.map<List<CustomEntity>, List<CustomModel>>(localList) {
-            toListModel(it)
-        }
+        return localList.map { list : List<CustomEntity> -> toListModel(list) }
     }
 
-    public fun toEntity(customModel : CustomModel) : CustomEntity {
+    fun toEntity(customModel : CustomModel) : CustomEntity {
         return when(customModel.id) {
-            Constants.NEGATIVE_ONE -> {
-                CustomEntity(
-                    null,
-                    customModel.name ?:"",
-                    customModel.icon ?:0
+            null -> {
+                CustomEntity (
+                    customModel.name ?: "",
+                    customModel.icon?:0
                 )
             }
             else -> {
-                CustomEntity(
+                CustomEntity (
                     customModel.id,
-                    customModel.name ?:"",
-                    customModel.icon ?:0
+                    customModel.name ?: "",
+                    customModel.icon?:0
                 )
             }
         }

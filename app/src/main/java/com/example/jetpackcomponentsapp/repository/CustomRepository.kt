@@ -1,6 +1,8 @@
 package com.example.jetpackcomponentsapp.repository
 
+import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -9,7 +11,7 @@ import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
 
-public class CustomRepository : BaseRepository {
+class CustomRepository : BaseRepository {
 
     companion object {
         private val TAG = CustomRepository::class.java.getSimpleName()
@@ -84,7 +86,7 @@ public class CustomRepository : BaseRepository {
     }
     //endregion
     override public suspend fun onCLose() {
-        if (database?.isOpen() == true)
+        if (database?.isOpen == true)
             database?.close()
     }
 }

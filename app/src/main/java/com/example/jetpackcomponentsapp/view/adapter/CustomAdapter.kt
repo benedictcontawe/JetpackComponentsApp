@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp.view.adapters
+package com.example.jetpackcomponentsapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,19 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.CustomBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
-import com.example.jetpackcomponentsapp.view.listeners.CustomListener
-import com.example.jetpackcomponentsapp.view.holders.CustomViewHolder
+import com.example.jetpackcomponentsapp.view.listeners.CustomListeners
+import com.example.jetpackcomponentsapp.view.holder.CustomViewHolder
 
-class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
+public class CustomAdapter : RecyclerView.Adapter<CustomViewHolder> {
 
     companion object {
         private val TAG = CustomAdapter::class.java.getSimpleName()
     }
 
-    private val customListener : CustomListener
+    private val customListener : CustomListeners
     private val list : MutableList<CustomModel>
 
-    constructor(customListener : CustomListener) : super() {
+    constructor(customListener : CustomListeners) : super() {
         this.customListener = customListener
         this.list = mutableListOf()
         setHasStableIds(true)

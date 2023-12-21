@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp.view.fragments
+package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -6,29 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.view.listeners.CustomListener
-import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.RecyclerBinder
+import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.util.Coroutines
+import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter
+import com.example.jetpackcomponentsapp.view.fragments.BaseFragment
+import com.example.jetpackcomponentsapp.view.listeners.CustomListeners
 import com.example.jetpackcomponentsapp.view.listeners.MainListener
-import com.example.jetpackcomponentsapp.view.adapters.CustomAdapter
 import kotlinx.coroutines.CoroutineScope
 
-class MainFragment : Fragment, CustomListener {
+class MainFragment : BaseFragment, CustomListeners {
 
     companion object {
-        private val TAG = MainFragment::class.java.getSimpleName()
+        private val TAG : String = MainFragment::class.java.getSimpleName()
 
-        fun newInstance(listener : MainListener) : MainFragment = MainFragment(listener)
+        public fun newInstance(listener : MainListener) : MainFragment = MainFragment(listener)
     }
 
     private var binder : RecyclerBinder? = null
-    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
+    private val viewModel : MainViewModel by activityViewModels<MainViewModel>()
     private val adapter : CustomAdapter by lazy { CustomAdapter(this@MainFragment) }
     private val listener : MainListener?
     //private val itemDecorationHelper: BottomOffsetDecorationHelper by lazy { BottomOffsetDecorationHelper(requireContext(), R.dimen.extra_scroll) }
@@ -48,7 +49,7 @@ class MainFragment : Fragment, CustomListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_main,container,false)
-        return binder?.root
+        return binder?.getRoot()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +66,7 @@ class MainFragment : Fragment, CustomListener {
             viewModel.observeItems().observe(viewLifecycleOwner, object : Observer<List<CustomModel>> {
                 override fun onChanged(list : List<CustomModel>) {
                     Log.d("MainFragment","ID ${list.map { it.id }}, Name ${list.map { it.name }}")
-                    binder?.recyclerView?.removeAllViews()
+                    //binder?.recyclerView?.removeAllViews()
                     adapter.setItems(list)
                     adapter.notifyDataSetChanged()
                 }
@@ -78,14 +79,15 @@ class MainFragment : Fragment, CustomListener {
         viewModel.checkIfFragmentLoaded(this@MainFragment)
     }
 
-    override fun onUpdate(item : CustomModel?, position : Int) {
-        viewModel.setUpdate(item)
+    override fun onUpdate(model : CustomModel?, position : Int) {
+        viewModel.setUpdate(model)
         listener?.launchUpdate()
     }
 
-    override fun onDelete(item : CustomModel?, position : Int) {
-        viewModel.deleteItem(item)
+    override fun onDelete(model : CustomModel?, position : Int) {
+        viewModel.deleteItem(model)
     }
+
     override fun onDestroy() {
         super.onDestroy()
     }

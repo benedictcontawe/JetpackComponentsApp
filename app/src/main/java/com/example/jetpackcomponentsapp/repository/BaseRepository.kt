@@ -5,11 +5,11 @@ import com.example.jetpackcomponentsapp.room.CustomEntity
 
 public interface BaseRepository {
 
-    public suspend fun  insert(customEntity: CustomEntity)
+    public suspend fun  insert(customEntity : CustomEntity)
 
-    public suspend fun  update(customEntity: CustomEntity)
+    public suspend fun  update(customEntity : CustomEntity)
 
-    public suspend fun  delete(customEntity: CustomEntity)
+    public suspend fun  delete(customEntity : CustomEntity)
 
     public suspend fun  deleteAll()
 

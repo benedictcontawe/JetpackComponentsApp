@@ -1,10 +1,17 @@
-package com.example.jetpackcomponentsapp.view.fragments
+package com.example.jetpackcomponentsapp.view.fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
@@ -12,17 +19,19 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.util.Coroutines
+import com.example.jetpackcomponentsapp.view.fragments.BaseDialogFragment
 
-public class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
+class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
 
     companion object {
         private val TAG = UpdateFragment::class.java.getSimpleName()
 
-        fun newInstance(): UpdateFragment = UpdateFragment()
+        fun newInstance() : UpdateFragment = UpdateFragment()
     }
 
     private var binder : UpdateBinder? = null
-    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
+    private val viewModel : MainViewModel by activityViewModels<MainViewModel>()
+    //private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,19 +58,23 @@ public class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
         binder?.setViewModel(viewModel)
         binder?.setLifecycleOwner(this@UpdateFragment)
         Coroutines.main(this@UpdateFragment, {
-            viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel> {
-                override fun onChanged(item: CustomModel) {
-                    binder?.editText?.setText(item.name)
+            viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel?> {
+                override fun onChanged(value : CustomModel?) {
+                    Log.d(TAG, "observeUpdate $value")
+                    binder?.editText?.setText(value?.name)
                     binder?.editText?.requestFocus()
                     binder?.editText?.selectAll()
                     showSoftKeyboard(binder?.editText)
                 }
             })
         })
+        binder?.editText?.requestFocus()
+        binder?.editText?.selectAll()
+        showSoftKeyboard(binder?.editText)
         binder?.button?.setOnClickListener(this@UpdateFragment)
     }
 
-    override fun onClick(view: View?) {
+    override fun onClick(view : View?) {
         if (view == binder?.button) {
             binder?.getViewModel()?.updateItem(binder?.editText?.getText().toString())
             hideSoftKeyboard()
@@ -78,21 +91,3 @@ public class UpdateFragment : BaseDialogFragment(), View.OnClickListener {
         viewModel.checkIfFragmentLoaded(this@UpdateFragment)
     }
 }
-/*
-AlertDialog.Builder(activity)
-.setTitle("Update Name")
-.setMessage("Please update your name")
-.setView(getEditText())
-.setIcon(R.drawable.ic_update_white)
-.setPositiveButton("OK", object : DialogInterface.OnClickListener {
-    override fun onClick(dialog : DialogInterface, which : Int) {
-        dismiss()
-    }
-})
-.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
-    override fun onClick(dialog : DialogInterface?, which : Int) {
-        dismiss()
-    }
-})
-.create()
-*/

@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp.view.fragments
+package com.example.jetpackcomponentsapp.view.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -7,40 +7,51 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.AddBinder
 import com.example.jetpackcomponentsapp.model.CustomModel
+import com.example.jetpackcomponentsapp.util.Coroutines
+import com.example.jetpackcomponentsapp.view.fragments.BaseFragment
 
 class AddFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
-        private val TAG = AddFragment::class.java.getSimpleName()
+        public val TAG : String = AddFragment::class.java.getSimpleName()
 
-        public fun newInstance() : AddFragment = AddFragment()
+        fun newInstance() : AddFragment = AddFragment()
     }
 
     private var binder : AddBinder? = null
-    private val viewModel : MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }
+    private val viewModel : MainViewModel by activityViewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, getHandleOnBackPressed())
+        requireActivity().onBackPressedDispatcher.addCallback(this, getHandleOnBackPressed())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_add,container,false)
-        return binder?.root
+        return binder?.getRoot()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binder?.setViewModel(viewModel)
         binder?.setLifecycleOwner(this@AddFragment)
         binder?.editText?.requestFocus()
         showSoftKeyboard(binder?.editText)
         binder?.button?.setOnClickListener(this@AddFragment)
+        Coroutines.main(this@AddFragment, {
+            viewModel.observeUpdate().observe(viewLifecycleOwner, object : Observer<CustomModel?> {
+                override fun onChanged(value : CustomModel?) {
+                    Log.d(TAG, "observeUpdate $value")
+                }
+            })
+        })
     }
 
     override fun onClick(view : View?) {

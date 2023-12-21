@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,12 +14,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.MainBinder
-import com.example.jetpackcomponentsapp.view.fragments.AddFragment
-import com.example.jetpackcomponentsapp.view.fragments.MainFragment
-import com.example.jetpackcomponentsapp.view.fragments.UpdateFragment
+import com.example.jetpackcomponentsapp.view.fragment.AddFragment
+import com.example.jetpackcomponentsapp.view.fragment.MainFragment
+import com.example.jetpackcomponentsapp.view.fragment.UpdateFragment
 import com.example.jetpackcomponentsapp.view.listeners.MainListener
 
 public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListener {
@@ -28,7 +29,8 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
     }
 
     private var binder : MainBinder? = null
-    private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(MainViewModel::class.java) }
+    private val viewModel : MainViewModel by viewModels<MainViewModel>()
+    //private val viewModel : MainViewModel by lazy { ViewModelProvider(this@MainActivity).get(MainViewModel::class.java) }
 
     private val standByDialog by lazy {
         val builder = this.let { AlertDialog.Builder(it) }
@@ -51,13 +53,13 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
         observeLoadState()
         binder?.floatingActionButtonAdd?.setOnClickListener(this@MainActivity)
         binder?.floatingActionButtonDelete?.setOnClickListener(this@MainActivity)
-        getOnBackPressedDispatcher().addCallback(this@MainActivity, getHandleOnBackPressed())
+        onBackPressedDispatcher.addCallback(this@MainActivity, getHandleOnBackPressed())
     }
 
     private fun observeLoadState() {
         viewModel.observeLoadState().observe(this, object : Observer<Boolean> {
-            override fun onChanged(isLoading : Boolean?) {
-                when(isLoading == true) {
+            override fun onChanged(value : Boolean) {
+                when(value == true) {
                     true -> standByDialog.show()
                     false -> standByDialog.dismiss()
                 }
@@ -115,7 +117,7 @@ public class MainActivity : AppCompatActivity(), View.OnClickListener, MainListe
 
     @Deprecated("Deprecated in Java", ReplaceWith("Use this method getHandleOnBackPressed"), DeprecationLevel.WARNING)
     override fun onBackPressed() { Log.d(TAG,"onBackPressed()")
-        if (getOnBackPressedDispatcher().hasEnabledCallbacks())
+        if (onBackPressedDispatcher.hasEnabledCallbacks())
             super.onBackPressed()
         else if (getSupportFragmentManager().getBackStackEntryCount() == 0)
             super.onBackPressed()

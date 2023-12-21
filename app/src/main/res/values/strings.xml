@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">JetpackComponentsApp</string>
+    <string name="add">Add</string>
+    <string name="add_name">Add Name</string>
+    <string name="delete">Delete</string>
     <string name="delete_all">Delete All</string>
+    <string name="edit">Edit</string>
+    <string name="image">Image</string>
     <string name="Processing__please_wait_">Processing. Please wait…</string>
+    <string name="update_name">Update Name</string>
+    <string name="your_name">Your name</string>
 </resources>
