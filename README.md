@@ -73,5 +73,5 @@
 
 - [Navigation in Jetpack compose. Full guide Beginner to Advanced.](https://medium.com/@KaushalVasava/navigation-in-jetpack-compose-full-guide-beginner-to-advanced-950c1133740)
 
-- [https://briangardner.tech/2020/05/08/compose-floating-action-button.html](Floating Action Button With Compose)
+- [Floating Action Button With Compose](https://briangardner.tech/2020/05/08/compose-floating-action-button.html)
 <!-- - []() -->
