@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -42,10 +43,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -71,6 +72,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             //val context : Context = LocalContext.current
+            val isLoading : Boolean by viewModel.observeLoadState().observeAsState(initial = false)
             val isAddDialogShow : Boolean by viewModel.observeAddDialog().observeAsState(initial = false)
             val isUpdateDialogShow : Boolean by viewModel.observeUpdateDialog().collectAsState(initial = false)
             JetpackComponentsAppTheme {
@@ -97,6 +99,9 @@ class MainActivity : ComponentActivity() {
                             dismissOnClickOutside = true,
                         )
                     }
+                    if (isLoading) {
+                        ProgressDialogComposable()
+                    }
                 }
             }
         }
@@ -109,9 +114,7 @@ class MainActivity : ComponentActivity() {
         Scaffold (
             content = { paddingValues ->
                 Surface (
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NavHostComposable(navController = navController)
@@ -119,7 +122,9 @@ class MainActivity : ComponentActivity() {
             },
             floatingActionButton = {
                 Row (
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.Bottom
                 ) {
@@ -289,10 +294,8 @@ class MainActivity : ComponentActivity() {
             )
         ) {
             Column (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color.White,
+                modifier = Modifier.fillMaxWidth().background(
+                        color = MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(0.dp)
                     ),
                 verticalArrangement = Arrangement.Center,
@@ -356,10 +359,9 @@ class MainActivity : ComponentActivity() {
                 dismissOnClickOutside = dismissOnClickOutside
             )
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-                    .background(
-                        color = Color.White,
+            Column (
+                modifier = Modifier.fillMaxWidth().background(
+                        color = MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(0.dp)
                     ),
                 verticalArrangement = Arrangement.Center,
@@ -408,6 +410,38 @@ class MainActivity : ComponentActivity() {
                         text = stringResource(id = R.string.update_name)
                     )
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun ProgressDialogComposable() {
+        Dialog (
+            onDismissRequest = { },
+            properties = DialogProperties (
+                dismissOnBackPress = false, dismissOnClickOutside = false
+            )
+        ) {
+            Column (
+                modifier = Modifier.fillMaxWidth().background (
+                    color = MaterialTheme.colorScheme.background,
+                ),
+                //verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator (
+                    color = MaterialTheme.colorScheme.primary,
+                    //color = Color.Red,
+                    strokeWidth = 5.dp,
+                )
+                Text (
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = typography.labelLarge,
+                    text = stringResource(id = R.string.Processing__please_wait_),
+                    textAlign = TextAlign.Center,
+                )
             }
         }
     }

@@ -27,6 +27,7 @@ class MainViewModel : AndroidViewModel {
 
     constructor(application: Application) : super(application) {
         customRepository = CustomRepository(application)
+        //liveStandBy.setValue(true)
     }
 
     private val customRepository : CustomRepository
@@ -36,7 +37,7 @@ class MainViewModel : AndroidViewModel {
     private val _addTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
     private val liveUpdateDialog : MutableStateFlow<Boolean> = MutableStateFlow<Boolean>(false)
     private val _updateTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
-    //region Live Progress Bar Methods TODO: Create Composable Progressbar
+    //region Live Progress Bar Methods
     public suspend fun viewDidLoad() {
         liveStandBy.postValue(true)
     }
@@ -101,6 +102,7 @@ class MainViewModel : AndroidViewModel {
         viewDidLoad()
         liveUpdate.postValue(model)
         Log.d(TAG, "liveUpdate $liveUpdate")
+        viewWillAppear()
     } ) }
     //endregion
     //region Room CRUD Methods Methods
