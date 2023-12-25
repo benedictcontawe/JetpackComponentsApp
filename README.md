@@ -74,4 +74,6 @@
 - [Navigation in Jetpack compose. Full guide Beginner to Advanced.](https://medium.com/@KaushalVasava/navigation-in-jetpack-compose-full-guide-beginner-to-advanced-950c1133740)
 
 - [Floating Action Button With Compose](https://briangardner.tech/2020/05/08/compose-floating-action-button.html)
+
+- [Custom Progress Bars in Jetpack Compose](https://medium.com/@eozsahin1993/custom-progress-bars-in-jetpack-compose-723afb60c81c)
 <!-- - []() -->
