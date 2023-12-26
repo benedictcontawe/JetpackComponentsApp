@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp
+package com.example.jetpackcomponentsapp.util
 
 object Constants {
     public const val ROUTE_MAIN = "main"

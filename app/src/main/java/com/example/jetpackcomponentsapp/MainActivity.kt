@@ -58,6 +58,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.ui.theme.JetpackComponentsAppTheme
+import com.example.jetpackcomponentsapp.util.Constants
 
 class MainActivity : ComponentActivity() {
 
