@@ -1,5 +1,6 @@
 package com.example.jetpackcompose
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,12 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.PullRefreshState
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,14 +21,14 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
@@ -47,38 +42,34 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModels<MainViewModel>()
 
-    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            val isRefreshing : Boolean by viewModel.observeRefreshing().collectAsState(initial = false)
-            val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = viewModel::requestAPOD)
-            //val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = { viewModel.requestAPOD() })
-            val list : List<NasaHolderModel> by viewModel.observeAPOD().observeAsState(listOf<NasaHolderModel>())
+            val context : Context = LocalContext.current
+            val list : LazyPagingItems<NasaHolderModel> = viewModel.observeAPOD().collectAsLazyPagingItems()
             JetpackcomposeTheme {
                 Surface (
-                    modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState),
+                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     LazyColumn (
-                        //modifier = Modifier.pullRefresh(pullRefreshState).verticalScroll(rememberScrollState()),
+                        //modifier = Modifier.verticalScroll(rememberScrollState()),
                         userScrollEnabled = true
                     ) {
                         items (
-                            items = list,
-                            itemContent = { model -> NasaCellComposable(model) }
+                            count = list.itemCount,
+                            itemContent = {index : Int ->
+                                val model : NasaHolderModel? = list[index]
+                                if (model != null) {
+                                    NasaCellComposable(model)
+                                }
+                            }
                         )
                     }
-                    PullRefreshIndicator(refreshing = isRefreshing, state = pullRefreshState, scale = true)
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.requestAPOD()
     }
 
     @OptIn(ExperimentalGlideComposeApi::class)

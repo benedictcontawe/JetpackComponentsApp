@@ -7,4 +7,5 @@ object Constants {
     public const val API_AUTHORIZATION = "Basic YWZwaWRldnVzZXI6YWZwaWRldlBAc3N3MHJk"
     public const val TIMEOUT = 10L
     public const val BLANK = " "
+    public const val PAGING_SOURCE_PAGE_INDEX = 1
 }
