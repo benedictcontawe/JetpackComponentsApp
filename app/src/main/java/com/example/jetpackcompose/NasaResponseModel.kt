@@ -1,9 +1,11 @@
 package com.example.jetpackcompose
 
+import androidx.compose.runtime.Immutable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class NasaResponseModel(
+@Immutable
+public data class NasaResponseModel(
     @SerializedName("title")
     @Expose
     var title : String? = null,
@@ -27,6 +29,7 @@ data class NasaResponseModel(
     companion object {
         private val TAG = NasaResponseModel::class.java.getSimpleName()
     }
+
     override fun toString() : String {
         return "$TAG($title, $copyright, $date, $hdurl, $explanation)" ?: super.toString()
     }

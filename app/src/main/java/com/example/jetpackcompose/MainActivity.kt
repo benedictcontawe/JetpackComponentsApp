@@ -67,7 +67,8 @@ class MainActivity : ComponentActivity() {
                     ) {
                         items (
                             items = list,
-                            itemContent = { model -> NasaCellComposable(model) }
+                            itemContent = { model : NasaHolderModel -> NasaCellComposable(model) },
+                            key = { model : NasaHolderModel -> model.id }
                         )
                     }
                     PullRefreshIndicator(refreshing = isRefreshing, state = pullRefreshState, scale = true)
