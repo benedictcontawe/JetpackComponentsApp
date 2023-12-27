@@ -57,20 +57,17 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
     //implementation("androidx.appcompat:appcompat:1.6.1")
     //implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    //implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     //endregion
     //region Android X Jetpack Compose
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.material:material:1.5.4")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    //implementation("androidx.compose.foundation:foundation:1.5.4")
-    //implementation("androidx.compose.foundation:foundation-layout:1.5.4")
-    //implementation("androidx.compose.foundation:foundation-desktop:1.6.0-beta03")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    //implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.paging:paging-compose:3.3.0-alpha02")
     //endregion
