@@ -4,6 +4,8 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -76,5 +78,36 @@ public class Repository {
         return if (response.isSuccessful() && response.body() != null) response.body()!!
         else if (!response.isSuccessful()) listOf<NasaResponseModel>()
         else emptyList<NasaResponseModel>()
+    }
+
+    public suspend fun getAPOD (
+        request : NasaRequestModel,
+        onSuccess : (List<NasaResponseModel>) -> Unit,
+        onError : (String) -> Unit,
+        onFailure : (List<NasaResponseModel>, Throwable) -> Unit
+    ) {
+        nasaAPI.getAstronomyPictureOfTheDay(request.key!!, request.count!!).enqueue(object : Callback<List<NasaResponseModel>> {
+            override fun onResponse(call : Call<List<NasaResponseModel>>, response : Response<List<NasaResponseModel>>) {
+                if (response.isSuccessful()) {
+                    val nasaResponse: List<NasaResponseModel>? = response.body()
+                    Log.d(TAG,"isSuccessful() ${response.isSuccessful()}")
+                    Log.d(TAG,"errorBody() ${response.errorBody()}")
+                    Log.d(TAG,"body() ${response.body()}")
+                    Log.d(TAG,"code() ${response.code()}")
+                    Log.d(TAG,"headers() ${response.headers()}")
+                    Log.d(TAG,"message() ${response.message()}")
+                    Log.d(TAG,"raw() ${response.raw()}")
+                    onSuccess(response.body()!!)
+                } else if (response.isSuccessful().not()) { // Handle error response
+                    val errorMessage : String = response.errorBody()?.string() ?: "Unknown error"
+                    onError(errorMessage)
+                }
+            }
+
+            override fun onFailure(call : Call<List<NasaResponseModel>>, throwable : Throwable) {
+                // Handle failure (e.g., network issues)
+                onFailure(call.execute().body()!!, throwable)
+            }
+        })
     }
 }
