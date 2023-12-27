@@ -52,15 +52,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            val isRefreshing : Boolean by viewModel.observeLoading().collectAsState(initial = false)
+            val isRefreshing : Boolean by viewModel.observeRefreshing().collectAsState(initial = false)
             val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = viewModel::requestAPOD)
             //val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = { viewModel.requestAPOD() })
             val list : List<NasaHolderModel> by viewModel.observeAPOD().observeAsState(listOf<NasaHolderModel>())
             JetpackcomposeTheme {
                 Surface (
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .pullRefresh(pullRefreshState),
+                    modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     LazyColumn (

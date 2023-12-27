@@ -17,26 +17,26 @@ public class MainViewModel : ViewModel {
     private val repository : Repository
     private val list : MutableList<NasaHolderModel>
     private val liveList : MutableLiveData<List<NasaHolderModel>>
-    private val isLoading : MutableStateFlow<Boolean>
+    private val isRefreshing : MutableStateFlow<Boolean>
 
     constructor() {
         Log.d(TAG, "constructor")
         repository = Repository()
         list = mutableListOf<NasaHolderModel>()
         liveList = MutableLiveData<List<NasaHolderModel>>()
-        isLoading = MutableStateFlow<Boolean>(false)
+        isRefreshing = MutableStateFlow<Boolean>(false)
     }
 
     init {
         Log.d(TAG, "initialize")
     }
 
-    public fun observeLoading() : StateFlow<Boolean> {
-        return isLoading.asStateFlow<Boolean>()
+    public fun observeRefreshing() : StateFlow<Boolean> {
+        return isRefreshing.asStateFlow<Boolean>()
     }
-
     public fun requestAPOD() { Coroutines.default(this@MainViewModel, {
-        isLoading.value = true
+        isRefreshing.emit(true)
+        isRefreshing.value = true
         val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, list.size + 5)
         val responseList : List<NasaResponseModel> = repository.getAPOD(request)
         list.clear()
@@ -45,7 +45,7 @@ public class MainViewModel : ViewModel {
             list.add(NasaHolderModel(list.size + 1, response))
         }
         liveList.postValue(list.reversed())
-        isLoading.value = false
+        isRefreshing.emit(false)
     } ) }
 
     public fun observeAPOD() : LiveData<List<NasaHolderModel>> {
