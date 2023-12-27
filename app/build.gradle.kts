@@ -61,13 +61,13 @@ dependencies {
     //region Android X Jetpack Compose
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.material:material:1.5.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     //endregion
     //region Google Library
     //implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
