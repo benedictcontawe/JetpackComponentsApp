@@ -1,15 +1,18 @@
 package com.example.jetpackcomponentsapp.repository
 
-import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.jetpackcomponentsapp.CustomPagingSource
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
+import kotlinx.coroutines.flow.Flow
 
 class CustomRepository : BaseRepository {
 
@@ -82,9 +85,29 @@ class CustomRepository : BaseRepository {
     }
 
     override public fun getAll() : LiveData<List<CustomEntity>>? {
-        return customDao?.observeAll()
+        return customDao?.observeLiveAll()
+    }
+
+    override fun getFlowPagingData(): Flow<PagingData<CustomEntity>> {
+        return return Pager (
+            config = getPagingConfig(),
+            pagingSourceFactory = {
+                CustomPagingSource(customDao)
+            }
+        ).flow
+
     }
     //endregion
+    private fun getPagingConfig() : PagingConfig {
+        return PagingConfig (
+            pageSize = 10,
+            initialLoadSize = 10, //default: page size * 3
+            prefetchDistance = 10, //default: page size
+            //maxSize = PagedList.Config.MAX_SIZE_UNBOUNDED,
+            enablePlaceholders = false //default: true
+        )
+    }
+
     override public suspend fun onCLose() {
         if (database?.isOpen == true)
             database?.close()

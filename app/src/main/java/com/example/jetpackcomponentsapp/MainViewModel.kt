@@ -10,6 +10,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.room.CustomEntity
@@ -17,6 +19,7 @@ import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.util.Coroutines
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MainViewModel : AndroidViewModel {
@@ -146,10 +149,8 @@ class MainViewModel : AndroidViewModel {
         viewWillAppear()
     }) }
 
-    public fun observeItems() : LiveData<List<CustomModel>> {
-        return ConvertList.toLiveDataListModel (
-            repository.getAll() ?: MutableLiveData<List<CustomEntity>>(listOf<CustomEntity>())
-        )
+    public fun observeItems() : SharedFlow<PagingData<CustomModel>> {
+        return ConvertList.toSharedFlowPagingDataModel(repository.getFlowPagingData(), viewModelScope)
     }
     //endregion
     override fun onCleared() {

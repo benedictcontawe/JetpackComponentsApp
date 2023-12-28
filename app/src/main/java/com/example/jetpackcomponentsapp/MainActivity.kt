@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -56,6 +57,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.ui.theme.JetpackComponentsAppTheme
 import com.example.jetpackcomponentsapp.util.Constants
@@ -153,7 +157,7 @@ class MainActivity : ComponentActivity() {
     private fun NavHostComposable(navController : NavHostController) {
         NavHost(navController = navController, startDestination  = Constants.ROUTE_MAIN) {
             composable(route = Constants.ROUTE_MAIN) { backStackEntry : NavBackStackEntry ->
-                val list : List<CustomModel> by viewModel.observeItems().observeAsState(listOf<CustomModel>())
+                val list : LazyPagingItems<CustomModel> = viewModel.observeItems().collectAsLazyPagingItems()
                 /*
                 Box (
                     modifier = Modifier.fillMaxSize(),
@@ -168,10 +172,36 @@ class MainActivity : ComponentActivity() {
                 LazyColumn (
                     userScrollEnabled = true
                 ) {
+
+                    if (list.loadState.refresh == LoadState.Loading) {
+                        item {
+                            Column (
+                                modifier = Modifier.fillParentMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    }
+
                     items (
-                        items = list,
-                        itemContent = { model -> CellComposable(model) }
+                        count = list.itemCount,
+                        itemContent = {index : Int ->
+                            val model : CustomModel? = list[index]
+                            if (model != null) {
+                                CellComposable(model)
+                            }
+                        }
                     )
+
+                    if (list.loadState.append == LoadState.Loading) {
+                        item {
+                            CircularProgressIndicator (
+                                modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally)
+                            )
+                        }
+                    }
                 }
             }
         }

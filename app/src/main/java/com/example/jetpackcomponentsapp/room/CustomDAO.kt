@@ -2,6 +2,7 @@ package com.example.jetpackcomponentsapp.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CustomDAO {
@@ -22,9 +23,16 @@ interface CustomDAO {
     @Query("DELETE FROM custom_table")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC LIMIT :limit OFFSET :offset")
+    public suspend fun getAll(limit : Int, offset : Int) : List<CustomEntity>
+
     //@Query("SELECT * FROM custom_table")
     @Query("SELECT * FROM custom_table ORDER BY Id ASC")
-    fun observeAll() : LiveData<List<CustomEntity>>
+    fun observeLiveAll() : LiveData<List<CustomEntity>>
+
+    @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC")
+    //public fun observeAll() : PagingSource<Int, CustomEntity>
+    public fun observeFlowAll() : Flow<List<CustomEntity>>
 
     @Transaction
     suspend fun resetDAO() {
