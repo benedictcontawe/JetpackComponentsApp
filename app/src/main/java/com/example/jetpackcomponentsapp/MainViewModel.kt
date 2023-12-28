@@ -26,11 +26,11 @@ class MainViewModel : AndroidViewModel {
     }
 
     constructor(application: Application) : super(application) {
-        customRepository = CustomRepository(application)
+        repository = CustomRepository(application)
         //liveStandBy.setValue(true)
     }
 
-    private val customRepository : CustomRepository
+    private val repository : CustomRepository
     private val liveUpdate : MutableLiveData<CustomModel?> = MutableLiveData<CustomModel?>(null)
     private val liveStandBy : MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     private val liveAddDialog : MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
@@ -108,7 +108,7 @@ class MainViewModel : AndroidViewModel {
     //region Room CRUD Methods Methods
     public fun insertItem() { Coroutines.io(this@MainViewModel, {
         viewDidLoad()
-        customRepository.insert (
+        repository.insert (
             ConvertList.toEntity (
                 CustomModel ( _addTextState.value.text )
             )
@@ -119,7 +119,7 @@ class MainViewModel : AndroidViewModel {
     public fun updateItem() { Coroutines.io(this@MainViewModel, {
         viewDidLoad()
         val old : CustomModel? = liveUpdate.getValue()
-        customRepository.update (
+        repository.update (
             ConvertList.toEntity (
                 CustomModel (
                     old?.id,
@@ -134,7 +134,7 @@ class MainViewModel : AndroidViewModel {
     public fun deleteItem(model : CustomModel?) { Coroutines.io(this@MainViewModel, {
         viewDidLoad()
         if (model != null)
-            customRepository.delete(
+            repository.delete(
                 ConvertList.toEntity(model)
             )
         viewWillAppear()
@@ -142,19 +142,19 @@ class MainViewModel : AndroidViewModel {
 
     public fun deleteAll() { Coroutines.io(this@MainViewModel, {
         viewDidLoad()
-        customRepository.deleteAll()
+        repository.deleteAll()
         viewWillAppear()
     }) }
 
     public fun observeItems() : LiveData<List<CustomModel>> {
         return ConvertList.toLiveDataListModel (
-            customRepository.getAll() ?: MutableLiveData<List<CustomEntity>>(listOf<CustomEntity>())
+            repository.getAll() ?: MutableLiveData<List<CustomEntity>>(listOf<CustomEntity>())
         )
     }
     //endregion
     override fun onCleared() {
         Coroutines.io(this@MainViewModel, {
-            customRepository.onCLose()
+            repository.onCLose()
         })
         super.onCleared()
     }

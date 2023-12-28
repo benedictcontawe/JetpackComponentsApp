@@ -21,7 +21,7 @@ class CustomRepository : BaseRepository {
     private val customDao : CustomDAO?
 
     constructor(context : Context) {
-        if (database == null) database = provideRoomDatabase(
+        if (database == null) database = provideRoomDatabase (
             context,
             "custom_database",
             provideRoomDatabaseCallback()
