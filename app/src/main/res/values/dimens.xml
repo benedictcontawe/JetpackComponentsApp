@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- CardView Radius -->
+    <!--region CardView Radius -->
     <dimen name="card_radius_macro">12dp</dimen>
     <dimen name="card_radius">10dp</dimen>
     <dimen name="card_radius_minimum">5dp</dimen>
     <dimen name="card_radius_micro">3dp</dimen>
-
-    <!-- CardView Elavation -->
+    <!-- endregion -->
+    <!--region CardView Elavation -->
     <dimen name="card_elevation">5dp</dimen>
     <dimen name="card_elevation_minimum">2dp</dimen>
     <dimen name="card_elevation_none">0dp</dimen>
-
-    <!-- App Compat Auto Size -->
+    <!-- endregion -->
+    <!--region App Compat Auto Size -->
     <dimen name="auto_size_min_text_size">12sp</dimen>
     <dimen name="auto_size_max_text_size">15sp</dimen>
     <dimen name="auto_size_step_granularity">1sp</dimen>
-
-    <!-- Recycler View Extra Scroll Height -->
+    <!-- endregion -->
+    <!--region Recycler View Extra Scroll Height -->
     <dimen name="extra_scroll">5dp</dimen>
+    <!-- endregion -->
 </resources>

@@ -1,60 +1,106 @@
 package com.example.jetpackcomponentsapp.repository
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.LiveData
-import com.example.jetpackcomponentsapp.room.CustomDAO
-import com.example.jetpackcomponentsapp.room.CustomDatabase
-import com.example.jetpackcomponentsapp.room.CustomEntity
+import android.content.Context
+import androidx.datastore.preferences.*
+import androidx.datastore.preferences.core.edit
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class CustomRepository(applicationContext : Application) : BaseRepository {
+class CustomRepository : BaseRepository {
 
     companion object {
-        private val TAG : String = CustomRepository::class.java.getSimpleName()
-
         @Volatile private var INSTANCE  : CustomRepository? = null
-
         fun getInstance(applicationContext : Application) : CustomRepository {
             return INSTANCE ?: CustomRepository(applicationContext)
         }
     }
 
-    private var customDao : CustomDAO?
+    constructor(applicationContext : Application) {
+        this.applicationContext = applicationContext
+    }
+
+    private val Context.dataStore by preferencesDataStore (
+        name = "data_store"
+    )
+
+    private val applicationContext : Application
 
     init {
-        val database : CustomDatabase? = CustomDatabase.getInstance(applicationContext.getApplicationContext(), "custom_database.db")
-        customDao = database?.customDao()
-    }
 
+    }
     //region CRUD Operation
-    override public fun insert(customEntity : CustomEntity) {
-        Log.d(TAG, "insert ${customEntity}")
-        customDao?.insert(
-            customEntity
-        )
+    override suspend fun update(booleanKey : Boolean) {
+        applicationContext.dataStore.edit { preference ->
+            preference[PreferenceKeys.BOOLEAN_KEY] = booleanKey
+        }
     }
 
-    override public fun update(customEntity : CustomEntity) {
-        Log.d(TAG, "update ${customEntity}")
-        customDao?.update(
-            customEntity
-        )
+    override suspend fun update(stringKey : String) {
+        applicationContext.dataStore.edit { preference ->
+            preference[PreferenceKeys.STRING_KEY] = stringKey
+        }
     }
 
-    override public fun delete(customEntity : CustomEntity) {
-        Log.d(TAG, "delete ${customEntity}")
-        customDao?.delete(
-            customEntity.id
-        )
+    override suspend fun update(integerKey : Int) {
+        applicationContext.dataStore.edit { preference ->
+            preference[PreferenceKeys.INTEGER_KEY] = integerKey
+        }
     }
 
-    override public fun deleteAll() {
-        Log.d(TAG, "deleteAll")
-        customDao?.deleteAll()
+    override suspend fun update(doubleKey : Double) {
+        applicationContext.dataStore.edit { preference ->
+            preference[PreferenceKeys.DOUBLE_KEY] = doubleKey
+        }
     }
 
-    fun getAll() : LiveData<List<CustomEntity>> {
-        return customDao!!.getAll()
+    override suspend fun update(longKey : Long) {
+        applicationContext.dataStore.edit { preference ->
+            preference[PreferenceKeys.LONG_KEY] = longKey
+        }
     }
+
+    fun getBoolean() : Flow<Boolean?> {
+        return applicationContext.dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.BOOLEAN_KEY] ?: null
+        }
+    }
+
+    fun getString() : Flow<String> {
+        return applicationContext.dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.STRING_KEY] ?: "Nil"
+        }
+    }
+
+    fun getInteger() : Flow<Int?> {
+        return applicationContext.dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.INTEGER_KEY] ?: null
+        }
+    }
+
+    fun getDouble() : Flow<Double?> {
+        return applicationContext.dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.DOUBLE_KEY] ?: null
+        }
+    }
+
+    fun getLong() : Flow<Long?> {
+        return applicationContext.dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.LONG_KEY] ?: null
+        }
+    }
+    /*
+    fun getCustomModel() : Flow<List<CustomModel>> {
+        return dataStore?.data?.catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }?.map { preference ->
+            preference.get(PreferenceKeys.LIST_MODEL_KEY) ?: emptyList<CustomModel>()
+        } ?: emptyFlow()
+    }
+    */
     //endregion
 }

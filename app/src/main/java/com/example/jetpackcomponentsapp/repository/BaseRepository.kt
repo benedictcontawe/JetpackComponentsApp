@@ -1,14 +1,14 @@
 package com.example.jetpackcomponentsapp.repository
 
-import com.example.jetpackcomponentsapp.room.CustomEntity
-
 public interface BaseRepository {
 
-    fun  insert(customEntity : CustomEntity)
+    suspend fun update(booleanKey : Boolean)
 
-    fun  update(customEntity : CustomEntity)
+    suspend fun update(stringKey : String)
 
-    fun  delete(customEntity : CustomEntity)
+    suspend fun update(integerKey : Int)
 
-    fun  deleteAll()
+    suspend fun update(doubleKey : Double)
+
+    suspend fun update(longKey : Long)
 }
