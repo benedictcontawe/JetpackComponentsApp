@@ -1,10 +1,5 @@
 package com.example.jetpackcomponentsapp.view;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -12,6 +7,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.jetpackcomponentsapp.MainViewModel;
 import com.example.jetpackcomponentsapp.R;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         //viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         //setContentView(viewBinding.getRoot());
         //endregion
-        dataBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         if (savedInstanceState == null) {
             dataBinding.setViewModel(new ViewModelProvider(this).get(MainViewModel.class));
             dataBinding.setLifecycleOwner(this);
@@ -75,13 +75,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 switch (state) {
                     case ViewPager2.SCROLL_STATE_IDLE:
                         Log.d(TAG,"onPageScrollStateChanged($state) : ViewPager2.SCROLL_STATE_IDLE");
-                    break;
-                case ViewPager2.SCROLL_STATE_DRAGGING:
+                        break;
+                    case ViewPager2.SCROLL_STATE_DRAGGING:
                         Log.d(TAG,"onPageScrollStateChanged($state) : ViewPager2 . SCROLL_STATE_DRAGGING");
-                    break;
-                case ViewPager2.SCROLL_STATE_SETTLING:
+                        break;
+                    case ViewPager2.SCROLL_STATE_SETTLING:
                         Log.d(TAG,"onPageScrollStateChanged($state) : ViewPager2.SCROLL_STATE_SETTLING");
-                    break;
+                        break;
                 }
             }
 
@@ -109,17 +109,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         super.onPause();
         dataBinding.viewPagerTwo.unregisterOnPageChangeCallback(getOnPageChangeCallback());
     }
-
+    /*
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        /*
+
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
         }
         else {
             getSupportFragmentManager().popBackStack();
         }
-        */
     }
+    */
 }

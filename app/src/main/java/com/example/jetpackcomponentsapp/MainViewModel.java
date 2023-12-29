@@ -11,18 +11,18 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
-    static private CustomRepository customRepository;
+    private final CustomRepository repository;
 
     public MainViewModel(Application application) {
         super(application);
-        customRepository = CustomRepository.getInstance(application);
+        repository = CustomRepository.getInstance(application);
     }
 
     public int getItemCount()  {
-        return customRepository.getItems().size();
+        return repository.getItems().size();
     }
 
     public List<CustomModel> getItems()  {
-        return customRepository.getItems();
+        return repository.getItems();
     }
 }
