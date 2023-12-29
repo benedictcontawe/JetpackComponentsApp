@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.jetpackcomponentsapp.R
 
-class IndicatorViewHolder : BaseViewHolder {
+public class IndicatorViewHolder : BaseViewHolder {
 
     companion object {
         private val TAG = IndicatorViewHolder::class.java.getSimpleName()

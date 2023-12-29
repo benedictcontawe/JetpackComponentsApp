@@ -16,7 +16,7 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.ViewPagerBinder
 import kotlinx.coroutines.CoroutineScope
 
-class ViewPagerFragment : BaseFragment {
+public class ViewPagerFragment : BaseFragment {
 
     companion object {
         private val TAG : String = ViewPagerFragment::class.java.getSimpleName()

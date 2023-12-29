@@ -9,7 +9,7 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.TitleBinder
 import kotlinx.coroutines.CoroutineScope
 
-class TitleFragment : BaseFragment {
+public class TitleFragment : BaseFragment {
 
     companion object {
         private val TAG : String = TitleFragment::class.java.getSimpleName()
@@ -39,7 +39,7 @@ class TitleFragment : BaseFragment {
         binder?.titleTextView?.setText(title)
     }
 
-    override suspend fun onSetObservers(scope: CoroutineScope) {
+    override suspend fun onSetObservers(scope : CoroutineScope) {
 
     }
 }

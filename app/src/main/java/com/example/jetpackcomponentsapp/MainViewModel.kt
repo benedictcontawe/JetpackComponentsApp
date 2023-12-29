@@ -1,29 +1,30 @@
 package com.example.jetpackcomponentsapp
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.view.ButtonFragment
 import com.example.jetpackcomponentsapp.view.FragmentStateModel
 import com.example.jetpackcomponentsapp.view.TitleFragment
 
-class MainViewModel : AndroidViewModel {
+class MainViewModel : ViewModel {
 
     companion object {
-        private lateinit var customRepository : CustomRepository
+        private val TAG : String = MainViewModel::class.java.getSimpleName()
     }
 
-    constructor(application: Application) : super(application) {
-        customRepository = CustomRepository.getInstance(application)
+    constructor() : super() {
+        repository = CustomRepository.getInstance()
     }
+
+    private val repository : CustomRepository
 
     public fun getItemCount() : Int {
-        return customRepository.getItems().size
+        return repository.getItems().size
     }
 
     public fun getCustomModels() : List<CustomModel> {
-        return customRepository.getItems()
+        return repository.getItems()
     }
 
     public fun getFragmentStateModels() : List<FragmentStateModel> {

@@ -2,8 +2,8 @@ package com.example.jetpackcomponentsapp.model
 
 import com.example.jetpackcomponentsapp.R
 
-data class CustomModel(
-        val id : Int,
-        var name : String = "",
-        var icon : Int = R.drawable.ic_android_black
+public data class CustomModel (
+        public val id : Int,
+        public var name : String = "",
+        public var icon : Int = R.drawable.ic_android_black,
 )

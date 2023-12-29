@@ -8,8 +8,8 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.MainViewModel
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.MainBinder
 import kotlinx.coroutines.CoroutineScope
 

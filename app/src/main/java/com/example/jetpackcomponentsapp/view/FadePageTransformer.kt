@@ -3,7 +3,7 @@ package com.example.jetpackcomponentsapp.view
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 
-class FadePageTransformer : ViewPager2.PageTransformer {
+public class FadePageTransformer : ViewPager2.PageTransformer {
 
     override fun transformPage(page : View, position : Float) {
         if (position <= -1.0F || position >= 1.0F) {       // [-Infinity,-1) OR (1,+Infinity]

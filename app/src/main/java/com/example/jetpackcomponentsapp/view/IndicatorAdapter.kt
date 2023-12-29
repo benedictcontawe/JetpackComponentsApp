@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.R
 
-class IndicatorAdapter : RecyclerView.Adapter<IndicatorViewHolder> {
+public class IndicatorAdapter : RecyclerView.Adapter<IndicatorViewHolder> {
 
     companion object {
         private val TAG = IndicatorAdapter::class.java.getSimpleName()

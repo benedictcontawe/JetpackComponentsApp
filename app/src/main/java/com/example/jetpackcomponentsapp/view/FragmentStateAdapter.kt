@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class FragmentStateAdapter : FragmentStateAdapter {
+public class FragmentStateAdapter : FragmentStateAdapter {
 
     companion object {
         private val TAG : String = FragmentStateAdapter::class.java.getSimpleName()

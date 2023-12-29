@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewHolder : RecyclerView.ViewHolder {
+abstract public class BaseViewHolder : RecyclerView.ViewHolder {
 
     companion object {
         private val TAG = BaseViewPagerHolder::class.java.getSimpleName()

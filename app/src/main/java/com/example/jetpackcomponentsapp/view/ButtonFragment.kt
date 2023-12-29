@@ -10,7 +10,7 @@ import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.ButtonBinder
 import kotlinx.coroutines.CoroutineScope
 
-class ButtonFragment : BaseFragment, View.OnClickListener{
+public class ButtonFragment : BaseFragment, View.OnClickListener{
 
     companion object {
         private val TAG : String = ButtonFragment::class.java.getSimpleName()

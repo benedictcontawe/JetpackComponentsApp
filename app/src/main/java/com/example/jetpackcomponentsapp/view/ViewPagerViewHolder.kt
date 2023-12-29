@@ -1,6 +1,5 @@
 package com.example.jetpackcomponentsapp.view
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -8,7 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.model.CustomModel
 
-class ViewPagerViewHolder : BaseViewPagerHolder {
+public class ViewPagerViewHolder : BaseViewPagerHolder {
 
     companion object {
         private val TAG = ViewPagerViewHolder::class.java.getSimpleName()

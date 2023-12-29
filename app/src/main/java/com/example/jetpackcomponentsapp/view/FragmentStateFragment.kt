@@ -10,10 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.FragmentStateBinder
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 
-class FragmentStateFragment : BaseFragment {
+public class FragmentStateFragment : BaseFragment {
 
     companion object {
         private val TAG : String = FragmentStateFragment::class.java.getSimpleName()

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.model.CustomModel
 
-class ViewPagerAdapter : RecyclerView.Adapter<BaseViewPagerHolder> {
+public class ViewPagerAdapter : RecyclerView.Adapter<BaseViewPagerHolder> {
 
     companion object {
         private val TAG = ViewPagerAdapter::class.java.getSimpleName()
