@@ -11,6 +11,7 @@ import com.example.jetpackcomponentsapp.MainViewModel
 import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.databinding.MainBinder
 
+
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
