@@ -1,8 +1,13 @@
 package com.example.jetpackcomponentsapp
 
 import android.app.Application
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomponentsapp.repository.CustomRepository
@@ -15,10 +20,53 @@ class MainViewModel : AndroidViewModel {
     }
 
     private val repository : CustomRepository
+    private val liveSwitchChecked : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    private val _stringTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
+    private val _integerTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
+    private val _doubleTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
+    private val _longTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
 
     constructor(application : Application) : super(application) {
         repository = CustomRepository.getInstance(application)
     }
+    //region Switch Methods
+    public fun getSwitchChecked() : LiveData<Boolean> {
+        return this.liveSwitchChecked
+    }
+
+    public fun setSwitchChecked(isChecked : Boolean) {
+        liveSwitchChecked.setValue(isChecked)
+    }
+    //endregion
+    //region Text State Methods
+    val stringTextState : State<TextFieldValue>
+        get() = _stringTextState
+
+    fun onStringTextChanged(newValue : TextFieldValue) {
+        _stringTextState.value = newValue
+    }
+
+    val integerTextState : State<TextFieldValue>
+        get() = _integerTextState
+
+    fun onIntegerTextChanged(newValue : TextFieldValue) {
+        _integerTextState.value = newValue
+    }
+
+    val doubleTextState : State<TextFieldValue>
+        get() = _doubleTextState
+
+    fun onDoubleTextChanged(newValue : TextFieldValue) {
+        _doubleTextState.value = newValue
+    }
+
+    val longTextState : State<TextFieldValue>
+        get() = _longTextState
+
+    fun onLongTextChanged(newValue : TextFieldValue) {
+        _longTextState.value = newValue
+    }
+    //endregion
     //region Update Methods
     fun update(booleanKey : Boolean?) {
         Coroutines.io(this@MainViewModel) {
@@ -85,4 +133,5 @@ class MainViewModel : AndroidViewModel {
         return repository.getCustomModel().asLiveData()
     }
     */
+    //endregion
 }

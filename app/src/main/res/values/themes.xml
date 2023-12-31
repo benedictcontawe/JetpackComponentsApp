@@ -1,18 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.JetpackComponentsApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
-    <style name="Theme.JetpackComponentsApp" parent="Base.Theme.JetpackComponentsApp" />
-
-    <style name="DialogFragment" parent="android:Theme.Dialog">
-        <item name="android:windowBackground">@color/design_default_color_background</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowMinWidthMajor">70%</item>
-        <item name="android:windowMinWidthMinor">70%</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
+    <style name="Theme.Jetpackcomponentsapp" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

@@ -1,10 +1,10 @@
 package com.example.jetpackcomponentsapp.util
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
+//import androidx.appcompat.app.AppCompatActivity
+//import androidx.fragment.app.DialogFragment
+//import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+//import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +49,7 @@ public object Coroutines {
         CoroutineScope(Dispatchers.Main.immediate).launch {
             work()
         }
+    /*
     public fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
         activity.lifecycleScope.launch {
             activity.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -73,6 +74,7 @@ public object Coroutines {
                 work(this)
             }
         }
+    */
     //endregion
     //region I/O operations
     public fun io(work : suspend (() -> Unit)) =
