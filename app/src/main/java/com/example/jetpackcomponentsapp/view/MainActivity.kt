@@ -108,18 +108,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             binding.buttonInteger -> {
                 binding.getViewModel()?.update(
-                    binding.editTextInteger.getText().toString().toInt()
+                    binding.editTextInteger.getText().toString().toIntOrNull()
                 )
             }
             binding.buttonDouble -> {
                 //Toast.makeText(this,"Double Not Supported!",Toast.LENGTH_SHORT).show()
                 binding.getViewModel()?.update(
-                    binding.editTextDouble.getText().toString().toDouble()
+                    binding.editTextDouble.getText().toString().toDoubleOrNull()
                 )
             }
             binding.buttonLong -> {
                 binding.getViewModel()?.update(
-                    binding.editTextLong.getText().toString().toLong()
+                    binding.editTextLong.getText().toString().toLongOrNull()
                 )
             }
         }

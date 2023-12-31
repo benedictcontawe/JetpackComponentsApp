@@ -4,14 +4,15 @@ import android.app.Application
 import android.content.Context
 import androidx.datastore.preferences.*
 import androidx.datastore.preferences.core.edit
+import com.example.jetpackcomponentsapp.util.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class CustomRepository : BaseRepository {
+public class CustomRepository : BaseRepository {
 
     companion object {
         @Volatile private var INSTANCE  : CustomRepository? = null
-        fun getInstance(applicationContext : Application) : CustomRepository {
+        public fun getInstance(applicationContext : Application) : CustomRepository {
             return INSTANCE ?: CustomRepository(applicationContext)
         }
     }
@@ -21,7 +22,7 @@ class CustomRepository : BaseRepository {
     }
 
     private val Context.dataStore by preferencesDataStore (
-        name = "data_store"
+        name = Constants.DATA_STORE
     )
 
     private val applicationContext : Application
@@ -60,31 +61,31 @@ class CustomRepository : BaseRepository {
         }
     }
 
-    fun getBoolean() : Flow<Boolean?> {
+    public fun getBoolean() : Flow<Boolean?> {
         return applicationContext.dataStore.data.map { preferences ->
             preferences[PreferenceKeys.BOOLEAN_KEY] ?: null
         }
     }
 
-    fun getString() : Flow<String> {
+    public fun getString() : Flow<String> {
         return applicationContext.dataStore.data.map { preferences ->
             preferences[PreferenceKeys.STRING_KEY] ?: "Nil"
         }
     }
 
-    fun getInteger() : Flow<Int?> {
+    public fun getInteger() : Flow<Int?> {
         return applicationContext.dataStore.data.map { preferences ->
             preferences[PreferenceKeys.INTEGER_KEY] ?: null
         }
     }
 
-    fun getDouble() : Flow<Double?> {
+    public fun getDouble() : Flow<Double?> {
         return applicationContext.dataStore.data.map { preferences ->
             preferences[PreferenceKeys.DOUBLE_KEY] ?: null
         }
     }
 
-    fun getLong() : Flow<Long?> {
+    public fun getLong() : Flow<Long?> {
         return applicationContext.dataStore.data.map { preferences ->
             preferences[PreferenceKeys.LONG_KEY] ?: null
         }

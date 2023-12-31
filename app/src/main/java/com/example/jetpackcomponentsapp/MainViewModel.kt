@@ -16,40 +16,51 @@ class MainViewModel : AndroidViewModel {
 
     private val repository : CustomRepository
 
-    constructor(application: Application) : super(application) {
+    constructor(application : Application) : super(application) {
         repository = CustomRepository.getInstance(application)
     }
-
-    fun update(booleanKey : Boolean) {
+    //region Update Methods
+    fun update(booleanKey : Boolean?) {
         Coroutines.io(this@MainViewModel) {
-            repository.update(booleanKey)
+            if (booleanKey != null) {
+                repository.update(booleanKey)
+            }
         }
     }
 
-    fun update(stringKey : String) {
+    fun update(stringKey : String?) {
         Coroutines.io(this@MainViewModel) {
-            repository.update(stringKey)
+            if (stringKey != null) {
+                repository.update(stringKey)
+            }
         }
     }
 
-    fun update(integerKey : Int) {
+    fun update(integerKey : Int?) {
         Coroutines.io(this@MainViewModel) {
-            repository.update(integerKey)
+            if (integerKey != null) {
+                repository.update(integerKey)
+            }
         }
     }
 
-    fun update(doubleKey : Double) {
+    fun update(doubleKey : Double?) {
         Coroutines.io(this@MainViewModel) {
-            repository.update(doubleKey)
+            if (doubleKey != null) {
+                repository.update(doubleKey)
+            }
         }
     }
 
-    fun update(longKey : Long) {
+    fun update(longKey : Long?) {
         Coroutines.io(this@MainViewModel) {
-            repository.update(longKey)
+            if (longKey != null) {
+                repository.update(longKey)
+            }
         }
     }
-
+    //endregion
+    //region Observe Methods
     fun observeBoolean() : LiveData<Boolean?> {
         return repository.getBoolean().asLiveData(viewModelScope.coroutineContext)
     }
