@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">View Pager 2</string>
-    <string name="fragment_state">Fragment State</string>
-    <string name="view_pager">View Pager</string>
+    <string name="app_name">View Pager</string>
+    <string name="horizontal">Horizontal</string>
+    <string name="horizontal_page_">Horizontal Page: %s</string>
+    <string name="vertical">Vertical</string>
+    <string name="vertical_page_">Vertical Page: %s</string>
 </resources>
