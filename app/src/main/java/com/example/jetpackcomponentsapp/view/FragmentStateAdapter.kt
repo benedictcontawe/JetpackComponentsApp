@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.jetpackcomponentsapp.model.FragmentStateModel
 
 public class FragmentStateAdapter : FragmentStateAdapter {
 

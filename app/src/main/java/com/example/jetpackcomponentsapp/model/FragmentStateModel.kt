@@ -1,4 +1,6 @@
-package com.example.jetpackcomponentsapp.view
+package com.example.jetpackcomponentsapp.model
+
+import com.example.jetpackcomponentsapp.view.BaseFragment
 
 public data class FragmentStateModel (
     val title : String?,

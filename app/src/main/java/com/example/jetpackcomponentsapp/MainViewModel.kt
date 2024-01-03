@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.view.ButtonFragment
-import com.example.jetpackcomponentsapp.view.FragmentStateModel
+import com.example.jetpackcomponentsapp.model.FragmentStateModel
 import com.example.jetpackcomponentsapp.view.TitleFragment
 
 class MainViewModel : ViewModel {
