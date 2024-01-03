@@ -22,7 +22,7 @@ public class ViewPagerViewHolder : BaseViewPagerHolder {
     }
 
     public override fun bindDataToViewHolder(customModel : CustomModel, position : Int) {
-        image.setImageResource(customModel.icon)
+        customModel.icon?.let { image.setImageResource(it) }
         text.setText(customModel.name)
     }
 }
