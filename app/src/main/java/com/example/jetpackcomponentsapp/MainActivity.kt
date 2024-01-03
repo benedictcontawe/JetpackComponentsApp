@@ -113,6 +113,8 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun VerticalPagerComposable() {
         val pagerState : PagerState = rememberPagerState(initialPage = 0, pageCount = { viewModel.getListCount() } )
+        //pagerState.scrollToPage(0)
+        //pagerState.animateScrollToPage(0)
         VerticalPager (
             modifier = Modifier.fillMaxSize(),
             state = pagerState,
