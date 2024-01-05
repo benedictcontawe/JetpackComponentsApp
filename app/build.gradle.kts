@@ -68,7 +68,6 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
-
     //endregion
     //region Android Unit Test and U.I. Test Library
     testImplementation("junit:junit:4.13.2")
