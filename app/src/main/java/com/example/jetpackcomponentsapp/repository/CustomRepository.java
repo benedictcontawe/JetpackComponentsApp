@@ -1,40 +1,119 @@
 package com.example.jetpackcomponentsapp.repository;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
-import com.example.jetpackcomponentsapp.R;
+import androidx.lifecycle.LiveData;
+
 import com.example.jetpackcomponentsapp.model.CustomModel;
+import com.example.jetpackcomponentsapp.room.CustomDAO;
+import com.example.jetpackcomponentsapp.room.CustomDatabase;
+import com.example.jetpackcomponentsapp.room.CustomEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomRepository implements BaseRepository {
 
-    static volatile private  CustomRepository INSTANCE;
+    private final CustomDAO customDAO;
+    private static CustomRepository INSTANCE;
 
-    static public CustomRepository getInstance(Application applicationContext) {
-        if (INSTANCE != null)
-            return INSTANCE;
-        else {
-            INSTANCE = new CustomRepository(applicationContext);
-            return INSTANCE;
-        }
+    public static CustomRepository getInstance(Application applicationContext) {
+        if (INSTANCE == null) INSTANCE = new CustomRepository(applicationContext);
+        return INSTANCE;
     }
 
-    public CustomRepository(Application applicationContext) {
-
-    }
-
-    private CustomModel getItem(int id) {
-        return new CustomModel(id, String.valueOf(id), R.drawable.ic_android_black);
+    private CustomRepository(Application applicationContext) {
+        CustomDatabase database = CustomDatabase.getInstance(applicationContext);
+        customDAO = database.customDAO();
     }
 
     @Override
-    public List<CustomModel> getItems() {
-        List<CustomModel> list = new ArrayList<CustomModel>();
-        for(int i = 0; i < 11; i++){
-            list.add(getItem(i));
-        }
-        return list;
+    public void insert(CustomModel customModel) {
+        new insertAsyncTask(customDAO).execute (
+            ConvertList.toEntity(customModel)
+        );
     }
+
+    @Override
+    public void update(CustomModel customModel) {
+        new updateAsyncTask(customDAO).execute (
+            ConvertList.toEntity(customModel)
+        );
+    }
+
+    @Override
+    public void delete(CustomModel customModel) {
+        new deleteAsyncTask(customDAO).execute (
+            ConvertList.toEntity(customModel)
+        );
+    }
+
+    @Override
+    public void deleteAll() {
+        new deleteAllAsyncTask(customDAO).execute();
+    }
+
+    public LiveData<List<CustomModel>> getAll() {
+        return ConvertList.toLiveDataListModel(
+                customDAO.getAll()
+        );
+    }
+
+    //region Static Class For Repository
+    private static class insertAsyncTask extends AsyncTask<CustomEntity, Void, Void> {
+        private final CustomDAO customDAO;
+
+        private insertAsyncTask(CustomDAO customDAO) {
+            this.customDAO = customDAO;
+        }
+
+        @Override
+        protected Void doInBackground(CustomEntity... customEntities) {
+            customDAO.insert(customEntities[0]);
+            return null;
+        }
+    }
+
+    private static class updateAsyncTask extends AsyncTask<CustomEntity, Void, Void> {
+        private final CustomDAO customDAO;
+
+        private updateAsyncTask(CustomDAO customDAO) {
+            this.customDAO = customDAO;
+        }
+
+        @Override
+        protected Void doInBackground(CustomEntity... customEntities) {
+            customDAO.update(customEntities[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<CustomEntity, Void, Void> {
+        private final CustomDAO customDAO;
+
+        private deleteAsyncTask(CustomDAO customDAO) {
+            this.customDAO = customDAO;
+        }
+
+        @Override
+        protected Void doInBackground(CustomEntity... customEntities) {
+            customDAO.delete(customEntities[0].getId());
+            return null;
+        }
+    }
+
+    private static class deleteAllAsyncTask extends AsyncTask<Void, Void, Void> {
+        private final CustomDAO customDAO;
+
+        private deleteAllAsyncTask(CustomDAO customDAO) {
+            this.customDAO = customDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            customDAO.deleteAll();
+            return null;
+        }
+    }
+    //endregion
 }

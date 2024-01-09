@@ -7,6 +7,40 @@
 
     <style name="Theme.Jetpackcomponentsapp" parent="Base.Theme.Jetpackcomponentsapp" />
 
+    <style name="ConstraintLayoutMainStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/background_material_dark_gray</item>
+        <item name="android:animateLayoutChanges">true</item>
+    </style>
+
+    <style name="LinearLayoutAddStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@color/design_default_color_background</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="CardViewCellStyle" parent="Widget.Material3.CardView.Filled">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="cardBackgroundColor">@color/card_state_normal</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="cardElevation">@dimen/card_elevation_minimum</item>
+        <item name="cardMaxElevation">@dimen/card_elevation</item>
+    </style>
+
+    <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawingCacheQuality">high</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="backgroundTint">#0055A5</item>
+        <item name="fabSize">mini</item>
+    </style>
+
     <style name="DialogFragment" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@color/design_default_color_background</item>
         <item name="android:windowAnimationStyle">@null</item>

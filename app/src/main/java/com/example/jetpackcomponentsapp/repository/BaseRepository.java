@@ -2,10 +2,13 @@ package com.example.jetpackcomponentsapp.repository;
 
 import com.example.jetpackcomponentsapp.model.CustomModel;
 
-import java.util.List;
-
 public interface BaseRepository {
 
-    public List<CustomModel> getItems();
+    public void insert(CustomModel customModel);
 
+    public void update(CustomModel customModel);
+
+    public void delete(CustomModel customModel);
+
+    public void deleteAll();
 }
