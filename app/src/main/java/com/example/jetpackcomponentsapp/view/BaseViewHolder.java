@@ -12,6 +12,12 @@ abstract public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     protected final Context context;
 
+    public BaseViewHolder(View itemView) {
+        super(itemView);
+        this.context = itemView.getContext();
+        Log.d(TAG, "constructor");
+    }
+
     public BaseViewHolder(Context context, View itemView) {
         super(itemView);
         this.context = context;

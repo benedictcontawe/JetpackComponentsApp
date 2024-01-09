@@ -2,9 +2,9 @@ package com.example.jetpackcomponentsapp.model;
 
 public class CustomModel {
 
-    final public int id;
-    public String name;
-    public int icon;
+    public final int id;
+    public final String name;
+    public final int icon;
 
     public CustomModel(int id, String name, int icon) {
         this.id = id;
