@@ -2,14 +2,15 @@ package com.example.jetpackcomponentsapp
 
 import androidx.lifecycle.ViewModel
 
-class MainViewModel : ViewModel {
+public class MainViewModel : ViewModel {
 
     companion object {
         private val TAG : String = MainViewModel::class.java.getSimpleName()
     }
 
     private val list : MutableList<CustomModel> = mutableListOf<CustomModel>()
-
+    public var horizontalPage : Int = 0
+    public var vertivalPage : Int = 0
 
     constructor() : super() {
         list.addAll(getCustomModels())
@@ -51,7 +52,6 @@ class MainViewModel : ViewModel {
     }
 
     override fun onCleared() {
-
         super.onCleared()
     }
 }

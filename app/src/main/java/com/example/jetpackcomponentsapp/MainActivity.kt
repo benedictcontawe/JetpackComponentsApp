@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,7 +36,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomponentsapp.ui.theme.JetpackcomponentsappTheme
 
-class MainActivity : ComponentActivity() {
+public class MainActivity : ComponentActivity() {
+
+    companion object {
+        private val TAG : String = MainActivity::class.java.getSimpleName()
+    }
 
     private val viewModel : MainViewModel by viewModels<MainViewModel>()
 
@@ -92,7 +98,12 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun HorizontalPagerComposable() {
-        val pagerState : PagerState = rememberPagerState(pageCount = { viewModel.getListCount() } )
+        val pagerState : PagerState = rememberPagerState(initialPage = viewModel.horizontalPage, pageCount = { viewModel.getListCount() } )
+        LaunchedEffect(pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect { page ->
+                viewModel.horizontalPage = page
+            }
+        }
         HorizontalPager (
             modifier = Modifier.fillMaxSize(),
             state = pagerState,
@@ -112,7 +123,12 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun VerticalPagerComposable() {
-        val pagerState : PagerState = rememberPagerState(initialPage = 0, pageCount = { viewModel.getListCount() } )
+        val pagerState : PagerState = rememberPagerState(initialPage = viewModel.vertivalPage, pageCount = { viewModel.getListCount() } )
+        LaunchedEffect(pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect { page ->
+                viewModel.vertivalPage = page
+            }
+        }
         //pagerState.scrollToPage(0)
         //pagerState.animateScrollToPage(0)
         VerticalPager (
