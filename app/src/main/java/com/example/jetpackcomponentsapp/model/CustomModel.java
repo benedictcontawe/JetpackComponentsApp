@@ -1,7 +1,7 @@
 package com.example.jetpackcomponentsapp.model;
 
 import com.example.jetpackcomponentsapp.R;
-
+import androidx.annotation.NonNull;
 public class CustomModel {
 
     public final int id;
@@ -40,5 +40,11 @@ public class CustomModel {
 
     public int getIcon() {
         return icon;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "CustomModel id " + this.id + ", name " + this.name + ", icon " + this.icon;
     }
 }
