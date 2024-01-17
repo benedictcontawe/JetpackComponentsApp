@@ -13,16 +13,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-
-import java.lang.ref.Reference;
 import java.util.Map;
 
 public class CustomRepository implements BaseRepository {
 
     private static CustomRepository INSTANCE;
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private final FirebaseStorage storageRef = FirebaseStorage.getInstance();
-    private final StorageReference imagesRef, videosRef;
+    private final StorageReference imageReference, videosReference;
 
     public static CustomRepository getInstance() {
         if (INSTANCE == null) INSTANCE = new CustomRepository();
@@ -30,8 +27,9 @@ public class CustomRepository implements BaseRepository {
     }
 
     private CustomRepository() {
-        imagesRef = storageRef.getReference().child("images/");
-        videosRef = storageRef.getReference().child("videos/");
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        imageReference = firebaseStorage.getReference().child("images/");
+        videosReference = firebaseStorage.getReference().child("videos/");
     }
 
     @Override
@@ -114,16 +112,16 @@ public class CustomRepository implements BaseRepository {
 
     public void uploadFile() throws Exception {
         if (false) throw new Exception("File is Nil");
-        //imagesRef.child(name).putData(bytes);
+        //imageReference.child(name).putData(bytes);
     }
 
     public void deleteImage(String name) throws Exception {
         if (name == null) throw new Exception("Image is Nil");
-        imagesRef.child(name).delete();
+        imageReference.child(name).delete();
     }
 
     public void deleteImages(Consumer<ListResult> onSuccess, Consumer<Exception> onFailure) {
-        imagesRef.listAll()
+        imageReference.listAll()
             .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                 @Override
                 public void onSuccess(ListResult listResult) {
