@@ -2,6 +2,7 @@ package com.example.jetpackcomponentsapp.model;
 
 import com.example.jetpackcomponentsapp.R;
 import androidx.annotation.NonNull;
+
 public class CustomModel {
 
     public final int id;
