@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.jetpackcomponentsapp.MainViewModel;
+import com.example.jetpackcomponentsapp.view.model.ObjectViewModel;
 import com.example.jetpackcomponentsapp.R;
 import com.example.jetpackcomponentsapp.databinding.AddBinder;
 import com.example.jetpackcomponentsapp.model.CustomModel;
@@ -26,7 +26,7 @@ public class AddFragment extends Fragment {
     }
 
     private AddBinder binding;
-    private MainViewModel viewModel;
+    private ObjectViewModel viewModel;
 
     @Nullable
     @Override
@@ -38,7 +38,7 @@ public class AddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ObjectViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -48,24 +48,29 @@ public class AddFragment extends Fragment {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.insertItem(
-                        new CustomModel(
-                                binding.editText.getText().toString()
-                        )
+                viewModel.insertItem (
+                    new CustomModel (
+                        binding.editText.getText().toString()
+                    )
                 );
                 hideSoftKeyboard();
-                getActivity().getSupportFragmentManager().popBackStack();
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }
 
     private void showSoftKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
+    private void showSoftKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
     private void hideSoftKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

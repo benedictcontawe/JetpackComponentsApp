@@ -23,7 +23,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private CustomBinder customBinder;
 
 
-    private List<CustomModel> list = new ArrayList<>();
+    private final List<CustomModel> list = new ArrayList<>();
 
     public CustomAdapter(CustomListeners customListeners) {
         this.customListeners = customListeners;

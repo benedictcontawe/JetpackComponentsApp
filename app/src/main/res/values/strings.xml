@@ -1,9 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JetpackComponentsApp</string>
     <string name="add">Add</string>
     <string name="add_name">Add Name</string>
-    <string name="image">Image</string>
+    <string name="delete">Delete</string>
     <string name="delete_all">Delete All</string>
-    <string name="your_name">Your name</string>
+    <string name="edit">Edit</string>
+    <string name="image">Image</string>
+    <string name="object">Object</string>
+    <string name="primitive">Primitive</string>
+    <string name="update">Update</string>
     <string name="update_name">Update Name</string>
+    <string name="value">Value</string>
+    <string name="your_name">Your name</string>
+    <string name="_boolean">Boolean :</string>
+    <string name="_string">String :</string>
+    <string name="_integer">Integer :</string>
+    <string name="_double">Double :</string>
 </resources>

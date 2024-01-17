@@ -1,14 +1,26 @@
 package com.example.jetpackcomponentsapp.repository;
 
+import androidx.core.util.Consumer;
 import com.example.jetpackcomponentsapp.model.CustomModel;
+import com.example.jetpackcomponentsapp.model.PrimitiveModel;
+import com.google.firebase.firestore.QuerySnapshot;
+import java.util.Map;
 
 public interface BaseRepository {
 
-    public void insert(CustomModel customModel);
+    public void createObject(Map<String, Object> data);
 
-    public void update(CustomModel customModel);
+    public void createPrimitive(Map<String, Object> data);
 
-    public void delete(CustomModel customModel);
+    public void getObjects(Consumer<QuerySnapshot> onSuccess, Consumer<Exception> onFailure);
 
-    public void deleteAll();
+    public void updateObject(CustomModel customModel) throws Exception;
+
+    public void deleteObject(CustomModel customModel) throws Exception;
+
+    public void updatePrimitive(PrimitiveModel model) throws Exception;
+
+    public void getPrimitives(Consumer<QuerySnapshot> onSuccess, Consumer<Exception> onFailure);
+
+    public void deleteImage(String name) throws Exception;
 }

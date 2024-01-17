@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.jetpackcomponentsapp.MainViewModel;
+import com.example.jetpackcomponentsapp.view.model.ObjectViewModel;
 import com.example.jetpackcomponentsapp.R;
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder;
 import com.example.jetpackcomponentsapp.model.CustomModel;
@@ -27,7 +27,7 @@ public class UpdateFragment extends DialogFragment {
     }
 
     private UpdateBinder binding;
-    private MainViewModel viewModel;
+    private ObjectViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,17 +45,16 @@ public class UpdateFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ObjectViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-
         viewModel.getUpdate().observe(getViewLifecycleOwner(), new Observer<CustomModel>() {
             @Override
             public void onChanged(CustomModel item) {
-                binding.editText.setText(item.getName());
+                binding.editText.setText(item.name);
                 binding.editText.requestFocus();
                 binding.editText.selectAll();
-                showSoftKeyboard();
+                showSoftKeyboard(binding.editText);
             }
         });
 
@@ -70,12 +69,17 @@ public class UpdateFragment extends DialogFragment {
     }
 
     private void showSoftKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
+    private void showSoftKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
     private void hideSoftKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

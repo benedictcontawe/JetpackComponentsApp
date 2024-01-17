@@ -13,61 +13,71 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.jetpackcomponentsapp.MainViewModel;
+import com.example.jetpackcomponentsapp.databinding.ObjectBinder;
+import com.example.jetpackcomponentsapp.view.model.ObjectViewModel;
 import com.example.jetpackcomponentsapp.R;
-import com.example.jetpackcomponentsapp.databinding.MainBinder;
 import com.example.jetpackcomponentsapp.model.CustomModel;
 import com.example.jetpackcomponentsapp.view.CustomListeners;
-import com.example.jetpackcomponentsapp.view.MainActivity;
+import com.example.jetpackcomponentsapp.view.activity.ObjectActivity;
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter;
 
 import java.util.List;
 
-public class MainFragment extends Fragment implements CustomListeners {
+public class ObjectFragment extends Fragment implements CustomListeners, SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String TAG = MainFragment.class.getSimpleName();
-    public static MainFragment  newInstance() {
-        return new MainFragment();
+    public static final String TAG = ObjectFragment.class.getSimpleName();
+    public static ObjectFragment newInstance() {
+        return new ObjectFragment();
     }
 
-    private MainBinder binding;
-    private MainViewModel viewModel;
+    private ObjectBinder binding;
+    private ObjectViewModel viewModel;
     private CustomAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_object,container,false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ObjectViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-
+        setSwipeRefresh();
         setRecyclerView();
         setFloatingActionButton();
     }
 
+    private void setSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener(this);
+        viewModel.observeLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                //binding.swipeRefreshLayout.isRefreshing();
+                binding.swipeRefreshLayout.setRefreshing(isLoading);
+            }
+        });
+    }
+
     private void setRecyclerView() {
         adapter = new CustomAdapter(this);
-
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
         binding.recyclerView.setAdapter(adapter);
-
         viewModel.getItems().observe(getViewLifecycleOwner(), new Observer<List<CustomModel>>() {
             @Override
             public void onChanged(List<CustomModel> list) {
-                binding.recyclerView.removeAllViews();
                 adapter.setItems(list);
                 adapter.notifyDataSetChanged();
+                if (binding.swipeRefreshLayout.isRefreshing())
+                    binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
-
         binding.recyclerView.setHasFixedSize(true);
     }
 
@@ -87,14 +97,20 @@ public class MainFragment extends Fragment implements CustomListeners {
         });
     }
 
+    @Override
+    public void onRefresh() {
+        binding.recyclerView.removeAllViews();
+        binding.getViewModel().fetchItems();
+    }
+
     private void onAdd() {
-        ((MainActivity)getActivity()).callAddFragment();
+        ( (ObjectActivity) requireActivity() ).callAddFragment();
     }
 
     @Override
     public void onUpdate(CustomModel item, int position) {
         viewModel.setUpdate(item);
-        ((MainActivity)getActivity()).callUpdateFragment();
+        ( (ObjectActivity) requireActivity() ).callUpdateFragment();
     }
 
     @Override

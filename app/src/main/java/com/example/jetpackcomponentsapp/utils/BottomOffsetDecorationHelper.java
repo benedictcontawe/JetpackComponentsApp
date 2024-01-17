@@ -1,4 +1,4 @@
-package com.example.jetpackcomponentsapp;
+package com.example.jetpackcomponentsapp.utils;
 
 import android.content.Context;
 import android.graphics.Rect;

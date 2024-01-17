@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data class="PrimitiveBinder">
+        <variable
+            name="viewModel"
+            type="com.example.jetpackcomponentsapp.view.model.PrimitiveViewModel" />
+    </data>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:weightSum="4"
+        tools:context=".view.activity.PrimitiveActivity" >
+        <TableRow
+            android:layout_weight="1" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_boolean"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <CheckBox
+                android:id="@+id/check_box_boolean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button_boolean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/update"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="@dimen/auto_size_min_text_size" />
+
+            <TextView
+                android:id="@+id/label_boolean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/value"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </TableRow>
+        <TableRow
+            android:layout_weight="1" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_string"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_text_string"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/button_string"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/update"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="@dimen/auto_size_min_text_size" />
+
+            <TextView
+                android:id="@+id/label_string"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/value"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </TableRow>
+        <TableRow
+            android:layout_weight="1" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_integer"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_text_integer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/button_integer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/update"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="@dimen/auto_size_min_text_size" />
+
+            <TextView
+                android:id="@+id/label_integer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/value"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </TableRow>
+        <TableRow
+            android:layout_weight="1" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_double"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_text_double"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/button_double"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/update"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="@dimen/auto_size_min_text_size" />
+
+            <TextView
+                android:id="@+id/label_double"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/value"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </TableRow>
+    </TableLayout>
+</layout>

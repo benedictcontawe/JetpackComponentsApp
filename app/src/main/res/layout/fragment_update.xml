@@ -5,7 +5,7 @@
     <data class="UpdateBinder">
         <variable
             name="viewModel"
-            type="com.example.jetpackcomponentsapp.MainViewModel" />
+            type="com.example.jetpackcomponentsapp.view.model.ObjectViewModel" />
     </data>
 
     <LinearLayout

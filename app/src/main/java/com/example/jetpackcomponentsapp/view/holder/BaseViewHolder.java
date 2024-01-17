@@ -12,28 +12,18 @@ import com.example.jetpackcomponentsapp.view.CustomListeners;
 abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
     /**Main */
-    private CustomListeners listeners;
-    /**Data */
-    private int id;
+    private final CustomListeners listeners;
 
-    public BaseViewHolder(CustomListeners listeners, @NonNull View itemView) {
+    protected BaseViewHolder(CustomListeners listeners, @NonNull View itemView) {
         super(itemView);
         this.listeners = listeners;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Context getContext() {
+    protected Context getContext() {
         return itemView.getContext();
     }
 
-    public CustomListeners getListener() {
+    protected CustomListeners getListener() {
         return listeners;
     }
 

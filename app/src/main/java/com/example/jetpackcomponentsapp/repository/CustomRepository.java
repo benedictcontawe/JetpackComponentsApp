@@ -1,119 +1,145 @@
 package com.example.jetpackcomponentsapp.repository;
 
-import android.app.Application;
-import android.os.AsyncTask;
-
-import androidx.lifecycle.LiveData;
-
+import androidx.annotation.NonNull;
+import androidx.core.util.Consumer;
 import com.example.jetpackcomponentsapp.model.CustomModel;
-import com.example.jetpackcomponentsapp.room.CustomDAO;
-import com.example.jetpackcomponentsapp.room.CustomDatabase;
-import com.example.jetpackcomponentsapp.room.CustomEntity;
+import com.example.jetpackcomponentsapp.model.PrimitiveModel;
+import com.example.jetpackcomponentsapp.utils.Constants;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
-import java.util.List;
+import java.lang.ref.Reference;
+import java.util.Map;
 
 public class CustomRepository implements BaseRepository {
 
-    private final CustomDAO customDAO;
     private static CustomRepository INSTANCE;
+    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private final FirebaseStorage storageRef = FirebaseStorage.getInstance();
+    private final StorageReference imagesRef, videosRef;
 
-    public static CustomRepository getInstance(Application applicationContext) {
-        if (INSTANCE == null) INSTANCE = new CustomRepository(applicationContext);
+    public static CustomRepository getInstance() {
+        if (INSTANCE == null) INSTANCE = new CustomRepository();
         return INSTANCE;
     }
 
-    private CustomRepository(Application applicationContext) {
-        CustomDatabase database = CustomDatabase.getInstance(applicationContext);
-        customDAO = database.customDAO();
+    private CustomRepository() {
+        imagesRef = storageRef.getReference().child("images/");
+        videosRef = storageRef.getReference().child("videos/");
     }
 
     @Override
-    public void insert(CustomModel customModel) {
-        new insertAsyncTask(customDAO).execute (
-            ConvertList.toEntity(customModel)
-        );
+    public void createObject(Map<String, Object> data) {
+        firebaseFirestore.collection(Constants.OBJECT).add(data);
     }
 
     @Override
-    public void update(CustomModel customModel) {
-        new updateAsyncTask(customDAO).execute (
-            ConvertList.toEntity(customModel)
-        );
+    public void createPrimitive(Map<String, Object> data) {
+        firebaseFirestore.collection(Constants.PRIMITIVE).add(data);
     }
 
     @Override
-    public void delete(CustomModel customModel) {
-        new deleteAsyncTask(customDAO).execute (
-            ConvertList.toEntity(customModel)
-        );
+    public void getObjects(Consumer<QuerySnapshot> onSuccess, Consumer<Exception> onFailure) {
+        final Task<QuerySnapshot> response = firebaseFirestore.collection(Constants.OBJECT).get();
+        response.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                onSuccess.accept(queryDocumentSnapshots);
+            }
+        } ). addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                onFailure.accept(exception);
+            }
+        } );
     }
 
     @Override
-    public void deleteAll() {
-        new deleteAllAsyncTask(customDAO).execute();
-    }
-
-    public LiveData<List<CustomModel>> getAll() {
-        return ConvertList.toLiveDataListModel(
-                customDAO.getAll()
-        );
-    }
-
-    //region Static Class For Repository
-    private static class insertAsyncTask extends AsyncTask<CustomEntity, Void, Void> {
-        private final CustomDAO customDAO;
-
-        private insertAsyncTask(CustomDAO customDAO) {
-            this.customDAO = customDAO;
-        }
-
-        @Override
-        protected Void doInBackground(CustomEntity... customEntities) {
-            customDAO.insert(customEntities[0]);
-            return null;
+    public void updateObject(CustomModel model) throws Exception {
+        if (model != null) {
+            firebaseFirestore
+                .collection(Constants.OBJECT)
+                .document(model.id)
+                .update( ConvertList.toMap(model) );
+        } else {
+            throw new Exception("CustomModel is Null");
         }
     }
 
-    private static class updateAsyncTask extends AsyncTask<CustomEntity, Void, Void> {
-        private final CustomDAO customDAO;
-
-        private updateAsyncTask(CustomDAO customDAO) {
-            this.customDAO = customDAO;
-        }
-
-        @Override
-        protected Void doInBackground(CustomEntity... customEntities) {
-            customDAO.update(customEntities[0]);
-            return null;
+    @Override
+    public void deleteObject(CustomModel model) throws Exception {
+        if(model != null) {
+            firebaseFirestore
+                .collection(Constants.OBJECT)
+                .document(model.id)
+                .delete();
+        } else {
+            throw new Exception("Error deleting model");
         }
     }
 
-    private static class deleteAsyncTask extends AsyncTask<CustomEntity, Void, Void> {
-        private final CustomDAO customDAO;
-
-        private deleteAsyncTask(CustomDAO customDAO) {
-            this.customDAO = customDAO;
-        }
-
-        @Override
-        protected Void doInBackground(CustomEntity... customEntities) {
-            customDAO.delete(customEntities[0].getId());
-            return null;
+    @Override
+    public void updatePrimitive(PrimitiveModel model) throws Exception {
+        if (model != null) {
+            firebaseFirestore
+                .collection(Constants.PRIMITIVE)
+                .document(model.id)
+                .update( ConvertList.toMap(model) );
+        } else {
+            throw new Exception("PrimitiveModel is Nil");
         }
     }
 
-    private static class deleteAllAsyncTask extends AsyncTask<Void, Void, Void> {
-        private final CustomDAO customDAO;
-
-        private deleteAllAsyncTask(CustomDAO customDAO) {
-            this.customDAO = customDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            customDAO.deleteAll();
-            return null;
-        }
+    @Override
+    public void getPrimitives(Consumer<QuerySnapshot> onSuccess, Consumer<Exception> onFailure) {
+        final Task<QuerySnapshot> response = firebaseFirestore.collection(Constants.PRIMITIVE).get();
+        response.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                onSuccess.accept(queryDocumentSnapshots);
+            }
+        } ). addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                onFailure.accept(exception);
+            }
+        } );
     }
-    //endregion
+
+    public void uploadFile() throws Exception {
+        if (false) throw new Exception("File is Nil");
+        //imagesRef.child(name).putData(bytes);
+    }
+
+    public void deleteImage(String name) throws Exception {
+        if (name == null) throw new Exception("Image is Nil");
+        imagesRef.child(name).delete();
+    }
+
+    public void deleteImages(Consumer<ListResult> onSuccess, Consumer<Exception> onFailure) {
+        imagesRef.listAll()
+            .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                @Override
+                public void onSuccess(ListResult listResult) {
+                    onSuccess(listResult);
+                    /*
+                    for (StorageReference reference : listResult.getItems()) {
+                        reference.delete();
+                    }
+                    */
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    onFailure(exception);
+                }
+            });
+    }
 }
