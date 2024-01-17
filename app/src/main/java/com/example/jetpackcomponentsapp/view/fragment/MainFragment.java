@@ -26,6 +26,7 @@ import java.util.List;
 
 public class MainFragment extends Fragment implements CustomListeners {
 
+    public static final String TAG = MainFragment.class.getSimpleName();
     public static MainFragment  newInstance() {
         return new MainFragment();
     }

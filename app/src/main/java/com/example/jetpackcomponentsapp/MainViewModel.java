@@ -15,6 +15,7 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
+    public static final String TAG = MainViewModel.class.getSimpleName();
     private CustomRepository customRepository;
     MutableLiveData<List<CustomModel>> liveList;
     MutableLiveData<CustomModel> liveUpdate;

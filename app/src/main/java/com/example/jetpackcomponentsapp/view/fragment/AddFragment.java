@@ -21,7 +21,6 @@ import com.example.jetpackcomponentsapp.model.CustomModel;
 public class AddFragment extends Fragment {
 
     public static final String TAG = AddFragment.class.getSimpleName();
-
     public static AddFragment  newInstance() {
         return new AddFragment();
     }
