@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BottomOffsetDecorationHelper extends RecyclerView.ItemDecoration {
 
-    private int bottomItemOffset;
+    private final int bottomItemOffset;
 
     public BottomOffsetDecorationHelper(@NonNull Context context, @DimenRes int itemOffsetId) {
         bottomItemOffset = itemOffsetId;

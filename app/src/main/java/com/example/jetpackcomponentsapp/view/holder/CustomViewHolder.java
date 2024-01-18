@@ -8,27 +8,27 @@ import com.example.jetpackcomponentsapp.view.CustomListeners;
 
 public class CustomViewHolder extends BaseViewHolder {
 
-    private CustomBinder customBinder;
+    private final CustomBinder binder;
 
-    public CustomViewHolder(CustomListeners listeners, CustomBinder customBinder ) {
-        super(listeners,customBinder .getRoot());
-        this.customBinder = customBinder;
+    public CustomViewHolder(CustomListeners listeners, CustomBinder binder ) {
+        super(listeners,binder .getRoot());
+        this.binder = binder;
     }
 
     @Override
-    public void bindDataToViewHolder(final CustomModel item, final int position) {
-        setId(item.getId());
-        customBinder.imageView.setImageResource(item.getIcon());
-        customBinder.buttonEdit.setOnClickListener(new View.OnClickListener() {
+    public void bindDataToViewHolder(final CustomModel model, final int position) {
+        binder.setCustomModel(model);
+        binder.imageView.setImageResource(model.getIcon());
+        binder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getListener().onUpdate(item,position);
+                getListener().onUpdate(model,position);
             }
         });
-        customBinder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+        binder.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getListener().onDelete(item,position);
+                getListener().onDelete(model,position);
             }
         });
     }

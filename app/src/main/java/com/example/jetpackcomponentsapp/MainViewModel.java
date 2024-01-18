@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.jetpackcomponentsapp.model.CustomModel;
+import com.example.jetpackcomponentsapp.repository.BaseRepository;
 import com.example.jetpackcomponentsapp.repository.CustomRepository;
 
 import java.util.ArrayList;
@@ -16,13 +17,13 @@ import java.util.List;
 public class MainViewModel extends AndroidViewModel {
 
     public static final String TAG = MainViewModel.class.getSimpleName();
-    private CustomRepository customRepository;
-    MutableLiveData<List<CustomModel>> liveList;
-    MutableLiveData<CustomModel> liveUpdate;
+    private final BaseRepository repository;
+    private final MutableLiveData<List<CustomModel>> liveList;
+    private final MutableLiveData<CustomModel> liveUpdate;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        customRepository = CustomRepository.getInstance(application);
+        repository = CustomRepository.getInstance(application);
         liveList = new MutableLiveData();
         liveUpdate = new MutableLiveData<>();
     }
@@ -52,22 +53,22 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void insertItem(CustomModel item) {
-        customRepository.insert(item);
+        repository.insert(item);
     }
 
     public void updateItem() {
-        customRepository.update(liveUpdate.getValue());
+        repository.update(liveUpdate.getValue());
     }
     public void deleteItem(CustomModel item) {
-        customRepository.delete(item);
+        repository.delete(item);
     }
 
     public void deleteAll() {
-        customRepository.deleteAll();
+        repository.deleteAll();
     }
 
     public LiveData<List<CustomModel>> getItems() {
         //return liveList;
-        return customRepository.getAll();
+        return repository.getAll();
     }
 }

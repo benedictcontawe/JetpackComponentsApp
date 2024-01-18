@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -13,7 +12,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.jetpackcomponentsapp.MainViewModel;
 import com.example.jetpackcomponentsapp.R;
 import com.example.jetpackcomponentsapp.databinding.MainBinder;
@@ -21,7 +19,6 @@ import com.example.jetpackcomponentsapp.model.CustomModel;
 import com.example.jetpackcomponentsapp.view.CustomListeners;
 import com.example.jetpackcomponentsapp.view.MainActivity;
 import com.example.jetpackcomponentsapp.view.adapter.CustomAdapter;
-
 import java.util.List;
 
 public class MainFragment extends Fragment implements CustomListeners {
@@ -88,13 +85,13 @@ public class MainFragment extends Fragment implements CustomListeners {
     }
 
     private void onAdd() {
-        ((MainActivity)getActivity()).callAddFragment();
+        ( (MainActivity) requireActivity() ).callAddFragment();
     }
 
     @Override
     public void onUpdate(CustomModel item, int position) {
         viewModel.setUpdate(item);
-        ((MainActivity)getActivity()).callUpdateFragment();
+        ( (MainActivity) requireActivity() ).callUpdateFragment();
     }
 
     @Override

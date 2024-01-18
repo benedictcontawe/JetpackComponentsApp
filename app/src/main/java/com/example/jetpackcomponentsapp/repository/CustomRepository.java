@@ -53,6 +53,7 @@ public class CustomRepository implements BaseRepository {
         new deleteAllAsyncTask(customDAO).execute();
     }
 
+    @Override
     public LiveData<List<CustomModel>> getAll() {
         return ConvertList.toLiveDataListModel(
                 customDAO.getAll()

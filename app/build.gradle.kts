@@ -46,11 +46,13 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     //implementation("androidx.lifecycle:lifecycle-runtime:2.6.2")
     //endregion
-    //Room -> use annotationProcessor for java, kapt for kotlin
+    //region Room -> use annotationProcessor for java, kapt for kotlin
     implementation("androidx.room:room-runtime:2.6.1")//android.arch.persistence.room:runtime
     annotationProcessor("androidx.room:room-compiler:2.6.1")//android.arch.persistence.room:compiler
     //kapt "android.arch.persistence.room:compiler:1.1.1."
     testImplementation("androidx.room:room-testing:2.6.1") //android.arch.persistence.room:testing
+    //endregion
+    implementation("org.apache.commons:commons-lang3:3.14.0")
     //region Test Library
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
