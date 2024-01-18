@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp.utils;
 
 public class Constants {
+    public static final String CONTENT = "content";
     public static final String PRIMITIVE = "primitive";
     public static final String OBJECT = "object";
     public static final String NAME = "name";

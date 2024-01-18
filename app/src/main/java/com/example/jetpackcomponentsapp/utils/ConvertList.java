@@ -1,8 +1,7 @@
-package com.example.jetpackcomponentsapp.repository;
+package com.example.jetpackcomponentsapp.utils;
 
 import com.example.jetpackcomponentsapp.model.CustomModel;
 import com.example.jetpackcomponentsapp.model.PrimitiveModel;
-import com.example.jetpackcomponentsapp.utils.Constants;
 import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.HashMap;
 import java.util.Map;

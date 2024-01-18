@@ -1,14 +1,12 @@
 package com.example.jetpackcomponentsapp.view.model;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.jetpackcomponentsapp.model.PrimitiveModel;
 import com.example.jetpackcomponentsapp.repository.BaseRepository;
-import com.example.jetpackcomponentsapp.repository.ConvertList;
+import com.example.jetpackcomponentsapp.utils.ConvertList;
 import com.example.jetpackcomponentsapp.repository.CustomRepository;
 import com.example.jetpackcomponentsapp.utils.Constants;
 import com.google.firebase.firestore.DocumentSnapshot;

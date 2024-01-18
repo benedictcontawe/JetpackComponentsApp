@@ -1,10 +1,12 @@
 package com.example.jetpackcomponentsapp.repository;
 
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 import com.example.jetpackcomponentsapp.model.CustomModel;
 import com.example.jetpackcomponentsapp.model.PrimitiveModel;
 import com.example.jetpackcomponentsapp.utils.Constants;
+import com.example.jetpackcomponentsapp.utils.ConvertList;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -13,6 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import java.util.Map;
 
 public class CustomRepository implements BaseRepository {
@@ -110,11 +113,41 @@ public class CustomRepository implements BaseRepository {
         } );
     }
 
-    public void uploadFile() throws Exception {
-        if (false) throw new Exception("File is Nil");
+    @Override
+    public void uploadFile(String name, Uri uri, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {
+        //if (uri == null) throw new Exception("File is Nil");
         //imageReference.child(name).putData(bytes);
+        imageReference.child(name).putFile(uri)
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    uploadedFile(taskSnapshot, onSuccess, onFailure);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    onFailure.accept(exception);
+                }
+            });
     }
 
+    private void uploadedFile(UploadTask.TaskSnapshot taskSnapshot, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {
+        taskSnapshot.getMetadata().getReference().getDownloadUrl()
+            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                  @Override
+                  public void onSuccess(Uri uri) {
+                      onSuccess.accept(uri);
+                  }
+              }
+            ).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    onFailure.accept(exception);
+                }
+            });
+    }
+
+    @Override
     public void deleteImage(String name) throws Exception {
         if (name == null) throw new Exception("Image is Nil");
         imageReference.child(name).delete();
@@ -125,7 +158,7 @@ public class CustomRepository implements BaseRepository {
             .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                 @Override
                 public void onSuccess(ListResult listResult) {
-                    onSuccess(listResult);
+                    onSuccess.accept(listResult);
                     /*
                     for (StorageReference reference : listResult.getItems()) {
                         reference.delete();
@@ -136,7 +169,7 @@ public class CustomRepository implements BaseRepository {
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    onFailure(exception);
+                    onFailure.accept(exception);
                 }
             });
     }

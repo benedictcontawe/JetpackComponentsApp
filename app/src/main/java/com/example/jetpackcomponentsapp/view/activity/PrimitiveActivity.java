@@ -15,7 +15,7 @@ import com.example.jetpackcomponentsapp.R;
 import com.example.jetpackcomponentsapp.databinding.PrimitiveBinder;
 import com.example.jetpackcomponentsapp.view.model.PrimitiveViewModel;
 
-public class PrimitiveActivity extends AppCompatActivity implements View.OnClickListener{
+public class PrimitiveActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = PrimitiveActivity.class.getSimpleName();
     public static Intent newIntent(Context context) {
