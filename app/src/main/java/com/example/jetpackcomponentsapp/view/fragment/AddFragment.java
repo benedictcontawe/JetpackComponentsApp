@@ -36,7 +36,6 @@ public class AddFragment extends Fragment {
     }
 
     private AddBinder binding;
-    private ObjectViewModel viewModel;
     private ActivityResultLauncher<Intent> startForResult;
 
     @Override
@@ -49,16 +48,15 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add,container,false);
+        binding.setViewModel(new ViewModelProvider(requireActivity()).get(ObjectViewModel.class));
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.getViewModel().resetUri();
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(ObjectViewModel.class);
-        binding.setViewModel(viewModel);
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-
         binding.editText.requestFocus();
         showSoftKeyboard();
 
@@ -68,7 +66,6 @@ public class AddFragment extends Fragment {
                 Glide.with(requireContext())
                     .asBitmap()
                     .fallback(R.drawable.ic_launcher_foreground)
-                    .error(R.drawable.ic_launcher_foreground)
                     .placeholder(R.drawable.animation_loading)
                     .priority(Priority.NORMAL)
                     .load(uri)
@@ -87,7 +84,7 @@ public class AddFragment extends Fragment {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.insertItem (
+                binding.getViewModel().insertItem (
                     new CustomModel (
                         binding.editText.getText().toString()
                     )

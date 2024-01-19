@@ -22,6 +22,7 @@ public class CustomViewHolder extends BaseViewHolder {
     public void bindDataToViewHolder(final CustomModel model, final int position) {
         binder.setCustomModel(model);
         loadPhoto();
+        binder.textView.setText(model.name);
         binder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

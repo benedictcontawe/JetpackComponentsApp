@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data class="UpdateBinder">
         <variable
@@ -14,6 +14,20 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+
+        <ImageView
+            android:id="@+id/image_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_add_a_photo"
+            android:contentDescription="@null" />
+
         <TextView
             android:id="@+id/lbl_name"
             android:layout_width="wrap_content"
@@ -24,7 +38,6 @@
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={viewModel.update.name}"
             android:hint="@string/update_name"
             android:inputType="text"
             android:imeOptions="actionDone" />

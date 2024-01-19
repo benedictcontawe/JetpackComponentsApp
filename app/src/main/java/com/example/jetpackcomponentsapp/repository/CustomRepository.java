@@ -16,6 +16,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Map;
 
 public class CustomRepository implements BaseRepository {
@@ -115,20 +117,23 @@ public class CustomRepository implements BaseRepository {
 
     @Override
     public void uploadFile(String name, Uri uri, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {
-        //if (uri == null) throw new Exception("File is Nil");
-        //imageReference.child(name).putData(bytes);
-        imageReference.child(name).putFile(uri)
-            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    uploadedFile(taskSnapshot, onSuccess, onFailure);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    onFailure.accept(exception);
+        if (StringUtils.isBlank(name)) onFailure.accept(new Exception("File name is Nil"));
+        else if (uri == null) onFailure.accept(new Exception("File is Nil"));
+        else {
+            //imageReference.child(name).putData(bytes);
+            imageReference.child(name).putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        uploadedFile(taskSnapshot, onSuccess, onFailure);
+                    }
+                } ).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        onFailure.accept(exception);
                 }
             });
+        }
     }
 
     private void uploadedFile(UploadTask.TaskSnapshot taskSnapshot, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {

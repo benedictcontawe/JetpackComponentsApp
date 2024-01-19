@@ -134,7 +134,6 @@
                     android:id="@+id/text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@={customModel.name}"
                     tools:text="[Name]"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="@id/constraint_guideline_lead_quarter_vertical"

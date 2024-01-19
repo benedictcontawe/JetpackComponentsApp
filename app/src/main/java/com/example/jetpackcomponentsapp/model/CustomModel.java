@@ -6,14 +6,15 @@ import androidx.annotation.Nullable;
 public class CustomModel {
 
     public final String id;
-    public String name;
+    public final String name;
     @Nullable public final String icon;
-    @Nullable public String file;
+    @Nullable public final String file;
 
     public CustomModel(String name) {
         this.id = "Nil";
         this.name = name;
         this.icon = null;
+        this.file = null;
     }
 
     public CustomModel(@Nullable String id, @Nullable String name, @Nullable String icon, @Nullable String file) {
@@ -26,6 +27,6 @@ public class CustomModel {
     @NonNull
     @Override
     public String toString() {
-        return "CustomModel id " + this.id + ", name " + this.name + ", icon " + this.icon;
+        return "CustomModel id " + this.id + ", name " + this.name + ", icon " + this.icon + ", file" + file;
     }
 }

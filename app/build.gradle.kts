@@ -61,6 +61,7 @@ dependencies {
     //implementation("com.github.bumptech.glide:annotations:4.16.0")
     //annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     //endregion
+    implementation("org.apache.commons:commons-lang3:3.14.0")
     //region Test Library
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

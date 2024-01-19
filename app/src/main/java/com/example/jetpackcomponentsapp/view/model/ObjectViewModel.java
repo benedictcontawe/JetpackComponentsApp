@@ -28,7 +28,6 @@ public class ObjectViewModel extends AndroidViewModel {
 
     public static final String TAG = ObjectViewModel.class.getSimpleName();
     private final BaseRepository repository;
-    private List<CustomModel> list = new ArrayList<>();
     private final MutableLiveData<Boolean> liveLoading;
     private final MutableLiveData<List<CustomModel>> liveList;
     private final MutableLiveData<CustomModel> liveUpdate;
@@ -45,6 +44,10 @@ public class ObjectViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> observeLoading() {
         return liveLoading;
+    }
+
+    public void resetUri() {
+        liveUri.setValue(null);
     }
 
     public void setUri(ActivityResult activityResult) {
@@ -65,7 +68,7 @@ public class ObjectViewModel extends AndroidViewModel {
         repository.getObjects (
             queryDocumentSnapshots -> {
                 Log.d(TAG,"fetchItems onSuccess");
-                list.clear();
+                List<CustomModel> list = new ArrayList<>();
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     Log.d(TAG,"fetchItems onSuccess stream");
                     list = queryDocumentSnapshots.getDocuments().stream()
@@ -109,6 +112,7 @@ public class ObjectViewModel extends AndroidViewModel {
                     )
                 )
             );
+            liveUri.setValue(null);
             liveLoading.setValue(false);
         }, exception -> {
             Log.e(TAG,"insertItem uploadFile onFailure Exception " + exception.getMessage(), exception);
@@ -146,7 +150,8 @@ public class ObjectViewModel extends AndroidViewModel {
     public void deleteAll() {
         try {
             liveLoading.setValue(true);
-            for (CustomModel model : list) {
+            for (CustomModel model : liveList.getValue()) {
+                Log.d(TAG,"deleteAll " + model);
                 repository.deleteObject(model);
                 repository.deleteImage(model.file);
             }
@@ -163,6 +168,7 @@ public class ObjectViewModel extends AndroidViewModel {
     }
 
     private String getFileName(Uri uri) {
+        if (uri == null) return null;
         switch (uri.getScheme()) {
             case ContentResolver.SCHEME_FILE:
                 return new File(uri.getPath()).getName();
@@ -198,10 +204,8 @@ public class ObjectViewModel extends AndroidViewModel {
                     String packageName = uri.getAuthority();
                     String resourceType = uri.getPathSegments().get(0);
                     String resourceEntryName = uri.getPathSegments().get(1);
-                    resourceId = getApplication().getResources().getIdentifier(
-                            resourceEntryName,
-                            resourceType,
-                            packageName
+                    resourceId = getApplication().getResources().getIdentifier (
+                        resourceEntryName, resourceType, packageName
                     );
                     return getApplication().getResources().getResourceName(resourceId);
                 }
