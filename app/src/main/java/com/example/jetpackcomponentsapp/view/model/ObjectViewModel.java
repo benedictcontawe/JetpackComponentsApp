@@ -98,9 +98,9 @@ public class ObjectViewModel extends AndroidViewModel {
     }
 
     public void insertItem(CustomModel model) {
-        String name = getFileName(liveUri.getValue());
+        String fileName = getFileName(liveUri.getValue());
         liveLoading.setValue(true);
-        repository.uploadFile(name, liveUri.getValue(), uri -> {
+        repository.uploadFile(fileName, liveUri.getValue(), uri -> {
             Log.d(TAG,"insertItem uploadFile onSuccess");
             repository.createObject (
                 ConvertList.toMap (
@@ -108,30 +108,45 @@ public class ObjectViewModel extends AndroidViewModel {
                         model.id,
                         model.name,
                         uri.toString(),
-                        name
+                        fileName
                     )
                 )
             );
-            liveUri.setValue(null);
+            resetUri();
             liveLoading.setValue(false);
+            fetchItems();
         }, exception -> {
             Log.e(TAG,"insertItem uploadFile onFailure Exception " + exception.getMessage(), exception);
             liveLoading.setValue(false);
         } );
     }
 
-    public void updateItem() {
-        try {
-            liveLoading.setValue(true);
-            CustomModel model = liveUpdate.getValue();
-            repository.updateObject(model);
-            //TODO: Update Firebase Storage Image
-            //TODO: Delete Old Firebase Storage Image repository.deleteImage(model.file);
-        } catch (Exception exception) {
-            Log.e(TAG,"updateItem Exception " + exception.getMessage(), exception);
-        } finally {
-            liveLoading.setValue(false);
-            fetchItems();
+    public void updateItem(String name) {
+        liveLoading.setValue(true);
+        CustomModel model = new CustomModel (
+            liveUpdate.getValue().id, name, liveUpdate.getValue().icon, liveUpdate.getValue().file
+        );
+        if (liveUri.getValue() == null) {
+            repository.updateObject ( model, unused -> {
+                liveLoading.setValue(false);
+                fetchItems();
+            }, exception -> {
+                Log.e(TAG,"updateItem updateObject onFailure Exception " + exception.getMessage(), exception);
+                liveLoading.setValue(false);
+                fetchItems();
+            } );
+        } else if (liveUri.getValue() != null) {
+            repository.updateObject (
+                getFileName(liveUri.getValue()),
+                liveUri.getValue(), model, unused -> {
+                    liveLoading.setValue(false);
+                    fetchItems();
+                }, exception -> {
+                    Log.e(TAG,"updateItem updateObject onFailure Exception " + exception.getMessage(), exception);
+                    liveLoading.setValue(false);
+                    fetchItems();
+                }
+            );
         }
     }
     public void deleteItem(CustomModel model) {

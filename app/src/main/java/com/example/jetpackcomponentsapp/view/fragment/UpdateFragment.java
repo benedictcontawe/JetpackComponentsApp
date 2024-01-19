@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,16 @@ import com.example.jetpackcomponentsapp.model.CustomModel;
 public class UpdateFragment extends DialogFragment {
 
     public static final String TAG = UpdateFragment.class.getSimpleName();
+    public static final String URL = "image_url";
     public static UpdateFragment newInstance() {
         return new UpdateFragment();
+    }
+    public static UpdateFragment newInstance(String url) {
+        UpdateFragment fragment = new UpdateFragment();
+        Bundle arguments = new Bundle();
+        arguments.putString(URL, url);
+        fragment.setArguments(arguments);
+        return fragment;
     }
 
     private UpdateBinder binding;
@@ -50,6 +59,7 @@ public class UpdateFragment extends DialogFragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_update,container,false);
         binding.setViewModel(new ViewModelProvider(requireActivity()).get(ObjectViewModel.class));
         binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.getViewModel().resetUri();
         return binding.getRoot();
     }
 
@@ -77,11 +87,19 @@ public class UpdateFragment extends DialogFragment {
                 showSoftKeyboard(binding.editText);
             }
         });
-
+        binding.imageCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startForResult.launch (
+                    new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                );
+                //startActivityForResult(galleryIntent, null);
+            }
+        });
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.getViewModel().updateItem();
+                binding.getViewModel().updateItem(binding.editText.getText().toString());
                 hideSoftKeyboard();
                 dismiss();
             }

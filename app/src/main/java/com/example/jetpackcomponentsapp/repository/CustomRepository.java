@@ -36,15 +36,10 @@ public class CustomRepository implements BaseRepository {
         imageReference = firebaseStorage.getReference().child("images/");
         videosReference = firebaseStorage.getReference().child("videos/");
     }
-
+    //region Object Methods
     @Override
     public void createObject(Map<String, Object> data) {
         firebaseFirestore.collection(Constants.OBJECT).add(data);
-    }
-
-    @Override
-    public void createPrimitive(Map<String, Object> data) {
-        firebaseFirestore.collection(Constants.PRIMITIVE).add(data);
     }
 
     @Override
@@ -64,15 +59,34 @@ public class CustomRepository implements BaseRepository {
     }
 
     @Override
-    public void updateObject(CustomModel model) throws Exception {
-        if (model != null) {
-            firebaseFirestore
-                .collection(Constants.OBJECT)
-                .document(model.id)
-                .update( ConvertList.toMap(model) );
-        } else {
-            throw new Exception("CustomModel is Null");
-        }
+    public void updateObject(CustomModel model, Consumer<Void> onSuccess, Consumer<Exception> onFailure) {
+        firebaseFirestore.collection(Constants.OBJECT).document(model.id).update( ConvertList.toMap(model) )
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                onSuccess.accept(unused);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                onFailure.accept(exception);
+            }
+        });
+    }
+
+    @Override
+    public void updateObject(String newName, Uri newUri, CustomModel model, Consumer<Void> onSuccess, Consumer<Exception> onFailure) {
+        updateFile(newName, newUri, model.file,
+            newFile -> {
+                updateObject (
+                    new CustomModel (model.id, model.name, newFile.toString(), newName),
+                    onSuccess,
+                    onFailure
+                );
+            }, exception -> {
+                onFailure.accept(exception);
+            }
+        );
     }
 
     @Override
@@ -85,6 +99,12 @@ public class CustomRepository implements BaseRepository {
         } else {
             throw new Exception("Error deleting model");
         }
+    }
+    //endregion
+    //region Primitive Methods
+    @Override
+    public void createPrimitive(Map<String, Object> data) {
+        firebaseFirestore.collection(Constants.PRIMITIVE).add(data);
     }
 
     @Override
@@ -114,7 +134,8 @@ public class CustomRepository implements BaseRepository {
             }
         } );
     }
-
+    //endregion
+    //region File Methods
     @Override
     public void uploadFile(String name, Uri uri, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {
         if (StringUtils.isBlank(name)) onFailure.accept(new Exception("File name is Nil"));
@@ -138,18 +159,43 @@ public class CustomRepository implements BaseRepository {
 
     private void uploadedFile(UploadTask.TaskSnapshot taskSnapshot, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {
         taskSnapshot.getMetadata().getReference().getDownloadUrl()
-            .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                  @Override
-                  public void onSuccess(Uri uri) {
-                      onSuccess.accept(uri);
-                  }
+        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+              @Override
+              public void onSuccess(Uri uri) {
+                  onSuccess.accept(uri);
               }
-            ).addOnFailureListener(new OnFailureListener() {
+          }
+        ).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                onFailure.accept(exception);
+            }
+        });
+    }
+
+    @Override
+    public void updateFile(String newName, Uri newUri, String oldName, Consumer<Uri> onSuccess, Consumer<Exception> onFailure) {
+        if (StringUtils.isBlank(newName)) onFailure.accept(new Exception("File name is Nil"));
+        else if (newName == null) onFailure.accept(new Exception("File is Nil"));
+        else {
+            imageReference.child(newName).putFile(newUri)
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    uploadedFile(taskSnapshot, onSuccess, onFailure);
+                    try {
+                        deleteImage(oldName);
+                    } catch (Exception exception) {
+                        onFailure.accept(exception);
+                    }
+                }
+            } ).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     onFailure.accept(exception);
                 }
             });
+        }
     }
 
     @Override
@@ -178,4 +224,5 @@ public class CustomRepository implements BaseRepository {
                 }
             });
     }
+    //endregion
 }
