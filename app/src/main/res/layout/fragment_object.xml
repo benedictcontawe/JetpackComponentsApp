@@ -87,6 +87,7 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_add"
             android:contentDescription="@string/add"
+            android:tooltipText="@string/add"
             app:srcCompat="@drawable/ic_add_white"
             app:layout_constraintStart_toStartOf="@id/constraint_guideline_marginStart"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"
@@ -95,6 +96,7 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_delete"
             android:contentDescription="@string/delete_all"
+            android:tooltipText="@string/delete_all"
             app:srcCompat="@drawable/ic_delete_white"
             app:layout_constraintEnd_toEndOf="@id/constraint_guideline_marginEnd"
             app:layout_constraintBottom_toBottomOf="@id/constraint_guideline_marginBottom"
