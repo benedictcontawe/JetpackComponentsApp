@@ -74,8 +74,7 @@ public class ObjectFragment extends Fragment implements CustomListeners, SwipeRe
             public void onChanged(List<CustomModel> list) {
                 adapter.setItems(list);
                 adapter.notifyDataSetChanged();
-                if (binding.swipeRefreshLayout.isRefreshing())
-                    binding.swipeRefreshLayout.setRefreshing(false);
+                //if (binding.swipeRefreshLayout.isRefreshing()) binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
         binding.recyclerView.setHasFixedSize(true);

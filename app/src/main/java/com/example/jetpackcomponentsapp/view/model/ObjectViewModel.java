@@ -6,10 +6,13 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
+import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -22,6 +25,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class ObjectViewModel extends AndroidViewModel {
@@ -82,6 +88,22 @@ public class ObjectViewModel extends AndroidViewModel {
                 }
                 liveList.setValue(list);
                 liveLoading.setValue(false);
+                /*
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+                */
+                /*
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }).start();
+                */
             }, exception -> {
                 Log.e(TAG,"fetchItems onFailure Exception " + exception.getMessage(), exception);
                 liveLoading.setValue(false);
