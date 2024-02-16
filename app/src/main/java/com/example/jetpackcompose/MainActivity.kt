@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,102 +58,109 @@ class MainActivity : ComponentActivity() {
         public fun newIntent(context : Context) : Intent = Intent(context.applicationContext, MainActivity::class.java)
     }
 
+    private val viewModel : MainViewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState : Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             val viewModel : MainViewModel = viewModel { MainViewModel() }
-            val data by viewModel.getData().observeAsState("Result")
-            val progress by viewModel.getProgressData().observeAsState(0.0f)
-            val isSwitchChecked by viewModel.getSwitchChecked().observeAsState(false) //var isSwitchChecked by remember { mutableStateOf(false) }
-            val isCheckBoxChecked by viewModel.getCheckBoxChecked().observeAsState(false) //var isCheckBoxChecked by remember { mutableStateOf(false) }
-            val isSpinnerExpanded by viewModel.getSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
-            val isCustomSpinnerExpanded by viewModel.getCustomSpinnerExpanded().observeAsState(false) //var isSpinnerExpanded by remember { mutableStateOf(false) }
-            val rate by viewModel.getRatingBar().observeAsState(0) //var rating by remember { mutableStateOf(0) }
-            val sliderProgress by viewModel.getSliderProgress().observeAsState(0.0f) //var sliderProgress by remember { mutableStateOf(false) }
+            val data : String by viewModel.getData().observeAsState("Result")
+            val progress : Float by viewModel.getProgressData().observeAsState(0.0f)
+            val isSwitchChecked : Boolean by viewModel.getSwitchChecked().observeAsState(false)
+            val isCheckBoxChecked : Boolean by viewModel.getCheckBoxChecked().observeAsState(false)
+            val isSpinnerExpanded : Boolean by viewModel.getSpinnerExpanded().observeAsState(false)
+            val isCustomSpinnerExpanded : Boolean by viewModel.getCustomSpinnerExpanded().observeAsState(false)
+            val rate : Int by viewModel.getRatingBar().observeAsState(0)
+            val sliderProgress : Float by viewModel.getSliderProgress().observeAsState(0.0f)
             JetpackcomposeTheme {
-                Surface (
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                SurfaceComposable(viewModel, data, progress, isSwitchChecked, isCheckBoxChecked, isSpinnerExpanded, isCustomSpinnerExpanded, rate, sliderProgress)
+            }
+        }
+    }
+
+    @Composable
+    private fun SurfaceComposable(viewModel : MainViewModel, data : String, progress : Float, isSwitchChecked : Boolean, isCheckBoxChecked : Boolean, isSpinnerExpanded : Boolean, isCustomSpinnerExpanded : Boolean, rate : Int, sliderProgress : Float) {
+        Surface (
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                Text(text = data, textAlign = TextAlign.Center, fontSize = 13.sp)
+                LinearProgressIndicator (
+                    progress = progress,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(13.dp)
+                )
+                Divider (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp),
+                    //color = Color.Red
+                )
+                //Spacer(modifier = Modifier.height(0.dp))
+                //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
+                Button (
+                    onClick = { viewModel.setData("Button Was Clicked") }
                 ) {
-                    Column (
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Text(text = data, textAlign = TextAlign.Center, fontSize = 13.sp)
-                        LinearProgressIndicator (
-                            progress = progress,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(13.dp)
-                        )
-                        Divider (
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(10.dp),
-                            //color = Color.Red
-                        )
-                        //Spacer(modifier = Modifier.height(0.dp))
-                        //Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f / 0.013f, true))
-                        Button (
-                            onClick = { viewModel.setData("Button Was Clicked") }
-                        ) {
-                            Text(text = "Send Data")
-                        }
-                        SwitchComposable(
-                            isCheck = isSwitchChecked,
-                            onCheckedChange = { isChecked : Boolean ->
-                                viewModel.setSwitchChecked(isChecked)
-                            }
-                        )
-                        ToggleButtonComposable()
-                        RadioGroupComposable (
-                            list = viewModel.onOffList,
-                            onSelect = { option : String -> viewModel.isRadioButtonChecked(option) },
-                            onClick = { option : String -> viewModel.setSelectedRadioButton(option) },
-                        )
-                        CheckboxComposable (
-                            isChecked = isCheckBoxChecked,
-                            onCheckedChange = { isChecked : Boolean ->
-                                viewModel.setCheckBoxChecked(isChecked)
-                            },
-                            text = viewModel.getCheckBoxText(isCheckBoxChecked)
-                        )
-                        SpinnerComposable (
-                            onClick = { viewModel.setSpinnerExpanded(isSpinnerExpanded.not()) },
-                            text = viewModel.getSelectedSpinner(),
-                            isExpanded = isSpinnerExpanded,
-                            onDismiss = { viewModel.setSpinnerExpanded(false) },
-                            list = viewModel.spinnerList,
-                            onItemSelected = { spinner : String ->
-                                viewModel.setSpinnerExpanded(false)
-                                viewModel.setSpinnerSelectedIndex(spinner)
-                            }
-                        )
-                        CustomSpinnerComposable (
-                            onClick = { viewModel.setCustomSpinnerExpanded(isCustomSpinnerExpanded.not()) },
-                            text = viewModel.getSelectedCustomSpinner(),
-                            isExpanded = isCustomSpinnerExpanded,
-                            onDismiss = { viewModel.setCustomSpinnerExpanded(false) },
-                            list = viewModel.spinnerList,
-                            onItemSelected = { spinner : String ->
-                                viewModel.setCustomSpinnerExpanded(false)
-                                viewModel.setCustomSpinnerSelectedIndex(spinner)
-                            }
-                        )
-                        RatingBarComposable (
-                            rated = rate,
-                            onRatingChanged = { rating -> viewModel.setRatingBar(rating) }
-                        )
-                        SeekBarComposable (
-                            progressed = sliderProgress,
-                            onProgressChanged = { progress : Float ->
-                                viewModel.setSliderProgress(progress)
-                            }
-                        )
-                        RangeSliderComposable()
-                    }
+                    Text(text = "Send Data")
                 }
+                SwitchComposable(
+                    isCheck = isSwitchChecked,
+                    onCheckedChange = { isChecked : Boolean ->
+                        viewModel.setSwitchChecked(isChecked)
+                    }
+                )
+                ToggleButtonComposable()
+                RadioGroupComposable (
+                    list = viewModel.onOffList,
+                    onSelect = { option : String -> viewModel.isRadioButtonChecked(option) },
+                    onClick = { option : String -> viewModel.setSelectedRadioButton(option) },
+                )
+                CheckboxComposable (
+                    isChecked = isCheckBoxChecked,
+                    onCheckedChange = { isChecked : Boolean ->
+                        viewModel.setCheckBoxChecked(isChecked)
+                    },
+                    text = viewModel.getCheckBoxText(isCheckBoxChecked)
+                )
+                SpinnerComposable (
+                    onClick = { viewModel.setSpinnerExpanded(isSpinnerExpanded.not()) },
+                    text = viewModel.getSelectedSpinner(),
+                    isExpanded = isSpinnerExpanded,
+                    onDismiss = { viewModel.setSpinnerExpanded(false) },
+                    list = viewModel.spinnerList,
+                    onItemSelected = { spinner : String ->
+                        viewModel.setSpinnerExpanded(false)
+                        viewModel.setSpinnerSelectedIndex(spinner)
+                    }
+                )
+                CustomSpinnerComposable (
+                    onClick = { viewModel.setCustomSpinnerExpanded(isCustomSpinnerExpanded.not()) },
+                    text = viewModel.getSelectedCustomSpinner(),
+                    isExpanded = isCustomSpinnerExpanded,
+                    onDismiss = { viewModel.setCustomSpinnerExpanded(false) },
+                    list = viewModel.spinnerList,
+                    onItemSelected = { spinner : String ->
+                        viewModel.setCustomSpinnerExpanded(false)
+                        viewModel.setCustomSpinnerSelectedIndex(spinner)
+                    }
+                )
+                RatingBarComposable (
+                    rated = rate,
+                    onRatingChanged = { rating -> viewModel.setRatingBar(rating) }
+                )
+                SeekBarComposable (
+                    progressed = sliderProgress,
+                    onProgressChanged = { progress : Float ->
+                        viewModel.setSliderProgress(progress)
+                    }
+                )
+                RangeSliderComposable()
             }
         }
     }
@@ -352,10 +360,24 @@ class MainActivity : ComponentActivity() {
 
     @Preview(showBackground = true)
     @Composable
-    private fun GreetingPreview() {
+    private fun MainPreview() {
         JetpackcomposeTheme {
-            Text(
-                text = "Hello Android!",
+            val isSwitchChecked : Boolean by remember { mutableStateOf(false) }
+            val isCheckBoxChecked : Boolean by remember { mutableStateOf(false) }
+            val isSpinnerExpanded : Boolean by remember { mutableStateOf(false) }
+            val isCustomSpinnerExpanded : Boolean by remember { mutableStateOf(false) }
+            val rating : Int by remember { mutableStateOf(0) }
+            val sliderProgress : Float by remember { mutableStateOf(0.0f) }
+            SurfaceComposable (
+                viewModel = viewModel { MainViewModel() },
+                data = "Data",
+                progress = 0.0f,
+                isSwitchChecked = isSwitchChecked,
+                isCheckBoxChecked = isCheckBoxChecked,
+                isSpinnerExpanded = isSpinnerExpanded,
+                isCustomSpinnerExpanded = isCustomSpinnerExpanded,
+                rate = rating,
+                sliderProgress = sliderProgress
             )
         }
     }
