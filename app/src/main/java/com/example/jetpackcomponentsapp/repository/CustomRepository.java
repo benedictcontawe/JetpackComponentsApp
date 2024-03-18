@@ -1,5 +1,7 @@
 package com.example.jetpackcomponentsapp.repository;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
@@ -7,6 +9,12 @@ import com.example.jetpackcomponentsapp.model.CustomModel;
 import com.example.jetpackcomponentsapp.model.PrimitiveModel;
 import com.example.jetpackcomponentsapp.utils.Constants;
 import com.example.jetpackcomponentsapp.utils.ConvertList;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -33,6 +42,7 @@ public class CustomRepository implements BaseRepository {
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final StorageReference imageReference, videosReference;
+    public final CallbackManager callbackManager = CallbackManager.Factory.create();
 
     public static CustomRepository getInstance() {
         if (INSTANCE == null) INSTANCE = new CustomRepository();
@@ -253,7 +263,31 @@ public class CustomRepository implements BaseRepository {
                 }
             } );
     }
-    /*
+
+    public void loginFacebook(Activity activity) {
+        LoginManager.getInstance().registerCallback(callbackManager, facebookCallback());
+        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"));
+    }
+
+    private FacebookCallback<LoginResult> facebookCallback() {
+        return new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        };
+    }
+
     public void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
@@ -271,7 +305,6 @@ public class CustomRepository implements BaseRepository {
                 }
             });
     }
-    */
     @Override
     public void checkCredential(String email, String password, Consumer<FirebaseUser> onSuccess, Consumer<Throwable> onFailure) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
