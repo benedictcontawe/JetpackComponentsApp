@@ -7,9 +7,15 @@ import com.example.jetpackcomponentsapp.model.CustomModel;
 import com.example.jetpackcomponentsapp.model.PrimitiveModel;
 import com.example.jetpackcomponentsapp.utils.Constants;
 import com.example.jetpackcomponentsapp.utils.ConvertList;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -19,10 +25,12 @@ import com.google.firebase.storage.UploadTask;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class CustomRepository implements BaseRepository {
 
     private static CustomRepository INSTANCE;
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final StorageReference imageReference, videosReference;
 
@@ -223,6 +231,80 @@ public class CustomRepository implements BaseRepository {
                     onFailure.accept(exception);
                 }
             });
+    }
+    //endregion
+    //region Authentication Methods
+    @Override
+    public void registerCredential(String email, String password, Consumer<FirebaseUser> onSuccess, Consumer<Throwable> onFailure) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    try {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            onSuccess.accept(user);
+                        } else {
+                            throw new Exception("Registration Invalid");
+                        }
+                    } catch (Exception exception) {
+                        onFailure.accept(exception);
+                    }
+                }
+            } );
+    }
+    /*
+    public void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        firebaseAuth.signInWithCredential(credential)
+            .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        //updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        //updateUI(null);
+                    }
+                }
+            });
+    }
+    */
+    @Override
+    public void checkCredential(String email, String password, Consumer<FirebaseUser> onSuccess, Consumer<Throwable> onFailure) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    try {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            onSuccess.accept(user);
+                        } else {
+                            throw new Exception("Credential Invalid");
+                        }
+                    } catch (Exception exception) {
+                        onFailure.accept(exception);
+                    }
+                }
+            });
+    }
+
+    @Override
+    public FirebaseUser getUser() {
+        return firebaseAuth.getCurrentUser();
+    }
+
+    @Override
+    public boolean isUserSignedIn() {
+        return getUser() != null ? true : false;
+    }
+
+    @Override
+    public void signOut() {
+        firebaseAuth.signOut();
     }
     //endregion
 }
