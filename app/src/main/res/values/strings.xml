@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JetpackComponentsApp</string>
+    <string name="facebook_app_id">###############</string>
+    <string name="facebook_login_protocol_scheme">fb###############</string>
+    <string name="facebook_client_token">#########</string>
+    <string name="firebase_web_client_id">############-##############################.apps.googleusercontent.com</string>
     <string name="add">Add</string>
     <string name="add_name">Add Name</string>
     <string name="delete">Delete</string>

@@ -1,8 +1,12 @@
 package com.example.jetpackcomponentsapp.repository;
 
+import static androidx.core.app.ActivityCompat.startIntentSenderForResult;
+
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 import com.example.jetpackcomponentsapp.model.CustomModel;
@@ -15,6 +19,11 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.BeginSignInResult;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +33,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,13 +48,21 @@ import java.util.concurrent.Executor;
 
 public class CustomRepository implements BaseRepository {
 
+    public static final String TAG = CustomRepository.class.getSimpleName();
     private static CustomRepository INSTANCE;
+    //region Firebase
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final StorageReference imageReference, videosReference;
+    //endregion
+    //region Google
+    public static final int GOOGLE_SIGN_IN = 100;
+    private SignInClient oneTapClient;
+    //endregion
+    //region Facebook
     private final CallbackManager callbackManager = CallbackManager.Factory.create();
     private final LoginManager loginManager = LoginManager.getInstance();
-
+    //endregion
     public static CustomRepository getInstance() {
         if (INSTANCE == null) INSTANCE = new CustomRepository();
         return INSTANCE;
@@ -264,7 +282,83 @@ public class CustomRepository implements BaseRepository {
                 }
             } );
     }
+    //region Google Login Methods
+    public void loginGoogle(Activity activity, String firebaseWebClientId) {
+        //oneTapClient = Identity.getSignInClient(this)
+        oneTapClient.beginSignIn(buildSignInRequest(firebaseWebClientId))
+            .addOnSuccessListener(activity, new OnSuccessListener<BeginSignInResult>() {
+                @Override
+                public void onSuccess(BeginSignInResult result) {
+                    try {
+                        startIntentSenderForResult(activity, result.getPendingIntent().getIntentSender(), GOOGLE_SIGN_IN, null, 0, 0, 0, null);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.e(TAG, "Couldn't start One Tap UI: " + e.getLocalizedMessage());
+                    }
+                }
+            })
+            .addOnFailureListener((Executor) this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // No saved credentials found. Launch the One Tap sign-up flow, or
+                    // do nothing and continue presenting the signed-out UI.
+                    Log.d(TAG, e.getLocalizedMessage());
+                }
+            });
+    }
 
+    private BeginSignInRequest buildSignInRequest(String firebaseWebClientId) {
+        return BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                                .setSupported(true)
+                                .setFilterByAuthorizedAccounts(false)
+                                //.setServerClientId(context.getString(R.string.firebase_web_client_id))
+                                .setServerClientId(firebaseWebClientId)
+                                .build()
+                )
+                .setAutoSelectEnabled(true)
+                .build();
+    }
+
+    public void googleOnActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        if (requestCode == GOOGLE_SIGN_IN && resultCode == Activity.RESULT_OK) {
+            try {
+                SignInCredential googleCredential = oneTapClient.getSignInCredentialFromIntent(data);
+                String idToken = googleCredential.getGoogleIdToken();
+                if (idToken !=  null) {
+                    // Got an ID token from Google. Use it to authenticate
+                    // with Firebase.
+                    Log.d(TAG, "Got ID token " + idToken);
+                    // Got an ID token from Google. Use it to authenticate
+                    // with Firebase.
+                    AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+                    firebaseAuth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithCredential:success");
+                                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                                        //updateUI(user);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                        //updateUI(null);
+                                    }
+                                }
+                            });
+                }
+            } catch (ApiException exception) {
+                Log.e(TAG, "ApiException " + exception);
+            }
+
+        } else if (requestCode == GOOGLE_SIGN_IN && resultCode != Activity.RESULT_OK) {
+            Log.w(TAG, "failed, user denied OR no network OR jks SHA1 not configure yet at play console android project");
+        }
+    }
+    //endregion
+    //region Facebook Login Methods
     public void loginFacebook(Activity activity) {
         loginManager.registerCallback(callbackManager, facebookCallback());
         loginManager.logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"));
@@ -306,6 +400,7 @@ public class CustomRepository implements BaseRepository {
                 }
             });
     }
+    //endregion
     @Override
     public void checkCredential(String email, String password, Consumer<FirebaseUser> onSuccess, Consumer<Throwable> onFailure) {
         firebaseAuth.signInWithEmailAndPassword(email, password)

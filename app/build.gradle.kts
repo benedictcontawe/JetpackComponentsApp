@@ -57,6 +57,7 @@ dependencies {
     //implementation("com.google.firebase:firebase-firestorm:24.10.2")
     implementation("com.google.firebase:firebase-firestore")
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
     //endregion
     //region Facebook
     implementation("com.facebook.android:facebook-android-sdk:5.0.0")
