@@ -42,7 +42,8 @@ public class CustomRepository implements BaseRepository {
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final StorageReference imageReference, videosReference;
-    public final CallbackManager callbackManager = CallbackManager.Factory.create();
+    private final CallbackManager callbackManager = CallbackManager.Factory.create();
+    private final LoginManager loginManager = LoginManager.getInstance();
 
     public static CustomRepository getInstance() {
         if (INSTANCE == null) INSTANCE = new CustomRepository();
@@ -265,8 +266,8 @@ public class CustomRepository implements BaseRepository {
     }
 
     public void loginFacebook(Activity activity) {
-        LoginManager.getInstance().registerCallback(callbackManager, facebookCallback());
-        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"));
+        loginManager.registerCallback(callbackManager, facebookCallback());
+        loginManager.logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"));
     }
 
     private FacebookCallback<LoginResult> facebookCallback() {
