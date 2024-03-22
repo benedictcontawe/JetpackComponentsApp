@@ -2,6 +2,7 @@ package com.example.jetpackcomponentsapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -53,12 +54,13 @@ public class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
             })
         } )
         adapter.addLoadStateListener { loadState ->
-            if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
-                binder?.swipeRefreshLayout?.setRefreshing(loadState.refresh is LoadState.Loading)
-                binder?.appendLoading?.setVisibility (
-                    if (loadState.append is LoadState.Loading) View.VISIBLE
-                    else View.GONE
-                )
+            Log.d(TAG, "refresh ${loadState.refresh is LoadState.Loading} append ${loadState.append is LoadState.Loading}")
+            if (loadState.refresh is LoadState.Loading) {
+                binder?.swipeRefreshLayout?.setRefreshing(true)
+                binder?.appendLoading?.setVisibility(View.GONE)
+            } else if (loadState.append is LoadState.Loading) {
+                binder?.swipeRefreshLayout?.setRefreshing(false)
+                binder?.appendLoading?.setVisibility(View.VISIBLE)
             } else {
                 binder?.swipeRefreshLayout?.setRefreshing(false)
                 binder?.appendLoading?.setVisibility(View.GONE)
