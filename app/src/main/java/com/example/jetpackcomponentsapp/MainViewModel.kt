@@ -1,6 +1,8 @@
 package com.example.jetpackcomponentsapp
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -28,5 +30,15 @@ public class MainViewModel : ViewModel {
                 NasaHolderModel(list.size + 1, response)
             }
         }.shareIn(viewModelScope, SharingStarted.Lazily)
+    }
+
+    public fun observeLiveAPOD() : LiveData<PagingData<NasaHolderModel>> {
+        val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, 0)
+        return repository.getLiveAPOD(request).map { pagingDatum ->
+            pagingDatum.map { response ->
+                list.add(NasaHolderModel(0, response))
+                NasaHolderModel(list.size + 1, response)
+            }
+        }
     }
 }

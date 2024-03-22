@@ -1,9 +1,11 @@
 package com.example.jetpackcomponentsapp
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -70,7 +72,7 @@ public class Repository {
         return retrofit!!.create(serviceClass)
     }
 
-    private suspend fun getPagingConfig() : PagingConfig {
+    private fun getPagingConfig() : PagingConfig {
         return PagingConfig (
             pageSize = 10,
             initialLoadSize = 10, //default: page size * 3
@@ -87,6 +89,15 @@ public class Repository {
                 NasaPagingSource(nasaAPI, request)
             }
         ).flow
+    }
+
+    public fun getLiveAPOD(request : NasaRequestModel) : LiveData<PagingData<NasaResponseModel>> {
+        return Pager (
+            config = getPagingConfig(),
+            pagingSourceFactory = {
+                NasaPagingSource(nasaAPI, request)
+            }
+        ).liveData
     }
 
     public suspend fun getAPOD(request : NasaRequestModel) : List<NasaResponseModel> {
