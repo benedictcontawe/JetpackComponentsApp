@@ -24,7 +24,7 @@ public class Repository {
     private val nasaAPI : NasaAPI
 
     constructor() {
-        if (retrofit == null) retrofit = provideRetrofit(
+        if (retrofit == null) retrofit = provideRetrofit (
             Constants.API_DOMAIN,
             provideGsonBuilder(),
             provideOkHttpClient()
@@ -71,7 +71,7 @@ public class Repository {
     }
 
     private suspend fun getPagingConfig() : PagingConfig {
-        return PagingConfig(
+        return PagingConfig (
             pageSize = 10,
             initialLoadSize = 10, //default: page size * 3
             prefetchDistance = 10, //default: page size
@@ -81,7 +81,7 @@ public class Repository {
     }
 
     public suspend fun getFlowAPOD(request : NasaRequestModel) : Flow<PagingData<NasaResponseModel>> {
-        return Pager(
+        return Pager (
             config = getPagingConfig(),
             pagingSourceFactory = {
                 NasaPagingSource(nasaAPI, request)
