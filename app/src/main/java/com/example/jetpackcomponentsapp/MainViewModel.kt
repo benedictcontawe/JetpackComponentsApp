@@ -2,6 +2,7 @@ package com.example.jetpackcomponentsapp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -22,7 +23,7 @@ public class MainViewModel : ViewModel {
         list = mutableListOf<NasaHolderModel>()
     }
 
-    public suspend fun observeAPOD() : SharedFlow<PagingData<NasaHolderModel>> {
+    public fun observeAPOD() : SharedFlow<PagingData<NasaHolderModel>> {
         val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, 0)
         return repository.getFlowAPOD(request).map { pagingDatum ->
             pagingDatum.map { response ->

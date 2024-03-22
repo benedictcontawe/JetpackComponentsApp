@@ -82,7 +82,7 @@ public class Repository {
         )
     }
 
-    public suspend fun getFlowAPOD(request : NasaRequestModel) : Flow<PagingData<NasaResponseModel>> {
+    public fun getFlowAPOD(request : NasaRequestModel) : Flow<PagingData<NasaResponseModel>> {
         return Pager (
             config = getPagingConfig(),
             pagingSourceFactory = {

@@ -32,7 +32,7 @@ public class NasaPagingSource : PagingSource<Int, NasaResponseModel> {
             val nextKey : Int? = if (response.body()?.isEmpty() == true) null
             else position + 1
             Log.d(TAG, "load $position $prevKey $nextKey ${response.body()}")
-            LoadResult.Page(
+            LoadResult.Page<Int, NasaResponseModel>(
                 data = response.body()!!,
                 prevKey = prevKey,
                 nextKey = nextKey
