@@ -2,6 +2,8 @@
 <!-- - []() -->
 - [How to set Java SDK path in AndroidStudio?](https://stackoverflow.com/questions/19608742/how-to-set-java-sdk-path-in-androidstudio)
 
+- [Constraint Layout in Jetpack Compose with Examples](https://medium.com/huawei-developers/constraint-layout-in-jetpack-compose-with-examples-20cf39172371)
+
 - [Migrating to Material Design 3](https://material.io/blog/migrating-material-3)
 
 - [Device mirroring](https://developer.android.com/studio/preview/features#device-mirroring-giraffe)
