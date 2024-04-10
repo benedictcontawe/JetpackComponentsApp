@@ -16,7 +16,6 @@ import com.example.jetpackcomponentsapp.MainViewModel;
 import com.example.jetpackcomponentsapp.R;
 import com.example.jetpackcomponentsapp.databinding.AddBinder;
 import com.example.jetpackcomponentsapp.model.CustomModel;
-import org.apache.commons.lang3.StringUtils;
 
 public class AddFragment extends Fragment {
 

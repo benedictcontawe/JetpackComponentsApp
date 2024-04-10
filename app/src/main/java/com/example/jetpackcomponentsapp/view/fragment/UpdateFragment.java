@@ -1,5 +1,6 @@
 package com.example.jetpackcomponentsapp.view.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import com.example.jetpackcomponentsapp.MainViewModel;
 import com.example.jetpackcomponentsapp.R;
 import com.example.jetpackcomponentsapp.databinding.UpdateBinder;
 import com.example.jetpackcomponentsapp.model.CustomModel;
-import org.apache.commons.lang3.StringUtils;
 
 public class UpdateFragment extends DialogFragment {
 
@@ -33,7 +33,19 @@ public class UpdateFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment);
+        setStyle(DialogFragment.STYLE_NORMAL, getTheme());
+        setCancelable(true);
+    }
+
+    @Override
+    public int getTheme() {
+        return R.style.DialogFragment;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
     }
 
     @Nullable
