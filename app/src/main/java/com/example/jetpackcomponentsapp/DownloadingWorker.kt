@@ -22,9 +22,7 @@ class DownloadingWorker : Worker {
                     Log.d(TAG,"Downloading $index")
                     //setForegroundAsync()
                     setProgressAsync(
-                            Data.Builder()
-                                    .putInt(Constants.WORKER_INT_PROGRESS, index)
-                                    .build()
+                        Data.Builder().putInt(Constants.WORKER_INT_PROGRESS, index).build()
                     )
                 }
                 ListenableWorker.Result.success()

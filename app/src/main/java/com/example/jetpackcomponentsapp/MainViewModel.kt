@@ -1,12 +1,12 @@
 package com.example.jetpackcomponentsapp
 
 import android.app.Application
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
-import androidx.work.impl.model.WorkSpec
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.CancellationException
@@ -41,15 +41,23 @@ class MainViewModel : AndroidViewModel {
 
     init {
         workManager = WorkManager.getInstance(getApplication())
-        constraints = Constraints.Builder()
+        constraints = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Constraints.Builder()
                 .setRequiresCharging(false)
                 .setRequiresDeviceIdle(false)
                 .setRequiresBatteryNotLow(false)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
+        } else {
+            Constraints.Builder()
+                .setRequiresCharging(false)
+                .setRequiresBatteryNotLow(false)
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+        }
     }
 
-    private fun getScheduleWork(hour: Int, minute: Int) : Long {
+    private fun getScheduleWork(hour : Int, minute : Int) : Long {
         val calendar : Calendar = Calendar.getInstance()
         val nowMillis : Long = calendar.getTimeInMillis()
 
@@ -78,18 +86,11 @@ class MainViewModel : AndroidViewModel {
     public fun setOneTimeWorkRequest(name: String, int: String, string: String, long: String) {
         Log.d(TAG, "setOneTimeWorkRequest($name, $int, $string, $long)")
         val data : Data = Data.Builder()
-                .putString(Constants.WORKER_NAME,
-                        name
-                )
-                .putInt(Constants.WORKER_INT,
-                        getInteger(int)
-                )
-                .putString(Constants.WORKER_STRING,
-                        string
-                )
-                .putLong(Constants.WORKER_LONG,
-                        getLong(long)
-                ).build()
+                .putString(Constants.WORKER_NAME, name)
+                .putInt(Constants.WORKER_INT, getInteger(int))
+                .putString(Constants.WORKER_STRING, string)
+                .putLong(Constants.WORKER_LONG, getLong(long))
+                .build()
         workManager.cancelAllWorkByTag(name)
         oneTimeWorkRequest = OneTimeWorkRequest.Builder(CustomWorker::class.java)
                 .setInitialDelay(getScheduleWork(0, 1), TimeUnit.MICROSECONDS)
@@ -105,14 +106,10 @@ class MainViewModel : AndroidViewModel {
         Log.d(TAG, "Chaining Workers Filter -> Compress -> Upload")
         val WORK_NAME = "SingleBackupWorker"
         workManager.cancelAllWorkByTag(name)
-        filteringWorRequest = OneTimeWorkRequest.Builder(FilteringWorker::class.java)
-                .build()
-        compressingWorkRequest = OneTimeWorkRequest.Builder(CompressingWorker::class.java)
-                .build()
-        uploadingWorRequest = OneTimeWorkRequest.Builder(UploadingWorker::class.java)
-                .build()
-        downloadingWorRequest = OneTimeWorkRequest.Builder(DownloadingWorker::class.java)
-                .build()
+        filteringWorRequest = OneTimeWorkRequest.Builder(FilteringWorker::class.java).build()
+        compressingWorkRequest = OneTimeWorkRequest.Builder(CompressingWorker::class.java).build()
+        uploadingWorRequest = OneTimeWorkRequest.Builder(UploadingWorker::class.java).build()
+        downloadingWorRequest = OneTimeWorkRequest.Builder(DownloadingWorker::class.java).build()
         parallelWorks = mutableListOf<OneTimeWorkRequest>()
         parallelWorks.add(downloadingWorRequest!!)
         parallelWorks.add(filteringWorRequest!!)
@@ -132,7 +129,7 @@ class MainViewModel : AndroidViewModel {
                 .build()
         workManager.enqueue(periodicWorkRequest)
     }
-
+    /*
     private fun getEmptyWorkInfo() : WorkInfo {
         return WorkInfo(
                 UUID.randomUUID(),
@@ -144,23 +141,24 @@ class MainViewModel : AndroidViewModel {
         )
     }
 
-    public fun getOneTimeWorkRequestWorkSpec() : WorkSpec? {
-        workManager.getWorkInfosByTag("asd").get().get(0)
-
-        return oneTimeWorkRequest?.getWorkSpec()
+    public fun getOneTimeWorkRequestWorkSpec(tag : String) : WorkSpec? {
+        workManager.getWorkInfosByTag(tag).get().get(0)
+        return oneTimeWorkRequest?.workSpec
     }
-
+    */
     public fun getOneTimeWorkRequestWorkInfo() : WorkInfo? {
         return try {
-            workManager.getWorkInfoById(oneTimeWorkRequest!!.getId()).get()
-        } catch (ex: CancellationException) { Log.e(TAG, "CancellationException ${ex.message}")
-            getEmptyWorkInfo()
-        } catch (ex: ExecutionException) { Log.e(TAG, "ExecutionException ${ex.message}")
-            getEmptyWorkInfo()
-        } catch (ex: InterruptedException) { Log.e(TAG, "InterruptedException ${ex.message}")
-            getEmptyWorkInfo()
-        } catch (ex: kotlin.KotlinNullPointerException) { Log.e(TAG, "KotlinNullPointerException ${ex.message}")
-            getEmptyWorkInfo()
+            workManager.getWorkInfoById(oneTimeWorkRequest!!.id).get()
+        } catch (exception : CancellationException) { Log.e(TAG, "CancellationException ${exception.message}")
+            null //getEmptyWorkInfo()
+        } catch (exception : ExecutionException) { Log.e(TAG, "ExecutionException ${exception.message}")
+            null //getEmptyWorkInfo()
+        } catch (exception : InterruptedException) { Log.e(TAG, "InterruptedException ${exception.message}")
+            null //getEmptyWorkInfo()
+        } catch (exception : kotlin.KotlinNullPointerException) { Log.e(TAG, "KotlinNullPointerException ${exception.message}")
+            null //getEmptyWorkInfo()
+        } catch (exception : NullPointerException) {
+            null
         }
     }
 
