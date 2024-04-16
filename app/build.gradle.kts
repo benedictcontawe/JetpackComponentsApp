@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.jetpackcomponentsapp"
-        minSdk = 16
+        minSdk = 19
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -52,7 +52,7 @@ dependencies {
     //implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
     //implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     //implementation("androidx.lifecycle:lifecycle-common-java8:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     //endregion
     //region Android Unit Test and U.I. Test Library

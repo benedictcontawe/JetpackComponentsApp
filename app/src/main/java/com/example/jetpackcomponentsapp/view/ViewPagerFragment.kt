@@ -51,7 +51,11 @@ public class ViewPagerFragment : BaseFragment {
         //viewBinding.viewPagerTwo.setAdapter(CustomViewPagerAdapter(dataBinding.getViewModel()?.getItems()))
         //endregion
         binder?.viewPagerTwo?.setAdapter(ViewPagerAdapter(binder?.getViewModel()?.getCustomModels()))
-        binder?.viewPagerTwo?.setPageTransformer(FadePageTransformer())
+        val pageMargin = resources.getDimensionPixelOffset(R.dimen.pageMargin).toFloat()
+        val pageOffset = resources.getDimensionPixelOffset(R.dimen.offset).toFloat()
+        binder?.viewPagerTwo?.setPageTransformer(SeekPageTransformer(pageOffset, pageMargin))
+        //binder?.viewPagerTwo?.setPageTransformer(SliderTransformer(3))
+        binder?.viewPagerTwo?.setOffscreenPageLimit(3)
         //dataBinding.viewPagerTwo.adapter.registerAdapterDataObserver()
         //binding.viewPagerTwo.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
     }
@@ -119,5 +123,4 @@ public class ViewPagerFragment : BaseFragment {
         super.onPause()
         binder?.viewPagerTwo?.unregisterOnPageChangeCallback(getOnPageChangeCallback())
     }
-
 }

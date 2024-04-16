@@ -43,6 +43,8 @@
             android:id="@+id/view_pager_two"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             tools:listitem="@layout/cell_custom"
             tools:itemCount="10"
             android:orientation="horizontal"
