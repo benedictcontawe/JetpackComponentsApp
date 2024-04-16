@@ -19,21 +19,17 @@ class SliderPageTransformer : ViewPager2.PageTransformer {
     }
 
     private val offscreenPageLimit : Int
-
     /**
      * @param offscreenPageLimit should be equal to setOffscreenPageLimit method of view pager 2
      */
     constructor(offscreenPageLimit : Int) {
         this.offscreenPageLimit = offscreenPageLimit
     }
-    override fun transformPage(page: View, position: Float) {
+    override fun transformPage(page : View, position : Float) {
         page.apply {
-
             ViewCompat.setElevation(page, -abs(position))
-
-            val scaleFactor = -SCALE_FACTOR * position + DEFAULT_SCALE
-            val alphaFactor = -ALPHA_FACTOR * position + DEFAULT_ALPHA
-
+            val scaleFactor : Float = -SCALE_FACTOR * position + DEFAULT_SCALE
+            val alphaFactor : Float = -ALPHA_FACTOR * position + DEFAULT_ALPHA
             when {
                 position <= 0f -> {
                     translationX = DEFAULT_TRANSLATION_X

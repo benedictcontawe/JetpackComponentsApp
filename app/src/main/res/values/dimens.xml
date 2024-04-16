@@ -23,6 +23,6 @@
     <dimen name="indicator_diameter_small">12dp</dimen>
     <dimen name="indicator_extra_scroll">54dp</dimen>
     <!--endregion-->
-    <dimen name="pageMargin">50dp</dimen>
     <dimen name="offset">0dp</dimen>
+    <dimen name="margin">50dp</dimen>
 </resources>
