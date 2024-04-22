@@ -1,22 +1,28 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Background -->
-    <item android:id="@android:id/background">
+    <!-- Background shape -->
+    <item>
         <shape android:shape="rectangle">
-            <corners android:radius="20dp" />
-            <solid android:color="#CCCCCC" />
+            <solid android:color="@color/black" />
+            <corners android:radius="8dp" />
         </shape>
     </item>
-    <!-- Progress -->
-    <item android:id="@android:id/progress">
-        <clip>
+    <!-- Alternating Striped pattern -->
+    <item>
+        <rotate
+            android:fromDegrees="45"
+            android:toDegrees="45"
+            android:pivotX="50%"
+            android:pivotY="50%">
             <shape android:shape="rectangle">
-                <corners android:radius="20dp" />
+                <size
+                    android:width="10dp"
+                    android:height="10dp" />
                 <gradient
-                    android:startColor="#00FF00"
-                    android:centerColor="#00FF00"
-                    android:endColor="#00FF00"
-                    android:angle="0" />
+                    android:startColor="@color/purple_200"
+                    android:endColor="@color/teal_200"
+                    android:type="linear"
+                    android:angle="45" />
             </shape>
-        </clip>
+        </rotate>
     </item>
 </layer-list>

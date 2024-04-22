@@ -38,8 +38,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                tools:progressDrawable="@drawable/green_oval_progress"
-                android:progressTint="#FF0000"
+                android:progressDrawable="@drawable/green_oval_progress"
+                tools:progressTint="#FF0000"
                 android:max="10"
                 android:progress="@{viewModel.progressData}"
                 tools:progress="5" />
