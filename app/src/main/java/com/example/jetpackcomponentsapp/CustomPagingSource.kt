@@ -47,8 +47,8 @@ public class CustomPagingSource : PagingSource<Int, CustomEntity> {
     override fun getRefreshKey(state : PagingState<Int, CustomEntity>) : Int? {
         Log.d(TAG, "getRefreshKey $state")
         return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 }
