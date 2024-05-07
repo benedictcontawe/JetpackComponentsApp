@@ -44,6 +44,9 @@ public class NasaPagingSource : PagingSource<Int, NasaResponseModel> {
     }
 
     override fun getRefreshKey(state : PagingState<Int, NasaResponseModel>) : Int? {
-        return null
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
 }
