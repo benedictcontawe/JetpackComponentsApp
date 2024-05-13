@@ -80,4 +80,6 @@
 - [Custom Progress Bars in Jetpack Compose](https://medium.com/@eozsahin1993/custom-progress-bars-in-jetpack-compose-723afb60c81c)
 
 - [Sharing Content with Intents](https://guides.codepath.com/android/Sharing-Content-with-Intents#sending-links)
+
+-  [Retrofit 2 – Synchronous and Asynchronous Calls](https://howtodoinjava.com/retrofit2/retrofit-sync-async-calls/)
 <!-- - []() -->
