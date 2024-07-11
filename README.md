@@ -81,5 +81,8 @@
 
 - [Sharing Content with Intents](https://guides.codepath.com/android/Sharing-Content-with-Intents#sending-links)
 
--  [Retrofit 2 – Synchronous and Asynchronous Calls](https://howtodoinjava.com/retrofit2/retrofit-sync-async-calls/)
+- [Retrofit 2 – Synchronous and Asynchronous Calls](https://howtodoinjava.com/retrofit2/retrofit-sync-async-calls/)
+
+- [A cool enum Parcelable technique](https://medium.com/@mattmichihara/a-cool-enum-parcelable-technique-3b25e5a4f5be)
+
 <!-- - []() -->
