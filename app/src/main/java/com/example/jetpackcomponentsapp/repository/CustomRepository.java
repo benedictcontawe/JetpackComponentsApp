@@ -32,8 +32,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,6 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 public class CustomRepository implements BaseRepository {
 
@@ -356,6 +361,30 @@ public class CustomRepository implements BaseRepository {
         } else if (requestCode == GOOGLE_SIGN_IN && resultCode != Activity.RESULT_OK) {
             Log.w(TAG, "failed, user denied OR no network OR jks SHA1 not configure yet at play console android project");
         }
+    }
+
+    public void verifyPhoneNumber(String phoneNumber, Long timeout, Activity activity, PhoneAuthProvider.OnVerificationStateChangedCallbacks callback) {
+        final PhoneAuthOptions options = PhoneAuthOptions.newBuilder(firebaseAuth)
+            .setPhoneNumber(phoneNumber)
+            .setTimeout(timeout, TimeUnit.SECONDS)
+            .setActivity(activity)
+            .setCallbacks(callback)
+            .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    public void signInWithPhoneNumber(String verificationId, String code, Activity activity) {
+        final PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = task.getResult().getUser();
+                } else if(task.isSuccessful() && task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+
+                }
+            }
+        });
     }
     //endregion
     //region Facebook Login Methods
