@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -362,7 +363,8 @@ public class CustomRepository implements BaseRepository {
             Log.w(TAG, "failed, user denied OR no network OR jks SHA1 not configure yet at play console android project");
         }
     }
-
+    //endregion
+    //region Phone Methods
     public void verifyPhoneNumber(String phoneNumber, Long timeout, Activity activity, PhoneAuthProvider.OnVerificationStateChangedCallbacks callback) {
         final PhoneAuthOptions options = PhoneAuthOptions.newBuilder(firebaseAuth)
             .setPhoneNumber(phoneNumber)
@@ -449,7 +451,25 @@ public class CustomRepository implements BaseRepository {
                 }
             });
     }
+    //region Link Methods
+    public void onLinkEmailCredential(String email, String password, Activity activity) {
+        final AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        getUser().linkWithCredential(credential).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "onLinkEmailCredential Success");
+                } else if (task.isSuccessful() == false) {
+                    Log.d(TAG, "onLinkEmailCredential Fail");
+                }
+            }
+        });
+    }
 
+    public void unLinkCredential(String data) {
+        getUser().unlink(data);
+    }
+    //endregion
     @Override
     public FirebaseUser getUser() {
         return firebaseAuth.getCurrentUser();
