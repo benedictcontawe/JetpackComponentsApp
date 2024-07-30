@@ -52,6 +52,6 @@ dependencies {
     //endregion
     //region Work Manager
     //implementation "androidx.work:work-runtime:2.9.0" // (Java only)
-    implementation("androidx.work:work-runtime-ktx:2.7.1") // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:2.9.0") // Kotlin + coroutines
     //endregion
 }

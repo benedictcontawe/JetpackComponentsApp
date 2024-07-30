@@ -130,6 +130,21 @@ class MainViewModel : AndroidViewModel {
         workManager.enqueue(periodicWorkRequest)
     }
     /*
+    public fun scheduleCoordinatesWorker() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val workRequest = PeriodicWorkRequestBuilder<CoordinatesWorker>(
+                1, TimeUnit.MINUTES
+            ).setConstraints(constraints)
+                .build()
+            workManager.enqueueUniquePeriodicWork(
+                CoordinatesWorker.TAG,
+                ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+            )
+        }
+    }
+    */
+    /*
     private fun getEmptyWorkInfo() : WorkInfo {
         return WorkInfo(
                 UUID.randomUUID(),
@@ -163,30 +178,30 @@ class MainViewModel : AndroidViewModel {
     }
 
     public fun observeOneTimeWorkRequest() : LiveData<WorkInfo> { Log.d(TAG, "observeOneTimeWorkRequest()")
-        return if (oneTimeWorkRequest != null) workManager.getWorkInfoByIdLiveData(oneTimeWorkRequest!!.getId())
+        return if (oneTimeWorkRequest != null) workManager.getWorkInfoByIdLiveData(oneTimeWorkRequest!!.id)
         else MutableLiveData<WorkInfo>()
     }
-
+    /*
     public fun observeFilteringWorRequest() : LiveData<WorkInfo> { Log.d(TAG, "observeFilteringWorRequest()")
-        return if (filteringWorRequest != null) workManager.getWorkInfoByIdLiveData(filteringWorRequest!!.getId())
+        return if (filteringWorRequest != null) workManager.getWorkInfoByIdLiveData(filteringWorRequest!!.id))
         else MutableLiveData<WorkInfo>()
     }
 
     public fun observeCompressingWorRequest() : LiveData<WorkInfo> { Log.d(TAG, "observeCompressingWorRequest()")
-        return if (compressingWorkRequest != null) workManager.getWorkInfoByIdLiveData(compressingWorkRequest!!.getId())
+        return if (compressingWorkRequest != null) workManager.getWorkInfoByIdLiveData(compressingWorkRequest!!.id))
         else MutableLiveData<WorkInfo>()
     }
 
     public fun observeUploadingWorRequest() : LiveData<WorkInfo> { Log.d(TAG, "observeUploadingWorRequest()")
-        return if (uploadingWorRequest != null) workManager.getWorkInfoByIdLiveData(uploadingWorRequest!!.getId())
+        return if (uploadingWorRequest != null) workManager.getWorkInfoByIdLiveData(uploadingWorRequest!!.id))
         else MutableLiveData<WorkInfo>()
     }
 
     public fun observeDownloadingWorRequest() : LiveData<WorkInfo> { Log.d(TAG, "observeDownloadingWorRequest()")
-        return if (downloadingWorRequest != null) workManager.getWorkInfoByIdLiveData(downloadingWorRequest!!.getId())
+        return if (downloadingWorRequest != null) workManager.getWorkInfoByIdLiveData(downloadingWorRequest!!.id))
         else MutableLiveData<WorkInfo>()
     }
-
+    */
     public fun observeWorkInfosByTagLiveData(name: String) : LiveData<List<WorkInfo>> {
         Log.d(TAG, "observeWorkInfosByTagLiveData($name)")
         return workManager.getWorkInfosByTagLiveData(name)
