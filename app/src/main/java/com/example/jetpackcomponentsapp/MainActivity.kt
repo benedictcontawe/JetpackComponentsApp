@@ -63,9 +63,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         //val workSpec = binding.getViewModel()?.getOneTimeWorkRequestWorkSpec("asd")
         val workInfo = binding.getViewModel()?.getOneTimeWorkRequestWorkInfo()
         //Log.d(TAG, "onResume() WorkSpec worker_class_name ${workSpec?.workerClassName}  calculate Next Run Time ${workSpec?.calculateNextRunTime()} ${MainViewModel.getDate(workSpec?.calculateNextRunTime())}")
-        Log.d(TAG, "onResume() WorkInfo State ${workInfo?.state?.name} ordinal ${workInfo?.state?.ordinal} Run Attempt Count ${workInfo?.runAttemptCount} Progress ${workInfo?.progress} ${workInfo?.progress?.getInt(Constants.WORKER_INT_PROGRESS,0)} is Finished ${workInfo?.state?.isFinished()}")
-        Log.d(TAG, "CustomWorker WorkInfo Output Data Name ${workInfo?.getOutputData()?.getString(Constants.WORKER_OUTPUT_NAME)}")
-        Log.d(TAG, "CustomWorker WorkInfo Output Data Values ${workInfo?.getOutputData()?.getString(Constants.WORKER_OUTPUT_VALUE)}")
+        //Log.d(TAG, "onResume() WorkInfo State ${workInfo?.state?.name} ordinal ${workInfo?.state?.ordinal} Run Attempt Count ${workInfo?.runAttemptCount} Progress ${workInfo?.progress} ${workInfo?.progress?.getInt(Constants.WORKER_INT_PROGRESS,0)} is Finished ${workInfo?.state?.isFinished()}")
+        //Log.d(TAG, "CustomWorker WorkInfo Output Data Name ${workInfo?.getOutputData()?.getString(Constants.WORKER_OUTPUT_NAME)}")
+        //Log.d(TAG, "CustomWorker WorkInfo Output Data Values ${workInfo?.getOutputData()?.getString(Constants.WORKER_OUTPUT_VALUE)}")
     }
 
     private fun observeWorkRequests() {
@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         })
+        /*
         binding.getViewModel()?.observeFilteringWorRequest()?.observe(this@MainActivity, object : Observer<WorkInfo> {
             override fun onChanged(workInfo : WorkInfo) {
                 Log.d(TAG, "FilteringWorker WorkInfo State ${workInfo.state.name} ordinal ${workInfo.state.ordinal}")
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 binding.textResult.setText(workInfo.state.name)
             }
         })
+        */
     }
 
     private fun clearInputs() {
