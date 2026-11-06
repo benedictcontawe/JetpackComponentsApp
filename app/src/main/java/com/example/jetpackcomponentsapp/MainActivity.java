@@ -3,21 +3,16 @@ package com.example.jetpackcomponentsapp;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +24,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.jetpackcomponentsapp.databinding.MainBinder;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, OnTouchListener,CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener, OnFocusChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener,CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, RatingBar.OnRatingBarChangeListener, SeekBar.OnSeekBarChangeListener, View.OnFocusChangeListener {
 
     private MainBinder binding;
     private MainViewModel viewModel;
@@ -37,18 +32,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private String[] names ={"A","B","C","D","E","F","G"};
     private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
-    private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
+    //private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
 
     private Button buttonSendData;
     private CheckBox checkboxSendData;
-    private ProgressBar progressBarResult;
+    //private ProgressBar progressBarResult;
     private RadioGroup radioGroup;
     private RadioButton radioOn,radioOff;
     private RatingBar ratingBarSendData;
     private SeekBar seekBarSendData,seekBarDiscreteSendData;
     private Spinner spinnerSendData,spinnerCustomSendData;
     private SwitchCompat switchSendData; //Use SwitchCompat instead of using Switch
-    private TextView textResult;
+    //private TextView textResult;
     private ToggleButton toggleButtonSendData;
 
     @Override
@@ -72,12 +67,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-
         binding.getViewModel().setData("Test");
     }
 
     private void findViewId() {
-        textResult = findViewById(R.id.textResult);
+        //textResult = findViewById(R.id.textResult);
         buttonSendData = findViewById(R.id.buttonSendData);
         switchSendData = findViewById(R.id.switchSendData);
         toggleButtonSendData = findViewById(R.id.toggleBtnSendData);
@@ -90,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         ratingBarSendData = findViewById(R.id.ratingBarSendData);
         seekBarSendData = findViewById(R.id.seekBarSendData);
         seekBarDiscreteSendData = findViewById(R.id.seekBarDiscreteSendData);
-        progressBarResult = findViewById(R.id.progressBarResult);
+        //progressBarResult = findViewById(R.id.progressBarResult);
     }
 
     private void setSpinnerAdapter() {
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item, names);
+        final ArrayAdapter spinnerAdapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item, names);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSendData.setAdapter(spinnerAdapter);
 
@@ -142,11 +136,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        /*
         if (view.getId() == spinnerSendData.getId()){
             isSpinnerTouch = true;
         } else if (view.getId() == spinnerCustomSendData.getId()){
             isCustomSpinnerTouch = true;
         }
+        */
         return false;
     }
 
@@ -196,11 +192,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == spinnerSendData.getId()){
-            if (isSpinnerTouch)
-                binding.getViewModel().setData("Spinner value selected is " + names[position]);
+            //if (isSpinnerTouch)
+            binding.getViewModel().setData("Spinner value selected is " + names[position]);
         }
         else if(parent.getId() == spinnerCustomSendData.getId()){
-            if (isCustomSpinnerTouch)
+            //if (isCustomSpinnerTouch)
                 binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
         }
     }
@@ -254,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
     //endregion
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
