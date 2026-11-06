@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.JetpackComponentsApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+    <!-- Dark Mode Toggle Button: Dark surface background with neon green accent -->
+    <style name="AppTheme.ToggleButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#2C2C2C</item> <!-- Dark gray button surface instead of white -->
+        <item name="android:textColor">@android:color/white</item> <!-- White text for contrast -->
+        <item name="colorAccent">#00FF00</item> <!-- Vibrant green activation indicator -->
+    </style>
+    <!-- Dark Mode CheckBox: Dark surface with high-visibility accent -->
+    <style name="AppTheme.CheckBox" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#2C2C2C</item> <!-- Dark gray surface -->
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorAccent">#00FF00</item>
+    </style>
+    <!-- Dark Mode RatingBar: Light/white borders for dark backgrounds with red activation -->
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#B0B0B0</item> <!-- Light gray/white stars unselected so they show on dark backgrounds -->
+        <item name="colorControlActivated">#FF5252</item> <!-- Slightly brighter red for high contrast in dark mode -->
+    </style>
+</resources>

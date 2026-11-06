@@ -98,14 +98,20 @@ public class MainActivity extends AppCompatActivity {
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (findViewById(checkedId).getId()){
-                    case R.id.radioOn:
+                final RadioChoice choice =
+                        (checkedId == R.id.radioOn) ? RadioChoice.ON :
+                        (checkedId == R.id.radioOff) ? RadioChoice.OFF : RadioChoice.UNKNOWN;
+                switch (choice) {
+                    case ON:
                         binding.getViewModel().setData("Radio Button is On of your selected Radio Group");
                         binding.textResult.setText(binding.getViewModel().getData());
                         break;
-                    case R.id.radioOff:
+                    case OFF:
                         binding.getViewModel().setData("Radio Button is Off of your selected Radio Group");
                         binding.textResult.setText(binding.getViewModel().getData());
+                        break;
+                    case UNKNOWN:
+                    default:
                         break;
                 }
             }
