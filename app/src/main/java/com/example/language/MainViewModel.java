@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
-    int topDetector, bottomDetector;
+    private int topDetector, bottomDetector;
 
     public void setTopDetector(int topDetector) {
         this.topDetector = topDetector;

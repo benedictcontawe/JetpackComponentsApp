@@ -38,7 +38,7 @@
             app:layout_constraintGuide_percent="0.95" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/chck_switch"
+            android:id="@+id/check_switch"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="@string/scroll_view_switch"

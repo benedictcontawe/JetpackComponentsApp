@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View view, MotionEvent event) {
         //if (view == binder.scrollView)
-        return binder.chckSwitch.isChecked();
+        return binder.checkSwitch.isChecked();
     }
 
     @Override
