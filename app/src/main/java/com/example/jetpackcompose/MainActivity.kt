@@ -20,6 +20,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -39,9 +46,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,19 +85,23 @@ class MainActivity : ComponentActivity() {
             val data : String by viewModel.getData().observeAsState("Result")
             val progress : Float by viewModel.getProgressData().observeAsState(0.0f)
             val isSwitchChecked : Boolean by viewModel.getSwitchChecked().observeAsState(false)
+            val isToggleButtonChecked : Boolean by viewModel.getToggleButtonChecked().observeAsState(false)
+            val selectedRadioButton : String by viewModel.getSelectedRadioButton().observeAsState("")
             val isCheckBoxChecked : Boolean by viewModel.getCheckBoxChecked().observeAsState(false)
             val isSpinnerExpanded : Boolean by viewModel.getSpinnerExpanded().observeAsState(false)
             val isCustomSpinnerExpanded : Boolean by viewModel.getCustomSpinnerExpanded().observeAsState(false)
-            val rate : Int by viewModel.getRatingBar().observeAsState(0)
+            val rate : Float by viewModel.getRatingBar().observeAsState(0f)
             val sliderProgress : Float by viewModel.getSliderProgress().observeAsState(0.0f)
+            val discreteSliderValue : Int by viewModel.getDiscreteSliderValue().observeAsState(0)
+            val rangeSliderValue : ClosedFloatingPointRange<Float> by viewModel.getRangeSliderValue().observeAsState(viewModel.rangeSliderRange)
             JetpackcomposeTheme {
-                SurfaceComposable(viewModel, data, progress, isSwitchChecked, isCheckBoxChecked, isSpinnerExpanded, isCustomSpinnerExpanded, rate, sliderProgress)
+                SurfaceComposable(viewModel, data, progress, isSwitchChecked, isToggleButtonChecked, selectedRadioButton, isCheckBoxChecked, isSpinnerExpanded, isCustomSpinnerExpanded, rate, sliderProgress, discreteSliderValue, rangeSliderValue)
             }
         }
     }
 
     @Composable
-    private fun SurfaceComposable(viewModel : MainViewModel, data : String, progress : Float, isSwitchChecked : Boolean, isCheckBoxChecked : Boolean, isSpinnerExpanded : Boolean, isCustomSpinnerExpanded : Boolean, rate : Int, sliderProgress : Float) {
+    private fun SurfaceComposable(viewModel : MainViewModel, data : String, progress : Float, isSwitchChecked : Boolean, isToggleButtonChecked : Boolean, selectedRadioButton : String, isCheckBoxChecked : Boolean, isSpinnerExpanded : Boolean, isCustomSpinnerExpanded : Boolean, rate : Float, sliderProgress : Float, discreteSliderValue : Int, rangeSliderValue : ClosedFloatingPointRange<Float>) {
         Surface (
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -115,10 +136,16 @@ class MainActivity : ComponentActivity() {
                         viewModel.setSwitchChecked(isChecked)
                     }
                 )
-                ToggleButtonComposable()
+                ToggleButtonComposable (
+                    isChecked = isToggleButtonChecked,
+                    onCheckedChange = { isChecked : Boolean ->
+                        viewModel.setToggleButtonChecked(isChecked)
+                    },
+                    text = viewModel.getToggleButtonText(isToggleButtonChecked)
+                )
                 RadioGroupComposable (
                     list = viewModel.onOffList,
-                    onSelect = { option : String -> viewModel.isRadioButtonChecked(option) },
+                    onSelect = { option : String -> viewModel.isRadioButtonChecked(selectedRadioButton, option) },
                     onClick = { option : String -> viewModel.setSelectedRadioButton(option) },
                 )
                 CheckboxComposable (
@@ -152,7 +179,9 @@ class MainActivity : ComponentActivity() {
                 )
                 RatingBarComposable (
                     rated = rate,
-                    onRatingChanged = { rating -> viewModel.setRatingBar(rating) }
+                    starCount = viewModel.ratingStarCount,
+                    stepSize = viewModel.ratingStepSize,
+                    onRatingChanged = { rating : Float -> viewModel.setRatingBar(rating) }
                 )
                 SeekBarComposable (
                     progressed = sliderProgress,
@@ -160,7 +189,22 @@ class MainActivity : ComponentActivity() {
                         viewModel.setSliderProgress(progress)
                     }
                 )
-                RangeSliderComposable()
+                DiscreteSeekBarComposable (
+                    value = discreteSliderValue,
+                    valueRange = viewModel.discreteSliderRange,
+                    steps = viewModel.discreteSliderSteps,
+                    onValueChanged = { value : Float ->
+                        viewModel.setDiscreteSliderValue(value)
+                    }
+                )
+                RangeSliderComposable (
+                    range = rangeSliderValue,
+                    valueRange = viewModel.rangeSliderRange,
+                    steps = viewModel.rangeSliderSteps,
+                    onRangeChanged = { range : ClosedFloatingPointRange<Float> ->
+                        viewModel.setRangeSliderValue(range)
+                    }
+                )
             }
         }
     }
@@ -179,10 +223,24 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    // Compose version of the XML <ToggleButton>: a button that flips between checked/unchecked
+    // and shows textOn / textOff. Filled when checked, outlined when unchecked.
     @Composable
-    private fun ToggleButtonComposable() {
-        //TODO: On going under construction
-        Text(text = "Toggle Button Under Construction")
+    private fun ToggleButtonComposable(isChecked : Boolean, onCheckedChange : (Boolean) -> Unit, text : String) {
+        OutlinedButton (
+            onClick = { onCheckedChange(isChecked.not()) },
+            colors = ButtonDefaults.outlinedButtonColors (
+                containerColor = if (isChecked) MaterialTheme.colorScheme.primary else Color.Transparent,
+                contentColor = if (isChecked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
+            ),
+            // TalkBack reads it as a toggle ("On" / "Off") instead of a plain button, like the XML ToggleButton.
+            modifier = Modifier.semantics {
+                toggleableState = ToggleableState(isChecked)
+                stateDescription = text
+            }
+        ) {
+            Text(text = text)
+        }
     }
     @Composable
     private fun RadioGroupComposable(list : List<String>, onSelect : (String) -> Boolean, onClick : (String) -> Unit) {
@@ -306,26 +364,76 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun RatingBarComposable(rated : Int, onRatingChanged : (Int) -> Unit) {
+    private fun RatingBarComposable(rated : Float, starCount : Int, stepSize : Float, onRatingChanged : (Float) -> Unit) {
         val outlinedStar = painterResource(id = R.drawable.outlined_star)
         val filledStar = painterResource(id = R.drawable.filled_star)
-        Row (
+        // Width of the row of stars in pixels, used to turn a touch position into a rating.
+        var starsWidth : Int by remember { mutableStateOf(0) }
+        // pointerInput(Unit) keeps running between recompositions, so read the latest values through these.
+        val currentRated : Float by rememberUpdatedState(rated)
+        val currentOnRatingChanged : (Float) -> Unit by rememberUpdatedState(onRatingChanged)
+
+        // Like the XML RatingBar: the touched x position becomes 0.5, 1, 1.5 ... rounded up to the step size.
+        fun ratingAt(x : Float) : Float {
+            if (starsWidth <= 0) return 0f
+            val stars : Float = (x / starsWidth) * starCount
+            val stepped : Float = Math.ceil((stars / stepSize).toDouble()).toFloat() * stepSize
+            return stepped.coerceIn(0f, starCount.toFloat())
+        }
+
+        Box (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            contentAlignment = Alignment.Center,
         ) {
-            repeat(5) { index ->
-                Icon (
-                    //imageVector = if (index < rating) Icons.Filled.Star else Icons.Outlined.Star,
-                    painter = if (index < rated) filledStar else outlinedStar,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clickable { onRatingChanged(index + 1) }
-                        .padding(4.dp)
-                )
+            Row (
+                modifier = Modifier
+                    .onSizeChanged { size : IntSize -> starsWidth = size.width }
+                    .pointerInput(Unit) {
+                        detectTapGestures { offset : Offset ->
+                            val rating : Float = ratingAt(offset.x)
+                            // Tapping the current rating again clears it back to 0.
+                            currentOnRatingChanged(if (rating == currentRated) 0f else rating)
+                        }
+                    }
+                    .pointerInput(Unit) {
+                        // Slide your finger across the stars; dragging past the left edge gives 0.
+                        detectHorizontalDragGestures { change : PointerInputChange, _ : Float ->
+                            currentOnRatingChanged(ratingAt(change.position.x))
+                        }
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                repeat(starCount) { index : Int ->
+                    // How much of this star is filled: 0 (empty), 0.5 (half) or 1 (full).
+                    val fill : Float = (rated - index).coerceIn(0f, 1f)
+                    Box (
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(4.dp)
+                    ) {
+                        Icon (
+                            painter = outlinedStar,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                        if (fill > 0f) {
+                            Icon (
+                                painter = filledStar,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    // Only draw the left part of the filled star for a half star.
+                                    .drawWithContent {
+                                        clipRect(right = size.width * fill) {
+                                            this@drawWithContent.drawContent()
+                                        }
+                                    }
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -341,20 +449,23 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun DiscreteSeekBarComposable() {
-        //TODO: On going under construction
-        Text(text = "Discrete Seek Bar Under Construction")
+    private fun DiscreteSeekBarComposable(value : Int, valueRange : ClosedFloatingPointRange<Float>, steps : Int, onValueChanged : (Float) -> Unit) {
+        Slider (
+            value = value.toFloat(),
+            onValueChange = { progress : Float -> onValueChanged(progress) },
+            steps = steps,
+            valueRange = valueRange,
+        )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun RangeSliderComposable() {
-        var range by remember { mutableStateOf(-20f..20f) }
+    private fun RangeSliderComposable(range : ClosedFloatingPointRange<Float>, valueRange : ClosedFloatingPointRange<Float>, steps : Int, onRangeChanged : (ClosedFloatingPointRange<Float>) -> Unit) {
         RangeSlider (
             value = range,
-            onValueChange = { range = it },
-            steps = 10,
-            valueRange = 1F..10f,
+            onValueChange = { newRange : ClosedFloatingPointRange<Float> -> onRangeChanged(newRange) },
+            steps = steps,
+            valueRange = valueRange,
         )
     }
 
@@ -366,18 +477,22 @@ class MainActivity : ComponentActivity() {
             val isCheckBoxChecked : Boolean by remember { mutableStateOf(false) }
             val isSpinnerExpanded : Boolean by remember { mutableStateOf(false) }
             val isCustomSpinnerExpanded : Boolean by remember { mutableStateOf(false) }
-            val rating : Int by remember { mutableStateOf(0) }
+            val rating : Float by remember { mutableStateOf(0f) }
             val sliderProgress : Float by remember { mutableStateOf(0.0f) }
             SurfaceComposable (
                 viewModel = viewModel { MainViewModel() },
                 data = "Data",
                 progress = 0.0f,
                 isSwitchChecked = isSwitchChecked,
+                isToggleButtonChecked = false,
+                selectedRadioButton = "",
                 isCheckBoxChecked = isCheckBoxChecked,
                 isSpinnerExpanded = isSpinnerExpanded,
                 isCustomSpinnerExpanded = isCustomSpinnerExpanded,
                 rate = rating,
-                sliderProgress = sliderProgress
+                sliderProgress = sliderProgress,
+                discreteSliderValue = 0,
+                rangeSliderValue = 1f..10f
             )
         }
     }
