@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                         items (
                             items = list,
                             itemContent = { model : NasaHolderModel -> NasaCellComposable(model) },
-                            key = { model : NasaHolderModel -> model.id }
+                            key = { model : NasaHolderModel -> model.date }
                         )
                     }
                     PullRefreshIndicator(refreshing = isRefreshing, state = pullRefreshState, scale = true)
@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.requestAPOD()
+        viewModel.requestAPODIfEmpty()
     }
 
     @OptIn(ExperimentalGlideComposeApi::class)
