@@ -42,8 +42,7 @@ public class MainViewModel : ViewModel {
         }
     }
 
-    public fun requestAPOD() {
-        // Ignore a new pull while the previous request is still running.
+    public fun requestAPOD() { // Ignore a new pull while the previous request is still running.
         if (isRefreshing.value) {
             return
         }
