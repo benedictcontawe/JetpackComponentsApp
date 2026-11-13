@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private MainBinder binding;
     private MainViewModel viewModel;
-
-    private String[] names ={"A","B","C","D","E","F","G"};
     private int[] icons = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     //private Boolean isSpinnerTouch = false, isCustomSpinnerTouch = false;
@@ -88,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setSpinnerAdapter() {
-        final ArrayAdapter spinnerAdapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item, names);
+        final ArrayAdapter spinnerAdapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item, viewModel.names);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSendData.setAdapter(spinnerAdapter);
 
-        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),icons, names);
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),icons, viewModel.names);
         spinnerCustomSendData.setAdapter(customAdapter);
     }
 
@@ -193,11 +191,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == spinnerSendData.getId()){
             //if (isSpinnerTouch)
-            binding.getViewModel().setData("Spinner value selected is " + names[position]);
+            binding.getViewModel().setData("Spinner value selected is " + viewModel.names[position]);
         }
         else if(parent.getId() == spinnerCustomSendData.getId()){
             //if (isCustomSpinnerTouch)
-                binding.getViewModel().setData("Customize Spinner value selected is " + names[position]);
+                binding.getViewModel().setData("Customize Spinner value selected is " + viewModel.names[position]);
         }
     }
 

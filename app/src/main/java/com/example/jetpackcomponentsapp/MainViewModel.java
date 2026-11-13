@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
+    public final String[] names ={"A","B","C","D","E","F","G"};
     private final MutableLiveData<String> data = new MutableLiveData<>();
     private final MutableLiveData<Integer> progressData = new MutableLiveData<>();
 
