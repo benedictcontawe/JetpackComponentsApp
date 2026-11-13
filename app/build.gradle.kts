@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    // AGP 9 compiles Kotlin itself (built-in Kotlin), so org.jetbrains.kotlin.android is no longer applied here.
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -13,7 +14,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -30,18 +30,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    // Kotlin's jvmTarget now follows compileOptions.targetCompatibility (the old kotlinOptions block was removed in AGP 9).
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
+    // composeOptions.kotlinCompilerExtensionVersion is gone: the Compose compiler comes from the
+    // org.jetbrains.kotlin.plugin.compose plugin and always matches the Kotlin version.
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
