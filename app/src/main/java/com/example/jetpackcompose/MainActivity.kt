@@ -21,8 +21,13 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.toggleableState
@@ -223,23 +228,45 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    // Compose version of the XML <ToggleButton>: a button that flips between checked/unchecked
-    // and shows textOn / textOff. Filled when checked, outlined when unchecked.
+    // Compose version of the XML <ToggleButton> (android:Theme.Material look): a raised button with
+    // textOn / textOff and a thin indicator line at the bottom (green when checked, gray when unchecked).
     @Composable
     private fun ToggleButtonComposable(isChecked : Boolean, onCheckedChange : (Boolean) -> Unit, text : String) {
-        OutlinedButton (
+        Button (
             onClick = { onCheckedChange(isChecked.not()) },
-            colors = ButtonDefaults.outlinedButtonColors (
-                containerColor = if (isChecked) MaterialTheme.colorScheme.primary else Color.Transparent,
-                contentColor = if (isChecked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
+            shape = RoundedCornerShape(2.dp),
+            colors = ButtonDefaults.buttonColors (
+                containerColor = Color.White,
+                contentColor = Color.Black
             ),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp, pressedElevation = 6.dp),
+            contentPadding = PaddingValues(0.dp),
             // TalkBack reads it as a toggle ("On" / "Off") instead of a plain button, like the XML ToggleButton.
             modifier = Modifier.semantics {
                 toggleableState = ToggleableState(isChecked)
                 stateDescription = text
             }
         ) {
-            Text(text = text)
+            Box (
+                modifier = Modifier.defaultMinSize(minWidth = 88.dp, minHeight = 36.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text (
+                    text = text.uppercase(),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+                // Indicator line along the bottom edge of the button.
+                Box (
+                    modifier = Modifier
+                        .matchParentSize()
+                        .wrapContentHeight(Alignment.Bottom)
+                        .fillMaxWidth()
+                        .height(1.5.dp)
+                        .background(if (isChecked) Color.Green else Color.DarkGray)
+                )
+            }
         }
     }
     @Composable
