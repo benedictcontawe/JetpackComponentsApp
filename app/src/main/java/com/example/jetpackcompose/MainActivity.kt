@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -55,7 +54,7 @@ class MainActivity : ComponentActivity() {
             val isRefreshing : Boolean by viewModel.observeRefreshing().collectAsState(initial = false)
             val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = viewModel::requestAPOD)
             //val pullRefreshState : PullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = { viewModel.requestAPOD() })
-            val list : List<NasaHolderModel> by viewModel.observeAPOD().observeAsState(listOf<NasaHolderModel>())
+            val list : List<NasaHolderModel> by viewModel.observeAPOD().collectAsState()
             JetpackcomposeTheme {
                 Surface (
                     modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState),

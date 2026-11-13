@@ -3,6 +3,7 @@ package com.example.jetpackcompose
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.Strictness
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,7 +40,7 @@ public class Repository {
 
     private fun provideGsonBuilder() : Gson {
         return GsonBuilder()
-            .setLenient()
+            .setStrictness(Strictness.LENIENT)//setLenient() is deprecated since Gson 2.11
             .create()
     }
 
@@ -62,7 +63,7 @@ public class Repository {
             .build()
     }
 
-    private fun <S> createService(serviceClass : Class<S>?) : S {
+    private fun <S> createService(serviceClass : Class<S>) : S {
         return retrofit!!.create(serviceClass)
     }
 
