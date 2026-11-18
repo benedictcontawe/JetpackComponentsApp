@@ -10,7 +10,7 @@ public class MainViewModel : ViewModel {
 
     private val list : MutableList<CustomModel> = mutableListOf<CustomModel>()
     public var horizontalPage : Int = 0
-    public var vertivalPage : Int = 0
+    public var verticalPage : Int = 0
 
     constructor() : super() {
         list.addAll(getCustomModels())

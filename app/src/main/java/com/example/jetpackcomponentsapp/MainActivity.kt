@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -95,7 +94,6 @@ public class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun HorizontalPagerComposable() {
         val pagerState : PagerState = rememberPagerState(initialPage = viewModel.horizontalPage, pageCount = { viewModel.getListCount() } )
@@ -120,13 +118,12 @@ public class MainActivity : ComponentActivity() {
         )
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun VerticalPagerComposable() {
-        val pagerState : PagerState = rememberPagerState(initialPage = viewModel.vertivalPage, pageCount = { viewModel.getListCount() } )
+        val pagerState : PagerState = rememberPagerState(initialPage = viewModel.verticalPage, pageCount = { viewModel.getListCount() } )
         LaunchedEffect(pagerState) {
             snapshotFlow { pagerState.currentPage }.collect { page ->
-                viewModel.vertivalPage = page
+                viewModel.verticalPage = page
             }
         }
         //pagerState.scrollToPage(0)
