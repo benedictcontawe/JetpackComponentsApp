@@ -41,15 +41,15 @@ public class Repository {
 
     private fun provideGsonBuilder() : Gson {
         return GsonBuilder()
-            .setLenient()
+            .setStrictness(Strictness.LENIENT)//setLenient() is deprecated since Gson 2.11
             .create()
     }
 
     private fun provideOkHttpClient() : OkHttpClient {
         return  OkHttpClient.Builder()
-            .connectTimeout(Constants.TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(Constants.TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(Constants.TIMEOUT, TimeUnit.SECONDS)
+            .connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(Constants.READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.SECONDS)
             /*.addInterceptor(object  : Interceptor {
                 override fun intercept(chain: Interceptor.Chain) : Response {
                     val original : Request = chain.request()
@@ -64,7 +64,7 @@ public class Repository {
             .build()
     }
 
-    private fun <S> createService(serviceClass : Class<S>?) : S {
+    private fun <S> createService(serviceClass : Class<S>) : S {
         return retrofit!!.create(serviceClass)
     }
 

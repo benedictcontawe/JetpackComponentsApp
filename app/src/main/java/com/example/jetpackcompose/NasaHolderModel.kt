@@ -4,10 +4,10 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 public data class NasaHolderModel (
-    val id : Int,
+    //val id : Int,
     val title : String,
     val copyright : String,
-    val date : String,
+    val date : String, // Unique identifier: APOD has exactly one picture per day (used as the LazyColumn key)
     val explanation : String,
     val image : String
 ) {
@@ -20,6 +20,6 @@ public data class NasaHolderModel (
     }
 
     override fun toString() : String {
-        return "$TAG($id, $title, $copyright, $explanation, $image)" ?: super.toString()
+        return "$TAG($date, $title, $copyright, $explanation, $image)" ?: super.toString()
     }
 }
