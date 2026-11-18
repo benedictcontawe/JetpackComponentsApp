@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.jetpackcomponentsapp"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -65,8 +65,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.12.1")
     //endregion
     //region Data Store
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.3.0")
+    implementation("androidx.datastore:datastore-preferences-core:1.3.0")
     //endregion
     //region Android Unit Test and U.I. Test Library
     testImplementation("junit:junit:4.13.2")
