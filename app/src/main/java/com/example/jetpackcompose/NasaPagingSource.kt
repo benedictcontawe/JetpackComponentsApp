@@ -3,6 +3,7 @@ package com.example.jetpackcompose
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import retrofit2.HttpException
 import retrofit2.Response
 
 public class NasaPagingSource : PagingSource<Int, NasaResponseModel> {
@@ -24,16 +25,23 @@ public class NasaPagingSource : PagingSource<Int, NasaResponseModel> {
         return try {
             val position = params.key ?: Constants.PAGING_SOURCE_PAGE_INDEX
 
-            val response : Response<List<NasaResponseModel>> = nasaAPI.getAstronomyPictureOfTheDay(request.key!!, request.count?.plus(position)!!)
+            // count= returns that many random days, so ask for exactly one page's worth each time
+            // (params.loadSize comes from PagingConfig: initialLoadSize for the first page, pageSize after).
+            val response : Response<List<NasaResponseModel>> = nasaAPI.getAstronomyPictureOfTheDay(request.key!!, params.loadSize)
+            val body : List<NasaResponseModel>? = response.body()
+            if (response.isSuccessful().not() || body == null) {
+                // e.g. 429 too many requests, 500 server error: show the error state instead of crashing
+                return LoadResult.Error(HttpException(response))
+            }
 
             val prevKey = if (position == Constants.PAGING_SOURCE_PAGE_INDEX) null
             else position - 1
 
-            val nextKey = if (response.body()?.isEmpty() == true) null
+            val nextKey = if (body.isEmpty()) null
             else position + 1
-            Log.d(TAG, "load $position $prevKey $nextKey ${response.body()}")
+            Log.d(TAG, "load $position $prevKey $nextKey size ${body.size}")
             LoadResult.Page (
-                data = response.body()!!,
+                data = body,
                 prevKey = prevKey,
                 nextKey = nextKey
             )

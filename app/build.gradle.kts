@@ -65,8 +65,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     //implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation("androidx.paging:paging-compose:3.3.0-alpha02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+    implementation("androidx.paging:paging-compose:3.5.3")
     //endregion
     //region Google Library
     //implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
@@ -94,6 +94,6 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    testImplementation("androidx.paging:paging-common-ktx:3.2.1")
+    testImplementation("androidx.paging:paging-testing:3.5.3")
     //endregion
 }
