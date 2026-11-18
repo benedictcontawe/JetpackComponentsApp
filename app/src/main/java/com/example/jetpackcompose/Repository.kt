@@ -71,7 +71,7 @@ public class Repository {
 
     private fun getPagingConfig() : PagingConfig {
         return PagingConfig(
-            pageSize = 10,
+            pageSize = Constants.pageSize,
             initialLoadSize = 10, //default: page size * 3
             prefetchDistance = 10, //default: page size
             //maxSize = PagedList.Config.MAX_SIZE_UNBOUNDED,
