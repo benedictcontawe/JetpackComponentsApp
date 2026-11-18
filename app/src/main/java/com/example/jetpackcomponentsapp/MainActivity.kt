@@ -1,9 +1,14 @@
 package com.example.jetpackcomponentsapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,9 +30,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomponentsapp.ui.theme.JetpackcomponentsappTheme
+import com.example.jetpackcomponentsapp.util.Coroutines
 
 class MainActivity : ComponentActivity() {
 
@@ -64,6 +72,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Coroutines.main(this@MainActivity, Lifecycle.State.STARTED, {
+            viewModel.observeToast().collect { message : String ->
+                Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     @Composable
     private fun SwitchComposable(modifier : Modifier, isCheck : Boolean, onCheckedChange : (Boolean) -> Unit) {
         Switch (
@@ -75,27 +92,25 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun EditTextComposable(label : String? = null, text : TextFieldValue, onTextChange : (value : TextFieldValue) -> Unit) {
+    fun EditTextComposable(label : String? = null, text : TextFieldValue, keyboardType : KeyboardType = KeyboardType.Text, onTextChange : (value : TextFieldValue) -> Unit) {
         if (label?.isNotBlank() == true) {
             TextField (
                 value = text,
                 onValueChange = { value : TextFieldValue -> onTextChange(value) },
                 label = { Text(label) },
                 maxLines = 1,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             )
         } else {
             TextField (
                 value = text,
                 onValueChange = { value : TextFieldValue -> onTextChange(value) },
                 maxLines = 1,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             )
         }
     }
@@ -150,6 +165,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.weight(inputWeight),
             ) {
                 EditTextComposable (
+                    keyboardType = KeyboardType.Text,
                     text = textField,
                     onTextChange = { value : TextFieldValue ->
                         viewModel.onStringTextChanged(value)
@@ -184,6 +200,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.weight(inputWeight),
             ) {
                 EditTextComposable (
+                    keyboardType = KeyboardType.Number,
                     text = textField,
                     onTextChange = { value : TextFieldValue ->
                         viewModel.onIntegerTextChanged(value)
@@ -222,6 +239,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.weight(inputWeight),
             ) {
                 EditTextComposable (
+                    keyboardType = KeyboardType.Decimal,
                     text = textField,
                     onTextChange = { value : TextFieldValue ->
                         viewModel.onDoubleTextChanged(value)
@@ -260,6 +278,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.weight(inputWeight),
             ) {
                 EditTextComposable (
+                    keyboardType = KeyboardType.Number,
                     text = textField,
                     onTextChange = { value : TextFieldValue ->
                         viewModel.onLongTextChanged(value)

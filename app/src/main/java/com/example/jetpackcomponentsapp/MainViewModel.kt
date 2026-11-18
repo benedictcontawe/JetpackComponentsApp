@@ -12,6 +12,10 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.util.Coroutines
+import com.example.jetpackcomponentsapp.util.isValidNumber
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 class MainViewModel : AndroidViewModel {
 
@@ -25,6 +29,7 @@ class MainViewModel : AndroidViewModel {
     private val _integerTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
     private val _doubleTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
     private val _longTextState : MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
+    private val toastFlow : MutableSharedFlow<String> = MutableSharedFlow<String>(replay = 0)// replay = 0: a new collector (e.g. the Activity after rotation) does NOT get old messages.
 
     constructor(application : Application) : super(application) {
         repository = CustomRepository.getInstance(application)
@@ -72,40 +77,64 @@ class MainViewModel : AndroidViewModel {
         Coroutines.io(this@MainViewModel) {
             if (booleanKey != null) {
                 repository.update(booleanKey)
+                //showToast("Boolean saved: $booleanKey")
+            } else {
+                showToast("Invalid boolean value")
             }
         }
     }
 
     fun update(stringKey : String?) {
         Coroutines.io(this@MainViewModel) {
-            if (stringKey != null) {
+            if (stringKey?.isNotBlank() == true) {
                 repository.update(stringKey)
+                //showToast("String saved: $stringKey")
+            } else {
+                showToast("Invalid string value")
             }
         }
     }
 
     fun update(integerKey : Int?) {
         Coroutines.io(this@MainViewModel) {
-            if (integerKey != null) {
+            if (integerKey.isValidNumber()) {
                 repository.update(integerKey)
+                //showToast("Integer saved: $integerKey")
+            } else {
+                showToast("Invalid integer value")
             }
         }
     }
 
     fun update(doubleKey : Double?) {
         Coroutines.io(this@MainViewModel) {
-            if (doubleKey != null) {
+            if (doubleKey.isValidNumber()) {
                 repository.update(doubleKey)
+                //showToast("Double saved: $doubleKey")
+            } else {
+                showToast("Invalid double value")
             }
         }
     }
 
     fun update(longKey : Long?) {
         Coroutines.io(this@MainViewModel) {
-            if (longKey != null) {
+            if (longKey.isValidNumber()) {
                 repository.update(longKey)
+                //showToast("Long saved: $longKey")
+            } else {
+                showToast("Invalid long value")
             }
         }
+    }
+    //endregion
+    //region Toast Methods
+    fun observeToast() : SharedFlow<String> {
+        return toastFlow.asSharedFlow()
+    }
+
+    private suspend fun showToast(message : String) {
+        toastFlow.emit(message)
     }
     //endregion
     //region Observe Methods

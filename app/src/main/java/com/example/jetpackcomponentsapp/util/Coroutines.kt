@@ -1,5 +1,6 @@
 package com.example.jetpackcomponentsapp.util
 
+import androidx.activity.ComponentActivity
 //import androidx.appcompat.app.AppCompatActivity
 //import androidx.fragment.app.DialogFragment
 //import androidx.fragment.app.Fragment
@@ -48,6 +49,12 @@ public object Coroutines {
     public fun main(work : suspend (() -> Unit)) =
         CoroutineScope(Dispatchers.Main.immediate).launch {
             work()
+        }
+    public fun main(activity : ComponentActivity, state: Lifecycle.State, work : suspend ((scope : CoroutineScope) -> Unit)) =
+        activity.lifecycleScope.launch {
+            activity.lifecycle.repeatOnLifecycle(state) {
+                work(this)
+            }
         }
     /*
     public fun main(activity : AppCompatActivity, work : suspend ((scope : CoroutineScope) -> Unit)) =
