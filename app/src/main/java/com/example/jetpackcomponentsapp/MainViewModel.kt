@@ -11,14 +11,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.repository.CustomRepository
 import com.example.jetpackcomponentsapp.util.ConvertList
 import com.example.jetpackcomponentsapp.util.Coroutines
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 
 class MainViewModel : AndroidViewModel {
 
@@ -28,10 +30,15 @@ class MainViewModel : AndroidViewModel {
 
     constructor(application: Application) : super(application) {
         repository = CustomRepository(application)
+        // Built once: calling getFlowPagingData() again (e.g. on every recomposition) would start a new
+        // Pager and reload the list from the start. cachedIn must be the last step: it keeps the loaded
+        // pages in memory, shares them with every collector and survives screen rotation.
+        pagingItems = ConvertList.toFlowPagingDataModel(repository.getFlowPagingData()).cachedIn(viewModelScope)
         //liveStandBy.setValue(true)
     }
 
     private val repository : CustomRepository
+    private val pagingItems : Flow<PagingData<CustomModel>>
     private val liveUpdate : MutableLiveData<CustomModel?> = MutableLiveData<CustomModel?>(null)
     private val liveStandBy : MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     private val liveAddDialog : MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
@@ -106,7 +113,7 @@ class MainViewModel : AndroidViewModel {
         viewWillAppear()
     } ) }
     //endregion
-    //region Room CRUD Methods Methods
+    //region Room CRUD Methods
     public fun insertItem() { Coroutines.io(this@MainViewModel, {
         viewDidLoad()
         repository.insert (
@@ -147,8 +154,8 @@ class MainViewModel : AndroidViewModel {
         viewWillAppear()
     }) }
 
-    public fun observeItems() : SharedFlow<PagingData<CustomModel>> {
-        return ConvertList.toSharedFlowPagingDataModel(repository.getFlowPagingData(), viewModelScope)
+    public fun observeItems() : Flow<PagingData<CustomModel>> {
+        return pagingItems
     }
     //endregion
     override fun onCleared() {

@@ -60,6 +60,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.ui.theme.JetpackComponentsAppTheme
 import com.example.jetpackcomponentsapp.util.Constants
@@ -187,6 +188,7 @@ class MainActivity : ComponentActivity() {
 
                     items (
                         count = list.itemCount,
+                        key = list.itemKey { model : CustomModel -> model.id ?: 0 }, // Stable key per row: Compose keeps the right rows when items are added or deleted.
                         itemContent = {index : Int ->
                             val model : CustomModel? = list[index]
                             if (model != null) {

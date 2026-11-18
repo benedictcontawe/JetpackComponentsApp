@@ -8,10 +8,11 @@ import androidx.paging.PagingData
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.jetpackcomponentsapp.CustomPagingSource
+import com.example.jetpackcomponentsapp.R
 import com.example.jetpackcomponentsapp.room.CustomDAO
 import com.example.jetpackcomponentsapp.room.CustomDatabase
 import com.example.jetpackcomponentsapp.room.CustomEntity
+import com.example.jetpackcomponentsapp.util.Coroutines
 import kotlinx.coroutines.flow.Flow
 
 class CustomRepository : BaseRepository {
@@ -89,20 +90,19 @@ class CustomRepository : BaseRepository {
     }
 
     override fun getFlowPagingData(): Flow<PagingData<CustomEntity>> {
-        return return Pager (
+        return Pager (
             config = getPagingConfig(),
-            pagingSourceFactory = {
-                CustomPagingSource(customDao)
+            pagingSourceFactory = { // Room's own PagingSource: reloads after every insert / update / delete.
+                customDao!!.observePagingSource()
             }
         ).flow
-
     }
     //endregion
     private fun getPagingConfig() : PagingConfig {
         return PagingConfig (
             pageSize = 10,
             initialLoadSize = 10, //default: page size * 3
-            prefetchDistance = 10, //default: page size
+            prefetchDistance = 5, //default: page size
             //maxSize = PagedList.Config.MAX_SIZE_UNBOUNDED,
             enablePlaceholders = false //default: true
         )

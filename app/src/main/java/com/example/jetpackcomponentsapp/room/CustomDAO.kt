@@ -1,6 +1,7 @@
 package com.example.jetpackcomponentsapp.room
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -31,8 +32,12 @@ interface CustomDAO {
     fun observeLiveAll() : LiveData<List<CustomEntity>>
 
     @Query("SELECT * FROM custom_table GROUP BY Id ORDER BY Id ASC")
-    //public fun observeAll() : PagingSource<Int, CustomEntity>
     public fun observeFlowAll() : Flow<List<CustomEntity>>
+
+    // Room generates this PagingSource: it reads one page at a time (LIMIT / OFFSET) and is
+    // invalidated automatically after insert / update / delete, so the list refreshes by itself.
+    @Query("SELECT * FROM custom_table ORDER BY Id ASC")
+    public fun observePagingSource() : PagingSource<Int, CustomEntity>
 
     @Transaction
     suspend fun resetDAO() {

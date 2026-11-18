@@ -3,18 +3,11 @@ package com.example.jetpackcomponentsapp.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.jetpackcomponentsapp.model.CustomModel
 import com.example.jetpackcomponentsapp.room.CustomEntity
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
 
 object ConvertList {
 
@@ -55,16 +48,10 @@ object ConvertList {
             CustomModel(it.id?:0, it.name?:"")
         }
     }
-
-    public fun toSharedFlowPagingDataModel(flow : Flow<PagingData<CustomEntity>>, scope : CoroutineScope) : SharedFlow<PagingData<CustomModel>> {
-        return flow.map {
-            toPagingDataModel(it)
-        }.cachedIn(scope).shareIn(scope, SharingStarted.Lazily)
-    }
-
-    public suspend fun toStateFlowPagingDataModel(flow : Flow<PagingData<CustomEntity>>, scope : CoroutineScope) : StateFlow<PagingData<CustomModel>> {
-        return flow.map {
-            toPagingDataModel(it)
-        }.cachedIn(scope).stateIn(scope)
+    // Only converts Entity -> Model. Caching (cachedIn) is done in the ViewModel with viewModelScope.
+    public fun toFlowPagingDataModel(flow : Flow<PagingData<CustomEntity>>) : Flow<PagingData<CustomModel>> {
+        return flow.map { pagingData : PagingData<CustomEntity> ->
+            toPagingDataModel(pagingData)
+        }
     }
 }
