@@ -6,10 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
 
 public class MainViewModel : ViewModel {
 
@@ -18,25 +16,24 @@ public class MainViewModel : ViewModel {
     }
 
     private val repository : Repository
-    private val list : MutableList<NasaHolderModel>
+    private val pagingAPOD : Flow<PagingData<NasaHolderModel>>
 
     constructor() {
         Log.d(TAG, "constructor")
         repository = Repository()
-        list = mutableListOf<NasaHolderModel>()
+        // Created once: calling getFlowAPOD() again (e.g. on every recomposition) would start a new Pager
+        // and reload from page 1. cachedIn keeps the loaded pages across recomposition and rotation.
+        val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, Constants.APPEND_COUNT)
+        pagingAPOD = repository.getFlowAPOD(request).map { pagingData : PagingData<NasaResponseModel> ->
+            pagingData.map { response : NasaResponseModel -> NasaHolderModel(response) }
+        }.cachedIn(viewModelScope)
     }
 
     init {
         Log.d(TAG, "initialize")
     }
 
-    public fun observeAPOD() : SharedFlow<PagingData<NasaHolderModel>> {
-        val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, 0)
-        return repository.getFlowAPOD(request).map { pagingDatum : PagingData<NasaResponseModel> ->
-            pagingDatum.map { response : NasaResponseModel ->
-                list.add(NasaHolderModel(0, response))
-                NasaHolderModel(list.size + 1, response)
-            }
-        }.cachedIn(viewModelScope).shareIn(viewModelScope, SharingStarted.Lazily)
+    public fun observeAPOD() : Flow<PagingData<NasaHolderModel>> {
+        return pagingAPOD
     }
 }
