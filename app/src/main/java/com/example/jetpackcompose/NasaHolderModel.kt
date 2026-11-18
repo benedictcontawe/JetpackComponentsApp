@@ -15,7 +15,7 @@ public data class NasaHolderModel (
         private val TAG = NasaHolderModel::class.java.getSimpleName()
     }
 
-    constructor(response : NasaResponseModel) : this(title = response.title ?: Constants.BLANK, copyright = response.copyright ?: Constants.BLANK, date = response.date ?: Constants.BLANK, explanation = response.explanation ?: Constants.BLANK, image = response.hdurl ?: Constants.BLANK) {
+    constructor(id : Int, response : NasaResponseModel) : this(id = id ?: -1, title = response.title ?: Constants.BLANK, copyright = response.copyright ?: Constants.BLANK, date = response.date ?: Constants.BLANK, explanation = response.explanation ?: Constants.BLANK, image = response.hdurl ?: Constants.BLANK) {
 
     }
 
