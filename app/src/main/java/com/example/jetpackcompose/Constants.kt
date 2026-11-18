@@ -10,5 +10,4 @@ object Constants {
     public const val READ_TIMEOUT : Long = 30L    // seconds to wait for the response (APOD with count= can be slow)
     public const val WRITE_TIMEOUT : Long = 15L   // seconds to send the request
     public const val BLANK = " "
-    public const val PAGING_SOURCE_PAGE_INDEX = 1
 }

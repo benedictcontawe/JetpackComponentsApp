@@ -54,7 +54,6 @@ dependencies {
     //implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     //implementation("androidx.appcompat:appcompat:1.6.1")
     //implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    //implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     //endregion
     //region Android X Jetpack Compose
     implementation("androidx.activity:activity-compose:1.13.0")
@@ -64,9 +63,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    //implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation("androidx.paging:paging-compose:3.3.0-alpha02")
+    implementation("androidx.compose.runtime:runtime-livedata:1.12.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
     //endregion
     //region Google Library
     //implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
@@ -94,6 +92,5 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    testImplementation("androidx.paging:paging-common-ktx:3.2.1")
     //endregion
 }

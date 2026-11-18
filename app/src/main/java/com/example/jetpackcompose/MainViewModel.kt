@@ -2,14 +2,11 @@ package com.example.jetpackcompose
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 public class MainViewModel : ViewModel {
 
@@ -18,25 +15,62 @@ public class MainViewModel : ViewModel {
     }
 
     private val repository : Repository
-    private val list : MutableList<NasaHolderModel>
+    private val liveList : MutableStateFlow<List<NasaHolderModel>>
+    private val isRefreshing : MutableStateFlow<Boolean>
 
     constructor() {
         Log.d(TAG, "constructor")
         repository = Repository()
-        list = mutableListOf<NasaHolderModel>()
+        liveList = MutableStateFlow<List<NasaHolderModel>>(emptyList<NasaHolderModel>())
+        isRefreshing = MutableStateFlow<Boolean>(false)
     }
 
     init {
         Log.d(TAG, "initialize")
     }
 
-    public fun observeAPOD() : SharedFlow<PagingData<NasaHolderModel>> {
-        val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, 0)
-        return repository.getFlowAPOD(request).map { pagingDatum : PagingData<NasaResponseModel> ->
-            pagingDatum.map { response : NasaResponseModel ->
-                list.add(NasaHolderModel(0, response))
-                NasaHolderModel(list.size + 1, response)
+    public fun observeRefreshing() : StateFlow<Boolean> {
+        return isRefreshing.asStateFlow<Boolean>()
+    }
+    // First load only: does nothing once pictures are loaded (also retries if the first load failed).
+    public fun requestAPODIfEmpty() {
+        if (liveList.value.isEmpty()) {
+            requestAPOD()
+        }
+    }
+
+    public fun requestAPOD() { // Ignore a new pull while the previous request is still running.
+        if (isRefreshing.value) {
+            return
+        }
+        isRefreshing.value = true
+        Coroutines.io(this@MainViewModel, {
+            try {
+                val request : NasaRequestModel = NasaRequestModel(Constants.API_KEY, Constants.APPEND_COUNT)
+                val responseList : List<NasaResponseModel> = repository.getAPOD(request)
+                Log.d(TAG, "requestAPOD() size ${responseList.size}")
+                liveList.update { currentList : List<NasaHolderModel> ->
+                    val shownDates : Set<String> = currentList.map { model : NasaHolderModel -> model.date }.toSet()
+                    val newList : List<NasaHolderModel> = responseList
+                        .filter { response : NasaResponseModel -> response.date.isNullOrBlank().not() }
+                        .distinctBy { response : NasaResponseModel -> response.date }
+                        .filterNot { response : NasaResponseModel -> response.date in shownDates }
+                        .map { response : NasaResponseModel -> NasaHolderModel(response) }
+                        .reversed() // Newest on top
+                    newList + currentList
+                }
+            } catch (exception : CancellationException) {
+                Log.e(TAG, "requestAPOD() CancellationException ", exception)
+                throw exception
+            } catch (exception : Exception) { // No internet, timeout, bad response, etc. Keep the current list instead of crashing.
+                Log.e(TAG, "requestAPOD() Exception", exception)
+            } finally {
+                isRefreshing.value = false
             }
-        }.cachedIn(viewModelScope).shareIn(viewModelScope, SharingStarted.Lazily)
+        })
+    }
+
+    public fun observeAPOD() : StateFlow<List<NasaHolderModel>> {
+        return liveList.asStateFlow<List<NasaHolderModel>>()
     }
 }
